@@ -9,7 +9,7 @@
             </div>
             <div class="col-md-6 login-container bs-reset mt-login-5-bsfix">
                 <div class="login-content">
-                    <h1>SOCIALCOP LOGIN</h1>
+                    <h1>SOCIALCOP LOGIN </h1>
                     <form action="" class=" " method="post">
                         <div class="alert alert-danger display-hide">
                             <button class="close" data-close="alert"></button>
