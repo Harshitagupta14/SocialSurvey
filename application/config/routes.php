@@ -108,7 +108,8 @@ $route['account/logout'] = 'account/login/logout';
 $route['register'] = 'account/login/register_account';
 
 $route['create-survey-step-one'] = 'survey/survey_step_1/';
-$route['create-survey-step-two'] = 'survey/survey_step_2/';
+$route['create-survey-step-two/(:any)'] = 'survey/survey_step_2/$1';
+$route['ajax-save-question'] = 'survey/ajax_save_question/';
 
 //======= Admin Related Urls===================//
 

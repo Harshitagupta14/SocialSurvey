@@ -55,35 +55,19 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="select2-single-input-sm" class="control-label">Select Survey Question Type</label>
+
                                     <select id="select2-single-input-sm" class="form-control input-sm select2-multiple">
-                                        <optgroup label="TEXT">
-                                            <option value="sb">SUBJECTIVE</option>
-                                            <option value="mq">MULTIPLE CHOICE</option>
-                                            <option value="nm">NUMERICAL</option>
-                                            <option value="da">DATE</option>
-                                            <option value="ti">TIME</option>
-                                            <option value="sc">SCALE</option>
-                                            <option value="ph">PHONE</option>
-                                            <option value="em">EMAIL</option>
-                                        </optgroup>
-                                        <optgroup label="MEDIA">
-                                            <option value="CA">PICTURE INPUT</option>
-                                            <option value="NV">CAMERA</option>
-                                            <option value="OR">AUDIO INPUT</option>
-                                            <option value="WA">SIGNATURE</option>
-                                            <option value="WA">BARCODE</option>
-                                        </optgroup>
-                                        <optgroup label="GROUPED">
-                                            <option value="AZ">TABULAR</option>
-                                        </optgroup>
-                                        <optgroup label="HELPER">
-                                            <option value="AL">SECTION BREAK</option>
-                                            <option value="AL">NOTE</option>
-                                        </optgroup>
-                                        <optgroup label="LOCATION">
-                                            <option value="AL">MAP</option>
-                                            <option value="AL">GEO-LOCATION</option>
-                                        </optgroup>
+                                        <?php
+                                        foreach ($survey_types as $survey) {
+                                            if ($survey['type_parent_id'] == 0) {
+                                                ?>
+                                                <optgroup label="<?php echo $survey['type_name']; ?>"></optgroup>
+                                            <?php } else { ?>
+                                                <option value="<?php echo $survey['type_small_name']; ?>"><?php echo $survey['type_name']; ?></option>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 
@@ -92,7 +76,8 @@
 
 
                         </div>
-
+                        <input type="hidden" value="<?php echo $id; ?>" name="id" id="id"/>
+                        <input type="hidden" value="<?php echo $survey_id; ?>" name="survey_id" id="survey_id"/>
                         <!-- Default Question Block -->
                         <div id="question-block" style="margin-top:50px;"></div>
                         <!-- Default Question Block Ends -->
@@ -101,31 +86,78 @@
                         <div id="mq-block" style="display:none;">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <select multiple data-role="tagsinput" placeholder="Multiple Choice Options"></select>
+                                    <select multiple data-role="tagsinput" placeholder="Multiple Choice Options" id="multiple_choice"></select>
                                 </div>
                             </div>
                         </div>
                         <!-- Multiple Option Question Block Ends -->
-
-
                         <div class="row" style="margin-top:20px;">
                             <div class="col-lg-2 col-md-4 col-xs-12">
                                 <div class="mt-element-ribbon bg-grey-steel">
                                     <div class="ribbon ribbon-color-primary uppercase">Question 1</div>
-                                    <p class="ribbon-content"><input value="save" class="btn btn-danger" type="submit"></p>
+                                    <p class="ribbon-content"><input value="save" class="btn btn-danger" type="submit" id="question_save"></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var i = 0;
+        $("#question_save").click(function () {
+            var max_input;
+            var qLimitLow;
+            var multiple_choice;
+            var question_title = document.getElementById("form_control_1").value;
+            var help_text_note = document.getElementById("form_control_2").value;
+            var unique_one_word = document.getElementById("form_control_3").value;
+            var type = document.getElementById("select2-single-input-sm").value;
+            var survey_id = document.getElementById("survey_id").value;
+            i = +i + +1;
+            if (type == "sb") {
+                max_input = document.getElementById("form_control_4").value;
+                qLimitLow = 0;
+                multiple_choice = 0;
+            }
+            if (type == "mq") {
+                qLimitLow = document.getElementById("qLimitLow").value;
+                max_input = document.getElementById("qLimitUp").value;
+                multiple_choice = document.getElementById("multiple_choice").value;
+            } else {
+                max_input = 100;
+                qLimitLow = 0;
+                multiple_choice = 0;
+            }
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "ajax-save-question",
+                dataType: 'json',
+                data: {question_title: question_title, help_text_note: help_text_note, unique_one_word: unique_one_word, max_input: max_input, type: type, qLimitLow: qLimitLow, multiple_choice: multiple_choice, survey_id: survey_id, i: i},
+                complete: function (stat) {
+                    var response = stat.responseText;
+                    var data = JSON.parse(response);
+                    console.log(data.question_data.question_no);
+                    if (data.success == "true") {
+                        document.getElementById("form_control_1").value = "";
+                        document.getElementById("form_control_2").value = "";
+                        document.getElementById("form_control_3").value = "";
+                        document.getElementById("form_control_4").value = "";
+                        document.getElementById("qLimitLow").value = "";
+                        document.getElementById("qLimitUp").value = "";
+                        document.getElementById("select2-single-input-sm").value = "";
+                    } else {
+                        alert("Error");
+                    }
+                }
+            });
+        });
+    });
+</script>
 <script>
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -156,6 +188,12 @@
 <script>
     function create_default_fields() {
 
+//        var question_no = document.createElement('input');
+//        question_no.className = "form-control";
+//        question_no.setAttribute("id", "question_no");
+//        question_no.setAttribute("type", "text");
+//        question_no.setAttribute("value", 0);
+
         var question_block_row_div = document.createElement('div');
         question_block_row_div.className = "row";
         question_block_row_div.setAttribute("id", "question_block");
@@ -181,7 +219,7 @@
         question_title_help_block.className = "help-block";
         question_title_help_block.innerHTML = "Question Title Goes Here";
 
-
+//        question_title_inner_col_div.appendChild(question_no);
         question_title_inner_col_div.appendChild(question_title_input);
         question_title_inner_col_div.appendChild(question_title_label);
         question_title_inner_col_div.appendChild(question_title_help_block);
@@ -226,12 +264,12 @@
 
         var short_keyword_input = document.createElement('input');
         short_keyword_input.className = "form-control";
-        short_keyword_input.setAttribute("id", "form_control_2");
+        short_keyword_input.setAttribute("id", "form_control_3");
         short_keyword_input.setAttribute("placeholder", "Unique One Word");
         short_keyword_input.setAttribute("type", "text");
 
         var short_keyword_label = document.createElement('label');
-        short_keyword_label.setAttribute("for", "form_control_2");
+        short_keyword_label.setAttribute("for", "form_control_3");
         short_keyword_label.innerHTML = "Short Keyword For Question.";
 
         var short_keyword_help_block = document.createElement('span');
@@ -262,12 +300,12 @@
 
         var sb_max_characters_input = document.createElement('input');
         sb_max_characters_input.className = "form-control";
-        sb_max_characters_input.setAttribute("id", "form_control_2");
+        sb_max_characters_input.setAttribute("id", "form_control_4");
         sb_max_characters_input.setAttribute("type", "text");
         sb_max_characters_input.setAttribute("value", "100");
 
         var sb_max_characters_label = document.createElement('label');
-        sb_max_characters_label.setAttribute("for", "form_control_2");
+        sb_max_characters_label.setAttribute("for", "form_control_4");
         sb_max_characters_label.innerHTML = "Max Cahracters Allowed";
 
         var sb_max_characters_help_block = document.createElement('span');
@@ -389,21 +427,4 @@
     };
 </script>
 
-<script>
-    $('#select2-single-input-sm').select2({
-        placeholderOption: 'first'
-    });
 
-    $('#input-tags').selectize({
-        plugins: ['remove_button'],
-        delimiter: ',',
-        persist: false,
-        create: function (input) {
-            return {
-                value: input,
-                text: input
-            }
-        }
-    });
-
-</script>

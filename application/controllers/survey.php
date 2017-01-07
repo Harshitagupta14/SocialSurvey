@@ -26,11 +26,20 @@ class Survey extends CI_Controller {
             $this->form_validation->set_rules('survey_title', 'Survey Title', 'trim|required');
             $this->form_validation->set_rules('survey_category', 'Category', 'trim|required');
             if ($this->form_validation->run()) {
-                $survey_title = $this->session->set_userdata('survey_title', $this->input->post('survey_title'));
-                $survey_category = $this->session->set_userdata('survey_category', $this->input->post('survey_category'));
+                $date = date('Y-m-d H:i:s');
+                $data_survey = array(
+                    'survey_title' => $this->input->post('survey_title'),
+                    'survey_category' => $this->input->post('survey_category'),
+                    'survey_type' => $this->input->post('survey_type'),
+                    'user_id_fk' => $this->flexi_auth->get_user_by_identity_row_array()['uacc_id'],
+                    'add_time' => $date
+                );
+                $date_md = md5($date);
+                $data_survey["survey_id"] = $date_md;
+                $this->common_model->insert_data('tbl_survey', $data_survey);
                 $uniqueId = uniqid($this->input->ip_address(), TRUE);
                 $this->session->set_userdata("my_session_id", md5($uniqueId));
-                redirect('create-survey-step-two');
+                redirect('create-survey-step-two/' . $date_md);
                 exit();
             }
         }
@@ -39,137 +48,51 @@ class Survey extends CI_Controller {
         $this->load->view($this->config->item('template') . '/footer_dashboard');
     }
 
-    public function survey_step_2() {
+    public function survey_step_2($date_md = NULL) {
+
         //$data['category_data'] = $this->common_model->getFieldsFromAnyTable('parent_id', 0, 'tbl_category', FALSE, FALSE, 'active');
+        $select_id = $this->common_model->fetch_where('tbl_survey', '*', array('survey_id' => $date_md))[0];
         $data['METATITLE'] = "Create Survey - Step 1";
         $data['METAKEYWORDS'] = "Create Survey - Step 1";
         $data['METADESCRIPTION'] = "Create Survey - Step 1";
+        $data['id'] = $this->flexi_auth->get_user_by_identity_row_array()["uacc_id"];
         //$data['current_page_slug'] = "categories";
         $data['breadcrumb'] = '<li class="active">Services</li>';
+        $data['survey_types'] = $this->common_model->fetch_where('tbl_survey_question_type');
+        $data['survey_id'] = $select_id["id"];
         $this->load->view($this->config->item('template') . '/header_dashboard', $data);
         $this->load->view($this->config->item('template') . '/survey/step_2');
         $this->load->view($this->config->item('template') . '/footer_dashboard');
     }
 
-    public function productsByCategory($categorySlug) {
-        $data['category_detail'] = $category_detail = $this->common_model->getSingleRowFromAnyTable('slug', $categorySlug, 'tbl_category');
-        $count_sub_category = $this->common_model->getCountAllFromAnyTable('parent_id', $category_detail->category_id, 'tbl_category', 'active');
-        $data['METATITLE'] = $category_detail->meta_title;
-        $data['METAKEYWORDS'] = $category_detail->meta_keyword;
-        $data['METADESCRIPTION'] = $category_detail->meta_description;
-        $breadcumb = '<li class="active">' . $category_detail->category_name . '</li>';
-        $parent_id = $category_detail->parent_id;
-        for (; $parent_id != 0;) {
-            $parent_category_row = $this->common_model->getSingleRowFromAnyTable('category_id', $parent_id, 'tbl_category');
-            $parent_id = $parent_category_row->parent_id;
-            $breadcumb = '<li>' . $parent_category_row->category_name . '</li>' . $breadcumb;
-        }
-        $breadcumb = '<li><a href="' . site_url('category') . '">Services</a></li>' . $breadcumb;
-        if ($count_sub_category == 0) {
-            $data['dataURL'] = 'category/getProductsData/' . $category_detail->category_id . '/?';
-            $data['current_page_slug'] = "categories";
-            $data['breadcrumb'] = $breadcumb;
+    public function ajax_save_question() {
+        if ($_POST) {
+            $type = $this->input->post("type");
+            $select_type = $this->db->get_where("tbl_survey_question_type", array("type_small_name" => $type));
+            $type_id = $select_type->row()->id;
+            $data_array = array(
+                'question_title' => $this->input->post('question_title'),
+                'question_help_text' => $this->input->post('help_text_note'),
+                'question_one_word' => $this->input->post('unique_one_word'),
+                'question_limit_lower' => $this->input->post('qLimitLow'),
+                'question_limit_upper' => $this->input->post('max_input'),
+                'question_multiple_options' => $this->input->post('multiple_choice'),
+                'survey_fk_id' => json_decode($this->input->post('survey_id')),
+                'type_id_fk' => $type_id,
+                'question_no' => $this->input->post('i'),
+                'add_time' => date('Y-m-d H:i:s')
+            );
 
-            $this->load->view($this->config->item('template') . '/header', $data);
-            $this->load->view($this->config->item('template') . '/productList');
-            $this->load->view($this->config->item('template') . '/footer');
-        } else {
-            $data['category_data'] = $sub_category = $this->common_model->getFieldsFromAnyTable('parent_id', $category_detail->category_id, 'tbl_category', FALSE, FALSE, 'active');
-            $data['breadcrumb'] = $breadcumb;
-            $this->load->view($this->config->item('template') . '/header', $data);
-            $this->load->view($this->config->item('template') . '/category');
-            $this->load->view($this->config->item('template') . '/footer');
-        }
-    }
-
-    public function getProductsData($catId) {
-
-        $data['dataURL'] = $dataURL = 'category/getProductsData/' . $catId . '/?';
-        $countRecord = $this->product->get_products_count($catId, FALSE);
-        //pr($countRecord);die;
-        $config['base_url'] = base_url() . $dataURL;
-        $config['per_page'] = 9;
-        $config['total_rows'] = $countRecord;
-        $config['page_query_string'] = TRUE;
-        $currentpage = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        $this->pagination->initialize($config);
-        $paging = $this->pagination->create_links();
-        $data['product_data'] = $this->product->getProductByArguments($catId, FALSE, FALSE, $config['per_page'], $currentpage);
-
-        $data['paging'] = $paging;
-        $this->load->view($this->config->item('template') . '/more_products', $data);
-    }
-
-    public function productdetail($productSlug) {
-        $data['product_detail'] = $product_detail = $this->common_model->getSingleRowFromAnyTable('slug', $productSlug, $this->product->tableProduct);
-        $product_id = $product_detail->product_id;
-        if (!empty($_POST)) {
-            $this->form_validation->set_rules('full_name', 'Full Name', 'trim|required');
-            $this->form_validation->set_rules('email', 'Email', 'trim|required');
-            $this->form_validation->set_rules('subject', 'Subject', 'trim|required');
-            $this->form_validation->set_rules('review', 'Review', 'trim|required');
-            if ($this->form_validation->run()) {
-                $this->product->add_review($product_id);
-                $this->session->set_flashdata('ReviewSuccess', 'Review submitted Successfully');
-                redirect('product/' . $productSlug);
-                exit;
+            $this->common_model->insert_data('tbl_survey_question', $data_array);
+            $id = $this->db->insert_id();
+            if ($id == '') {
+                $data['success'] = "false";
+            } else {
+                $data['question_data'] = $this->common_model->fetch_where('tbl_survey_question', '*', array('id' => $id))[0];
+                $data['success'] = "true";
             }
-        }
-        $data['review_html'] = $this->load->view($this->config->item('template') . '/product_review_form', $data, true);
-        $data['category_detail'] = $category_detail = $this->common_model->getSingleRowFromAnyTable('category_id', $product_detail->category_id, 'tbl_category');
-        $data['product_featured_image'] = $this->product->get_product_featured_image($product_detail->product_id);
-        $data['product_image'] = $this->product->get_product_image($product_detail->product_id);
-        $data['similar_product'] = $this->product->get_similar_products($product_detail->product_id, $product_detail->group_number);
-        $data['METATITLE'] = $product_detail->meta_title;
-        $data['METAKEYWORDS'] = $product_detail->meta_keyword;
-        $data['METADESCRIPTION'] = $product_detail->meta_description;
-
-        $data['page_title'] = $product_detail->product_title;
-        $data['breadcrumb'] = '<li><a href="' . site_url('category/' . $category_detail->slug) . '">' . $category_detail->category_name . '</a></li> <li>' . $product_detail->product_title . '</li>';
-        $this->load->view($this->config->item('template') . '/header', $data);
-        $this->load->view($this->config->item('template') . '/productDetail');
-        $this->load->view($this->config->item('template') . '/footer');
-    }
-
-    public function productsByType($typeSlug) {
-        $data['type_detail'] = $product_type_detail = $this->common_model->getSingleRowFromAnyTable('slug', $typeSlug, 'tbl_product_types');
-        $data['dataURL'] = 'category/getProductsTypeData/' . $product_type_detail->prd_type_id . '/?';
-        $data['METATITLE'] = $product_type_detail->prd_type_name;
-        $data['METAKEYWORDS'] = $product_type_detail->prd_type_name;
-        $data['METADESCRIPTION'] = $product_type_detail->prd_type_name;
-        $data['page_title'] = $product_type_detail->prd_type_name;
-        $breadcumb = '<li>' . $product_type_detail->prd_type_name . '</li>';
-        $data['breadcrumb'] = $breadcumb;
-        $data['current_page_slug'] = $product_type_detail->slug;
-        $this->load->view($this->config->item('template') . '/header', $data);
-        $this->load->view($this->config->item('template') . '/productList');
-        $this->load->view($this->config->item('template') . '/footer');
-    }
-
-    public function getProductsTypeData($prdId) {
-        $data['dataURL'] = $dataURL = 'category/getProductsTypeData/' . $prdId . '/?';
-        $countRecord = sizeof($this->product->getProductByArguments(FALSE, $prdId, FALSE, FALSE, FALSE));
-        //pr($countRecord);die;
-        $config['base_url'] = base_url() . $dataURL;
-        $config['per_page'] = 9;
-        $config['total_rows'] = $countRecord;
-        $config['page_query_string'] = TRUE;
-        $currentpage = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        $this->pagination->initialize($config);
-        $paging = $this->pagination->create_links();
-        $data['product_data'] = $this->product->getProductByArguments(FALSE, $prdId, FALSE, $config['per_page'], $currentpage);
-        $data['paging'] = $paging;
-        $this->load->view($this->config->item('template') . '/more_products', $data);
-    }
-
-    public function productSearch() {
-        if (isset($_GET['search']) && $_GET['search'] != '') {
-            $searchKeyword = $this->input->get('search');
-            $data['product_data'] = $this->product->getProductByArguments(FALSE, FALSE, $searchKeyword, FALSE, FALSE);
-            $data['breadcrumb'] = '<li>' . "SearchBy" . ' "' . $searchKeyword . '"' . '</li>';
-            $this->load->view($this->config->item('template') . '/header', $data);
-            $this->load->view($this->config->item('template') . '/productSearch');
-            $this->load->view($this->config->item('template') . '/footer');
+            echo json_encode($data);
+            die;
         }
     }
 
