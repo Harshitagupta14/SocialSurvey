@@ -55,6 +55,16 @@
 
                                         </div>
                                         <div class="row">
+                                            <div class="col-md-offset-4 col-md-4">
+                                                <label for="type" class="control-label" style="margin-bottom:5px;">Type</label>
+                                                <select class="bs-select form-control" name="survey_type" id="category">
+                                                    <option value="SI">Simple</option>
+                                                    <option value="OB">Observation</option>
+                                                </select>
+                                                <span class="help-block" style="color: red;"><?= strip_tags(form_error('survey_type')) ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-offset-4 col-md-3" style="margin-top:20px;">
                                                 <a href="" type="submit" class="btn btn-danger" value="Cancel" name="login_user">Cancel</a>
                                             </div>
