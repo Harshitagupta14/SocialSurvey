@@ -8,8 +8,8 @@
             <?php echo $message; ?>
         <?php } ?>
         <!-- BEGIN PAGE HEADER-->
-        <h1 class="page-title"> Dashboard 2
-            <small>dashboard & statistics</small>
+        <h1 class="page-title"> Dashboard
+            <small>Survey and Statistics</small>
         </h1>
         <div class="page-bar">
             <ul class="page-breadcrumb">
@@ -25,110 +25,50 @@
         </div>
         <!-- END PAGE HEADER-->
         <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-green-sharp">
-                                <span data-counter="counterup" data-value="7800">0</span>
-                                <small class="font-green-sharp">$</small>
-                            </h3>
-                            <small>TOTAL PROFIT</small>
-                        </div>
-                        <div class="icon">
-                            <i class="icon-pie-chart"></i>
-                        </div>
+            <div class="col-md-4">
+                <!-- BEGIN Portlet PORTLET-->
+                <div class="portlet light">
+                    <div class="portlet-title">
+                        <ul class="nav nav-pills">
+                            <li class="tooltips" data-container="body" data-placement="top" data-original-title="Questios">
+                                <a href="#" style="background-color:#eee;"> <i class="fa fa-question-circle m-r-5"></i>
+                                    <span class="badge badge-danger"> 3 </span>
+                                </a>
+                            </li>
+                            <li  class="tooltips" data-container="body" data-placement="top" data-original-title="Responses">
+                                <a href="#" style="background-color:#eee;"> <i class="fa fa-area-chart"></i>
+                                    <span class="badge badge-danger"> 3 </span>
+                                </a>
+                            </li>
+                            <li style="float:right;"><i class="fa fa-clock-o" aria-hidden="true"></i> 12 seconds ago</li>
+                        </ul>
+
                     </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 76%;" class="progress-bar progress-bar-success green-sharp">
-                                <span class="sr-only">76% progress</span>
-                            </span>
+                    <div class="portlet-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Survey Title</h4>
+                                <span class="label label-warning"> Draft/Pubished </span>
+                            </div>
                         </div>
-                        <div class="status">
-                            <div class="status-title"> progress </div>
-                            <div class="status-number"> 76% </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-red-haze">
-                                <span data-counter="counterup" data-value="1349">0</span>
-                            </h3>
-                            <small>NEW FEEDBACKS</small>
-                        </div>
-                        <div class="icon">
-                            <i class="icon-like"></i>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 85%;" class="progress-bar progress-bar-success red-haze">
-                                <span class="sr-only">85% change</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> change </div>
-                            <div class="status-number"> 85% </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="actions" style="float:right;">
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-cloud-upload"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-blue-sharp">
-                                <span data-counter="counterup" data-value="567"></span>
-                            </h3>
-                            <small>NEW ORDERS</small>
-                        </div>
-                        <div class="icon">
-                            <i class="icon-basket"></i>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 45%;" class="progress-bar progress-bar-success blue-sharp">
-                                <span class="sr-only">45% grow</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> grow </div>
-                            <div class="status-number"> 45% </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-purple-soft">
-                                <span data-counter="counterup" data-value="276"></span>
-                            </h3>
-                            <small>NEW USERS</small>
-                        </div>
-                        <div class="icon">
-                            <i class="icon-user"></i>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 57%;" class="progress-bar progress-bar-success purple-soft">
-                                <span class="sr-only">56% change</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> change </div>
-                            <div class="status-number"> 57% </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- END Portlet PORTLET-->
             </div>
         </div>
 
