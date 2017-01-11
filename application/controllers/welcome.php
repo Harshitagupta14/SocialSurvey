@@ -71,4 +71,64 @@ class Welcome extends CI_Controller {
         exit;
     }
 
+    function fetch_survey_feeds() {
+        $last_survey_id = 1;
+        $survey_html = '';
+        for ($i = 0; $i < 10; $i++) {
+            $survey_html .= '<div class="col-md-4">
+                <!-- BEGIN Portlet PORTLET-->
+                <div class="portlet light">
+                    <div class="portlet-title">
+                        <ul class="nav nav-pills">
+                            <li class="tooltips" data-container="body" data-placement="top" data-original-title="Questios">
+                                <a href="#" style="background-color:#eee;"> <i class="fa fa-question-circle m-r-5"></i>
+                                    <span class="badge badge-danger"> 3 </span>
+                                </a>
+                            </li>
+                            <li  class="tooltips" data-container="body" data-placement="top" data-original-title="Responses">
+                                <a href="#" style="background-color:#eee;"> <i class="fa fa-area-chart"></i>
+                                    <span class="badge badge-danger"> 3 </span>
+                                </a>
+                            </li>
+                            <li style="float:right;"><i class="fa fa-clock-o" aria-hidden="true"></i> 12 seconds ago</li>
+                        </ul>
+
+                    </div>
+                    <div class="portlet-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4>Survey Title</h4>
+                                <span class="label label-warning"> Draft/Pubished </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="actions" style="float:right;">
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-cloud-upload"></i>
+                                    </a>
+                                    <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <i class="icon-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Portlet PORTLET-->
+            </div>';
+        }
+        header("Content-type: text/plain");
+        $str = preg_replace('/\\\"/', "\"", $survey_html);
+        $data = array(
+            'html' => $survey_html,
+            'id' => $last_survey_id + 1
+        );
+        echo json_encode($data, JSON_UNESCAPED_SLASHES);
+        die;
+    }
+
 }

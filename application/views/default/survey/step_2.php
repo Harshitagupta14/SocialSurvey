@@ -127,12 +127,14 @@
             if (type == "mq") {
                 qLimitLow = document.getElementById("qLimitLow").value;
                 max_input = document.getElementById("qLimitUp").value;
-                multiple_choice = document.getElementById("multiple_choice").value;
+                multiple_choice = $('#multiple_choice').val();
+                console.log(multiple_choice);
             } else {
                 max_input = 100;
                 qLimitLow = 0;
                 multiple_choice = 0;
             }
+            console.log(multiple_choice);
             $.ajax({
                 type: "POST",
                 url: "<?php echo base_url(); ?>" + "ajax-save-question",
@@ -157,6 +159,14 @@
             });
         });
     });
+
+    function SelectedValues() {
+        var result = []
+        $("#multiple_choice:selected").each(function () {
+            result.push($("#multiple_choice").val());
+        });
+        return result
+    }
 </script>
 <script>
     function readURL(input) {

@@ -43,7 +43,7 @@
             var baseurl = '<?= base_url() ?>';
         </script>
     </head>
-    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md">
+    <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md"  id="scrollable_container">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
@@ -496,7 +496,7 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>create-survey-step-one" class="nav-link ">
+                                    <a href="<?= base_url() ?>survey" class="nav-link ">
                                         <span class="title">Create Survey</span>
                                     </a>
                                 </li>

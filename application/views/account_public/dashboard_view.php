@@ -1,15 +1,38 @@
+<script>
+    var last_id = $("#last_id").val();
 
+
+    window.onload = function load_contents() {
+
+        $.ajax({
+            type: "POST",
+            async: 'false',
+            url: baseurl + 'ajax-fetch-survey-feeds',
+            dataType: "json",
+            success: function (msg) {
+
+                $('#survey_container').append(msg.html);
+                $('#card_view_container_spinner').hide();
+                //$('#loader').hide();
+
+            }
+        })
+
+    };
+
+
+</script>
 
 <!-- BEGIN CONTENT -->
-<div class="page-content-wrapper">
+<div class="page-content-wrapper" >
     <!-- BEGIN CONTENT BODY -->
-    <div class="page-content">
+    <div class="page-content" id="card_view_container">
         <?php if (!empty($message)) { ?>
             <?php echo $message; ?>
         <?php } ?>
         <!-- BEGIN PAGE HEADER-->
-        <h1 class="page-title"> Dashboard 2
-            <small>dashboard & statistics</small>
+        <h1 class="page-title"> Dashboard
+            <small>Survey and Statistics</small>
         </h1>
         <div class="page-bar">
             <ul class="page-breadcrumb">
@@ -24,113 +47,61 @@
             </ul>
         </div>
         <!-- END PAGE HEADER-->
-        <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-green-sharp">
-                                <span data-counter="counterup" data-value="7800">0</span>
-                                <small class="font-green-sharp">$</small>
-                            </h3>
-                            <small>TOTAL PROFIT</small>
+        <div class="row" id="survey_container">
+            <?php foreach ($survey_feeds as $survey) { ?>
+                <div class="col-md-4">
+                    <!-- BEGIN Portlet PORTLET-->
+                    <div class="portlet light">
+                        <div class="portlet-title">
+                            <ul class="nav nav-pills">
+                                <li class="tooltips" data-container="body" data-placement="top" data-original-title="Questios">
+                                    <a href="#" style="background-color:#eee;"> <i class="fa fa-question-circle m-r-5"></i>
+                                        <span class="badge badge-danger"> <?php echo $survey['question_count']; ?> </span>
+                                    </a>
+                                </li>
+                                <li  class="tooltips" data-container="body" data-placement="top" data-original-title="Responses">
+                                    <a href="#" style="background-color:#eee;"> <i class="fa fa-area-chart"></i>
+                                        <span class="badge badge-danger"> 3 </span>
+                                    </a>
+                                </li>
+                                <li style="float:right;"><i class="fa fa-clock-o" aria-hidden="true"></i> <?php echo $this->components->time_elapsed_string($survey['add_time']); ?></li>
+                            </ul>
+
                         </div>
-                        <div class="icon">
-                            <i class="icon-pie-chart"></i>
+                        <div class="portlet-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4><?php echo $survey['survey_title']; ?></h4>
+                                    <span class="label label-warning"> Draft/Pubished </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="actions" style="float:right;">
+                                        <a class="btn btn-circle btn-icon-only btn-default" href="<?php echo site_url('survey/' . $survey['survey_id']); ?>">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                            <i class="icon-cloud-upload"></i>
+                                        </a>
+                                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 76%;" class="progress-bar progress-bar-success green-sharp">
-                                <span class="sr-only">76% progress</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> progress </div>
-                            <div class="status-number"> 76% </div>
-                        </div>
-                    </div>
+                    <!-- END Portlet PORTLET-->
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-red-haze">
-                                <span data-counter="counterup" data-value="1349">0</span>
-                            </h3>
-                            <small>NEW FEEDBACKS</small>
-                        </div>
-                        <div class="icon">
-                            <i class="icon-like"></i>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 85%;" class="progress-bar progress-bar-success red-haze">
-                                <span class="sr-only">85% change</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> change </div>
-                            <div class="status-number"> 85% </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-blue-sharp">
-                                <span data-counter="counterup" data-value="567"></span>
-                            </h3>
-                            <small>NEW ORDERS</small>
-                        </div>
-                        <div class="icon">
-                            <i class="icon-basket"></i>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 45%;" class="progress-bar progress-bar-success blue-sharp">
-                                <span class="sr-only">45% grow</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> grow </div>
-                            <div class="status-number"> 45% </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <div class="dashboard-stat2 ">
-                    <div class="display">
-                        <div class="number">
-                            <h3 class="font-purple-soft">
-                                <span data-counter="counterup" data-value="276"></span>
-                            </h3>
-                            <small>NEW USERS</small>
-                        </div>
-                        <div class="icon">
-                            <i class="icon-user"></i>
-                        </div>
-                    </div>
-                    <div class="progress-info">
-                        <div class="progress">
-                            <span style="width: 57%;" class="progress-bar progress-bar-success purple-soft">
-                                <span class="sr-only">56% change</span>
-                            </span>
-                        </div>
-                        <div class="status">
-                            <div class="status-title"> change </div>
-                            <div class="status-number"> 57% </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
+
+
+
         </div>
+
+        <div class="mdl-grid " id="card_view_container"></div>
+
 
     </div>
     <!-- END CONTENT BODY -->
@@ -698,4 +669,305 @@
 </div>
 <!-- END QUICK SIDEBAR -->
 </div>
+<style>
+    .zs-contentAdder--header {
+        background-color: white;
+        height: 46px;
+        min-height: 46px;
+        padding: 0 40px;
+        text-align: right;
+    }
+    .zs-contentAdder--header > div, .zs-contentAdder--footer > div {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        justify-content: space-around;
+    }
+    .mdl-typography--text-center {
+        text-align: center;
+    }
+    .zs-align-item--center {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .mdl-spinner {
+        display: inline-block;
+        height: 28px;
+        position: relative;
+        width: 28px;
+    }
+    .mdl-spinner.is-active:not(.is-upgraded)::after {
+        content: "Loading...";
+    }
+    .mdl-spinner.is-upgraded.is-active {
+        animation: 1568.24ms linear 0s normal none infinite running mdl-spinner__container-rotate;
+    }
+    @keyframes mdl-spinner__container-rotate {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    .mdl-spinner__layer {
+        height: 100%;
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+    }
+    .mdl-spinner__layer-1 {
+        border-color: rgb(66, 165, 245);
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-1 {
+        border-color: rgb(66, 66, 66);
+    }
+    .mdl-spinner.is-active .mdl-spinner__layer-1 {
+        animation: 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__fill-unfill-rotate, 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__layer-1-fade-in-out;
+    }
+    .mdl-spinner__layer-2 {
+        border-color: rgb(244, 67, 54);
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-2 {
+        border-color: rgb(66, 66, 66);
+    }
+    .mdl-spinner.is-active .mdl-spinner__layer-2 {
+        animation: 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__fill-unfill-rotate, 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__layer-2-fade-in-out;
+    }
+    .mdl-spinner__layer-3 {
+        border-color: rgb(253, 216, 53);
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-3 {
+        border-color: rgb(66, 66, 66);
+    }
+    .mdl-spinner.is-active .mdl-spinner__layer-3 {
+        animation: 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__fill-unfill-rotate, 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__layer-3-fade-in-out;
+    }
+    .mdl-spinner__layer-4 {
+        border-color: rgb(76, 175, 80);
+    }
+    .mdl-spinner--single-color .mdl-spinner__layer-4 {
+        border-color: rgb(66, 66, 66);
+    }
+    .mdl-spinner.is-active .mdl-spinner__layer-4 {
+        animation: 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__fill-unfill-rotate, 5332ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__layer-4-fade-in-out;
+    }
+    @keyframes mdl-spinner__fill-unfill-rotate {
+        12.5% {
+            transform: rotate(135deg);
+        }
+        25% {
+            transform: rotate(270deg);
+        }
+        37.5% {
+            transform: rotate(405deg);
+        }
+        50% {
+            transform: rotate(540deg);
+        }
+        62.5% {
+            transform: rotate(675deg);
+        }
+        75% {
+            transform: rotate(810deg);
+        }
+        87.5% {
+            transform: rotate(945deg);
+        }
+        100% {
+            transform: rotate(1080deg);
+        }
+    }
+    @keyframes mdl-spinner__layer-1-fade-in-out {
+        0% {
+            opacity: 0.99;
+        }
+        25% {
+            opacity: 0.99;
+        }
+        26% {
+            opacity: 0;
+        }
+        89% {
+            opacity: 0;
+        }
+        90% {
+            opacity: 0.99;
+        }
+        100% {
+            opacity: 0.99;
+        }
+    }
+    @keyframes mdl-spinner__layer-2-fade-in-out {
+        0% {
+            opacity: 0;
+        }
+        15% {
+            opacity: 0;
+        }
+        25% {
+            opacity: 0.99;
+        }
+        50% {
+            opacity: 0.99;
+        }
+        51% {
+            opacity: 0;
+        }
+    }
+    @keyframes mdl-spinner__layer-3-fade-in-out {
+        0% {
+            opacity: 0;
+        }
+        40% {
+            opacity: 0;
+        }
+        50% {
+            opacity: 0.99;
+        }
+        75% {
+            opacity: 0.99;
+        }
+        76% {
+            opacity: 0;
+        }
+    }
+    @keyframes mdl-spinner__layer-4-fade-in-out {
+        0% {
+            opacity: 0;
+        }
+        65% {
+            opacity: 0;
+        }
+        75% {
+            opacity: 0.99;
+        }
+        90% {
+            opacity: 0.99;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+    .mdl-spinner__gap-patch {
+        border-color: inherit;
+        box-sizing: border-box;
+        height: 100%;
+        left: 45%;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        width: 10%;
+    }
+    .mdl-spinner__gap-patch .mdl-spinner__circle {
+        left: -450%;
+        width: 1000%;
+    }
+    .mdl-spinner__circle-clipper {
+        border-color: inherit;
+        display: inline-block;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        width: 50%;
+    }
+    .mdl-spinner__circle-clipper .mdl-spinner__circle {
+        width: 200%;
+    }
+    .mdl-spinner__circle {
+        animation: 0s ease 0s normal none 1 running none;
+        border-bottom-color: transparent !important;
+        border-left-color: inherit;
+        border-radius: 50%;
+        border-right-color: inherit;
+        border-style: solid;
+        border-top-color: inherit;
+        border-width: 3px;
+        bottom: 0;
+        box-sizing: border-box;
+        height: 100%;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .mdl-spinner__left .mdl-spinner__circle {
+        border-right-color: transparent !important;
+        transform: rotate(129deg);
+    }
+    .mdl-spinner.is-active .mdl-spinner__left .mdl-spinner__circle {
+        animation: 1333ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__left-spin;
+    }
+    .mdl-spinner__right .mdl-spinner__circle {
+        border-left-color: transparent !important;
+        left: -100%;
+        transform: rotate(-129deg);
+    }
+    .mdl-spinner.is-active .mdl-spinner__right .mdl-spinner__circle {
+        animation: 1333ms cubic-bezier(0.4, 0, 0.2, 1) 0s normal both infinite running mdl-spinner__right-spin;
+    }
+    @keyframes mdl-spinner__left-spin {
+        0% {
+            transform: rotate(130deg);
+        }
+        50% {
+            transform: rotate(-5deg);
+        }
+        100% {
+            transform: rotate(130deg);
+        }
+    }
+    @keyframes mdl-spinner__right-spin {
+        0% {
+            transform: rotate(-130deg);
+        }
+        50% {
+            transform: rotate(5deg);
+        }
+        100% {
+            transform: rotate(-130deg);
+        }
+    }
+    .zs-hidden {
+        display: none;
+        opacity: 0;
+        transform: scale(0);
+        visibility: hidden;
+    }
+</style>
+<script>
+    function approxDateDiff(mysqlDate) {
+        // Split timestamp into [ Y, M, D, h, m, s ]
+        var t = mysqlDate.split(/[- :]/);
+        // Apply each element to the Date function
+        var startDate = new Date(t[0], t[1] - 1, t[2], t[3], t[4], t[5]);
+        var now = new Date();
+        var difference = (now.getTime() - startDate.getTime()) / 1000 | 0;
+        if ((difference / (60 * 60 * 24 * 365) | 0)) {
+            var years = Math.round(difference / (60 * 60 * 24 * 365));
+            return  years == 1 ? years + ' Year' : years + ' Years';
+        }
+        if ((difference / (60 * 60 * 24 * 30) | 0)) {
+            var months = Math.round(difference / (60 * 60 * 24 * 30));
+            return  months + (months == 1 ? ' Month' : ' Months');
+        }
+        if ((difference / (60 * 60 * 24) | 0)) {
+            var days = Math.round(difference / (60 * 60 * 24));
+            return  days + (days == 1 ? ' Day' : ' Days');
+        }
+        if ((difference / (60 * 60) | 0)) {
+            var hours = Math.round(difference / (60 * 60));
+            return  hours + (hours == 1 ? ' Hour' : ' Hours');
+        }
+        if ((difference / (60) | 0)) {
+            var minutes = Math.round(difference / (60));
+            return  minutes + (minutes == 1 ? ' Minute' : ' Minutes');
+        }
+        if (difference) {
+            var seconds = difference;
+            return  seconds + (seconds == 1 ? ' sec' : ' secs');
+        }
+        if (difference == '' || difference == "undefined") {
+            return 'just now';
+        }
 
+
+    }
+</script>

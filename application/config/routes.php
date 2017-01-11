@@ -107,10 +107,10 @@ $route['account/delete-address/(:num)'] = 'account/auth_public/delete_address/$1
 $route['account/logout'] = 'account/login/logout';
 $route['register'] = 'account/login/register_account';
 
-$route['create-survey-step-one'] = 'survey/survey_step_1/';
-$route['create-survey-step-two/(:any)'] = 'survey/survey_step_2/$1';
+$route['survey'] = 'survey/survey_step_1/';
+$route['survey/(:any)'] = 'survey/survey_step_2/$1';
 $route['ajax-save-question'] = 'survey/ajax_save_question/';
-
+$route['ajax-fetch-survey-feeds'] = 'welcome/fetch_survey_feeds/';
 //======= Admin Related Urls===================//
 
 

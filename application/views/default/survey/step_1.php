@@ -9,7 +9,7 @@
             <ul class="page-breadcrumb">
                 <li>
                     <i class="icon-home"></i>
-                    <a href="<?= site_url('admin/dashboard') ?>">Home</a>
+                    <a href="<?= site_url('dashboard') ?>">Home</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li class="active"><?php echo isset($product_id) ? $breadcum_edit : $breadcum ?></li>
@@ -35,8 +35,10 @@
                                             <div class="form-group form-md-line-input">
                                                 <div class="col-md-offset-4 col-md-4">
                                                     <input class="form-control " id="form_control_1" placeholder="Survey Title" name="survey_title"  type="text">
-                                                    <span class="help-block">Enter a name for survey...</span>
-                                                    <span class="help-block" style="color: red;"><?= strip_tags(form_error('survey_title')) ?></span>
+                                                    <?php if (strip_tags(form_error('survey_title')) == '') { ?>
+                                                        <span class="help-block">Enter a name for survey...</span>
+                                                    <?php } ?>
+                                                    <span class="error-block" style="color: red;"><?= strip_tags(form_error('survey_title')) ?></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -66,10 +68,10 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-offset-4 col-md-3" style="margin-top:20px;">
-                                                <a href="" type="submit" class="btn btn-danger" value="Cancel" name="login_user">Cancel</a>
+                                                <a href="<?php echo site_url('dashboard'); ?>" type="submit" class="btn btn-danger" value="Cancel" >Cancel</a>
                                             </div>
                                             <div class="col-md-4" style="margin-top:20px;">
-                                                <input type="submit" class="btn btn-primary" value="Submit" name="login_user">
+                                                <input type="submit" class="btn btn-primary" value="Submit" name="create_survey">
                                                 <input type="hidden" value="save" name="form_submit">
                                             </div>
                                         </div>

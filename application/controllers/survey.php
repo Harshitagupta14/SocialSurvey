@@ -39,7 +39,7 @@ class Survey extends CI_Controller {
                 $this->common_model->insert_data('tbl_survey', $data_survey);
                 $uniqueId = uniqid($this->input->ip_address(), TRUE);
                 $this->session->set_userdata("my_session_id", md5($uniqueId));
-                redirect('create-survey-step-two/' . $date_md);
+                redirect('survey/' . $date_md);
                 exit();
             }
         }

@@ -10,8 +10,10 @@ class Auth_Public extends CI_Controller {
         $this->load->helper('form');
         $this->auth = new stdClass;
         $this->load->library('flexi_auth');
+        $this->load->library('components');
         $this->load->model('content_model', 'content');
         $this->load->model('order_model', 'order');
+        $this->load->model('survey_model', 'survey');
         $this->load->model($this->config->item('login_folder') . '/auth_model', 'authentication');
         if (!$this->flexi_auth->is_logged_in() && $this->uri->segment(2) != 'update_email') {
             $this->flexi_auth->set_error_message('You must login to access this area.', TRUE);
@@ -31,6 +33,7 @@ class Auth_Public extends CI_Controller {
     function dashboard() {
         $this->data['message'] = $this->session->flashdata('message');
         $this->data['user'] = $this->flexi_auth->get_user_by_identity_row_array();
+        $this->data['survey_feeds'] = $this->survey->get_survey_feeds();
         $this->load->view($this->config->item('public_login_folder') . '/header', $this->data);
         $this->load->view($this->config->item('public_login_folder') . '/dashboard_view', $this->data);
         $this->load->view($this->config->item('public_login_folder') . '/footer', $this->data);
