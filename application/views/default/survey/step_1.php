@@ -30,15 +30,19 @@
                         <div class="page-content-wrap">
                             <div class="row">
                                 <div class="col-md-12">
+                                    <span style="color: red;"> <?php print_r(validation_errors()); ?></span>
                                     <form action="" class="form-horizontal" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="form-group form-md-line-input">
                                                 <div class="col-md-offset-4 col-md-4">
                                                     <input class="form-control " id="form_control_1" placeholder="Survey Title" name="survey_title"  type="text">
+
                                                     <?php if (strip_tags(form_error('survey_title')) == '') { ?>
                                                         <span class="help-block">Enter a name for survey...</span>
                                                     <?php } ?>
                                                     <span class="error-block" style="color: red;"><?= strip_tags(form_error('survey_title')) ?></span>
+
+                                                    <span class="help-block" style="color: red;"><?= strip_tags(form_error('survey_title')) ?></span>
                                                 </div>
                                             </div>
                                         </div>

@@ -23,9 +23,9 @@ class Survey extends CI_Controller {
         //$data['current_page_slug'] = "categories";
         $data['breadcrumb'] = '<li class="active">Services</li>';
         if (!empty($_POST)) {
-            $this->form_validation->set_rules('survey_title', 'Survey Title', 'trim|required');
+            $this->form_validation->set_rules('survey_title', 'Survey Title', 'trim|required|is_unique[tbl_survey.survey_title]');
             $this->form_validation->set_rules('survey_category', 'Category', 'trim|required');
-            if ($this->form_validation->run()) {
+            if ($this->form_validation->run() == TRUE) {
                 $date = date('Y-m-d H:i:s');
                 $data_survey = array(
                     'survey_title' => $this->input->post('survey_title'),
@@ -41,6 +41,8 @@ class Survey extends CI_Controller {
                 $this->session->set_userdata("my_session_id", md5($uniqueId));
                 redirect('survey/' . $date_md);
                 exit();
+            } else {
+                $this->session->set_flashdata('error', validation_errors());
             }
         }
         $this->load->view($this->config->item('template') . '/header_dashboard', $data);
@@ -49,7 +51,6 @@ class Survey extends CI_Controller {
     }
 
     public function survey_step_2($date_md = NULL) {
-
         //$data['category_data'] = $this->common_model->getFieldsFromAnyTable('parent_id', 0, 'tbl_category', FALSE, FALSE, 'active');
         $select_id = $this->common_model->fetch_where('tbl_survey', '*', array('survey_id' => $date_md))[0];
         $data['METATITLE'] = "Create Survey - Step 1";
@@ -60,6 +61,8 @@ class Survey extends CI_Controller {
         $data['breadcrumb'] = '<li class="active">Services</li>';
         $data['survey_types'] = $this->common_model->fetch_where('tbl_survey_question_type');
         $data['survey_id'] = $select_id["id"];
+        $data['table_survey_id'] = $date_md;
+
         $this->load->view($this->config->item('template') . '/header_dashboard', $data);
         $this->load->view($this->config->item('template') . '/survey/step_2');
         $this->load->view($this->config->item('template') . '/footer_dashboard');
@@ -68,18 +71,25 @@ class Survey extends CI_Controller {
     public function ajax_save_question() {
         if ($_POST) {
             $type = $this->input->post("type");
-            $select_type = $this->db->get_where("tbl_survey_question_type", array("type_small_name" => $type));
-            $type_id = $select_type->row()->id;
+            $select_type = $this->common_model->fetch_where('tbl_survey_question_type', '*', array("type_small_name" => $type))[0];
+            $type_id = $select_type["id"];
+//            $question_no = $this->input->post('question_no');
+            if ($this->input->post('multiple_choice') != 0 ) {
+                $multiple_choice = implode("|", $this->input->post('multiple_choice'));
+            }
+            else{
+                $multiple_choice = 0;
+            }
             $data_array = array(
                 'question_title' => $this->input->post('question_title'),
                 'question_help_text' => $this->input->post('help_text_note'),
                 'question_one_word' => $this->input->post('unique_one_word'),
                 'question_limit_lower' => $this->input->post('qLimitLow'),
                 'question_limit_upper' => $this->input->post('max_input'),
-                'question_multiple_options' => $this->input->post('multiple_choice'),
-                'survey_fk_id' => json_decode($this->input->post('survey_id')),
+                'question_multiple_options' => $multiple_choice,
+                'survey_fk_id' => $this->input->post('survey_id'),
                 'type_id_fk' => $type_id,
-                'question_no' => $this->input->post('i'),
+                'question_no' => $this->input->post('question_no'),
                 'add_time' => date('Y-m-d H:i:s')
             );
 
@@ -88,6 +98,11 @@ class Survey extends CI_Controller {
             if ($id == '') {
                 $data['success'] = "false";
             } else {
+                $fetch = $this->common_model->fetch_where('tbl_survey_question', '*', array("survey_fk_id" => $this->input->post('survey_id')));
+                $last_element = end($fetch);
+                $increment = $last_element["question_no"];
+                $question_no = $increment + 1;
+                $data['question_no'] = $question_no;
                 $data['question_data'] = $this->common_model->fetch_where('tbl_survey_question', '*', array('id' => $id))[0];
                 $data['success'] = "true";
             }

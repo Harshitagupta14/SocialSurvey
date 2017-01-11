@@ -3,7 +3,9 @@
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
+
 <!-- END PAGE LEVEL PLUGINS -->
+
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="theme-panel">
@@ -15,10 +17,12 @@
             </div>
             <div class="theme-options" style="display: block;">
                 <div class="theme-option theme-colors clearfix">
-                    <span><a href="#" class="btn btn-primary"> + Add New Question </a></span>
+                    <!--<span><a href="#" class="btn btn-primary"> + Add New Question </a></span>-->
                 </div>
                 <div class="theme-option">
-                    <span> Question 1 </span>
+
+                    <span id="question_list"> Question 1</span><br/>
+                    <i class="icon-edit"></i><br/>
                     <select class="layout-option form-control input-small">
                         <option value="fluid" selected="selected">Fluid</option>
                         <option value="boxed">Boxed</option>
@@ -37,79 +41,81 @@
                 <li class="active"><?php echo isset($product_id) ? $breadcum_edit : $breadcum ?></li>
             </ul>
         </div>
+        <form method="post" id="survey_form">
+            <div class="row">
+                <div class="col-md-12">
+                    <?php if ($this->session->flashdata('ProductSuccess')) { ?>
+                        <div class="alert alert-success"> <?= $this->session->flashdata('ProductSuccess') ?></div>
+                    <?php } ?>
+                    <div class="portlet box green">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-globe"></i><?php if ($product_id) { ?>Edit<?php } else { ?> Add<?php } ?> Question</div>
+                        </div>
+                        <div class="portlet light ">
 
-        <div class="row">
-            <div class="col-md-12">
-                <?php if ($this->session->flashdata('ProductSuccess')) { ?>
-                    <div class="alert alert-success"> <?= $this->session->flashdata('ProductSuccess') ?></div>
-                <?php } ?>
-                <div class="portlet box green">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="fa fa-globe"></i><?php if ($product_id) { ?>Edit<?php } else { ?> Add<?php } ?> Question</div>
-                    </div>
-                    <div class="portlet light ">
+                            <div class="portlet-body">
 
-                        <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for="select2-single-input-sm" class="control-label">Select Survey Question Type</label>
 
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <label for="select2-single-input-sm" class="control-label">Select Survey Question Type</label>
-
-                                    <select id="select2-single-input-sm" class="form-control input-sm select2-multiple">
-                                        <?php
-                                        foreach ($survey_types as $survey) {
-                                            if ($survey['type_parent_id'] == 0) {
-                                                ?>
-                                                <optgroup label="<?php echo $survey['type_name']; ?>"></optgroup>
-                                            <?php } else { ?>
-                                                <option value="<?php echo $survey['type_small_name']; ?>"><?php echo $survey['type_name']; ?></option>
-                                                <?php
+                                        <select id="select2-single-input-sm" class="form-control input-sm select2-multiple">
+                                            <?php
+                                            foreach ($survey_types as $survey) {
+                                                if ($survey['type_parent_id'] == 0) {
+                                                    ?>
+                                                    <optgroup label="<?php echo $survey['type_name']; ?>"></optgroup>
+                                                <?php } else { ?>
+                                                    <option value="<?php echo $survey['type_small_name']; ?>"><?php echo $survey['type_name']; ?></option>
+                                                    <?php
+                                                }
                                             }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-
-
-                            </div>
-
-
-                        </div>
-                        <input type="hidden" value="<?php echo $id; ?>" name="id" id="id"/>
-                        <input type="hidden" value="<?php echo $survey_id; ?>" name="survey_id" id="survey_id"/>
-                        <!-- Default Question Block -->
-                        <div id="question-block" style="margin-top:50px;"></div>
-                        <!-- Default Question Block Ends -->
-
-                        <!-- Multiple Option Question Block -->
-                        <div id="mq-block" style="display:none;">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <select multiple data-role="tagsinput" placeholder="Multiple Choice Options" id="multiple_choice"></select>
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Multiple Option Question Block Ends -->
-                        <div class="row" style="margin-top:20px;">
-                            <div class="col-lg-2 col-md-4 col-xs-12">
-                                <div class="mt-element-ribbon bg-grey-steel">
-                                    <div class="ribbon ribbon-color-primary uppercase">Question 1</div>
-                                    <p class="ribbon-content"><input value="save" class="btn btn-danger" type="submit" id="question_save"></p>
+                            <input type="hidden" value="<?php echo $id; ?>" name="id" id="id"/>
+                            <input type="hidden" value="<?php echo $survey_id; ?>" name="survey_id" id="survey_id"/>
+                            <input type="hidden" value="<?php echo $question_no; ?>" name="question_no" id="question_no"/>
+                            <!-- Default Question Block -->
+                            <div id="question-block" style="margin-top:50px;"></div>
+                            <!-- Default Question Block Ends -->
+
+                            <!-- Multiple Option Question Block -->
+                            <div id="mq-block" style="display:none;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <select multiple data-role="tagsinput" placeholder="Multiple Choice Options" id="multiple_choice"></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Multiple Option Question Block Ends -->
+                            <div class="row" style="margin-top:20px;">
+                                <div class="col-lg-2 col-md-4 col-xs-12">
+                                    <div class="mt-element-ribbon bg-grey-steel">
+                                        <p class="ribbon ribbon-color-primary uppercase" id="question">Question 1</p>
+                                        <!--<input class="ribbon ribbon-color-primary uppercase" id="question" value="Question 1"/>-->
+    <!--                                    <input type="hidden" id="question_no" value="1"/>-->
+                                        <p class="ribbon-content"><input value="save" class="btn btn-danger" type="submit" id="question_save"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
-        var i = 0;
-        $("#question_save").click(function () {
+        var question_no = 1;
+        $("#question_save").click(function (e) {
+            e.preventDefault();
+            var str = $("#survey_form").serialize();
+            console.log(str);
             var max_input;
             var qLimitLow;
             var multiple_choice;
@@ -118,7 +124,16 @@
             var unique_one_word = document.getElementById("form_control_3").value;
             var type = document.getElementById("select2-single-input-sm").value;
             var survey_id = document.getElementById("survey_id").value;
-            i = +i + +1;
+//            var table_survey_id = document.getElementById("table_survey_id").value;
+            var question = +question_no + +1;
+            document.getElementById("question").innerHTML = "Question " + question;
+            var para = document.createElement("p");
+//            var link = "<?php echo site_url(); ?>" + "/create-survey-step-two/" + table_survey_id;
+            var question_list_data = "Question " + question;
+            var node = document.createTextNode(question_list_data);
+            para.appendChild(node);
+            var element = document.getElementById("question_list");
+            element.appendChild(para);
             if (type == "sb") {
                 max_input = document.getElementById("form_control_4").value;
                 qLimitLow = 0;
@@ -127,24 +142,24 @@
             if (type == "mq") {
                 qLimitLow = document.getElementById("qLimitLow").value;
                 max_input = document.getElementById("qLimitUp").value;
-                multiple_choice = $('#multiple_choice').val();
-                console.log(multiple_choice);
+                multiple_choice = $("#multiple_choice").val();
             } else {
                 max_input = 100;
                 qLimitLow = 0;
                 multiple_choice = 0;
             }
-            console.log(multiple_choice);
             $.ajax({
                 type: "POST",
                 url: "<?php echo base_url(); ?>" + "ajax-save-question",
                 dataType: 'json',
-                data: {question_title: question_title, help_text_note: help_text_note, unique_one_word: unique_one_word, max_input: max_input, type: type, qLimitLow: qLimitLow, multiple_choice: multiple_choice, survey_id: survey_id, i: i},
+                data: {question_title: question_title, help_text_note: help_text_note, unique_one_word: unique_one_word, max_input: max_input, type: type, qLimitLow: qLimitLow, multiple_choice: multiple_choice, survey_id: survey_id, question_no: question_no},
                 complete: function (stat) {
                     var response = stat.responseText;
                     var data = JSON.parse(response);
-                    console.log(data.question_data.question_no);
-                    if (data.success == "true") {
+                    // console.log(data.question_no);
+                    if (data.success === "true") {
+//                        document.getElementById("survey_form").reset();
+                        question_no = data.question_no;
                         document.getElementById("form_control_1").value = "";
                         document.getElementById("form_control_2").value = "";
                         document.getElementById("form_control_3").value = "";
@@ -152,21 +167,15 @@
                         document.getElementById("qLimitLow").value = "";
                         document.getElementById("qLimitUp").value = "";
                         document.getElementById("select2-single-input-sm").value = "";
+                        validateResult(question_no);
                     } else {
                         alert("Error");
                     }
+
                 }
             });
         });
     });
-
-    function SelectedValues() {
-        var result = []
-        $("#multiple_choice:selected").each(function () {
-            result.push($("#multiple_choice").val());
-        });
-        return result
-    }
 </script>
 <script>
     function readURL(input) {
@@ -197,13 +206,6 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script>
     function create_default_fields() {
-
-//        var question_no = document.createElement('input');
-//        question_no.className = "form-control";
-//        question_no.setAttribute("id", "question_no");
-//        question_no.setAttribute("type", "text");
-//        question_no.setAttribute("value", 0);
-
         var question_block_row_div = document.createElement('div');
         question_block_row_div.className = "row";
         question_block_row_div.setAttribute("id", "question_block");
@@ -220,6 +222,7 @@
         question_title_input.setAttribute("id", "form_control_1");
         question_title_input.setAttribute("placeholder", "Question Title");
         question_title_input.setAttribute("type", "text");
+        question_title_input.setAttribute("name", "question_title");
 
         var question_title_label = document.createElement('label');
         question_title_label.setAttribute("for", "form_control_1");
@@ -285,7 +288,6 @@
         var short_keyword_help_block = document.createElement('span');
         short_keyword_help_block.className = "help-block";
         short_keyword_help_block.innerHTML = "Short Keyword For Question.";
-
 
         short_keyword_inner_col_div.appendChild(short_keyword_input);
         short_keyword_inner_col_div.appendChild(short_keyword_label);
