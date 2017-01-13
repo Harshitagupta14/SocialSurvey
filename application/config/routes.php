@@ -111,6 +111,9 @@ $route['survey'] = 'survey/survey_step_1/';
 $route['survey/(:any)'] = 'survey/survey_step_2/$1';
 $route['ajax-save-question'] = 'survey/ajax_save_question/';
 $route['ajax-fetch-survey-feeds'] = 'welcome/fetch_survey_feeds/';
+$route['ajax-fetch-survey-questions'] = 'survey/ajax_get_survey_questions/';
+$route['ajax-edit-survey-question'] = 'survey/ajax_edit_survey_question/';
+$route['ajax-delete-survey-question'] = 'survey/ajax_delete_survey_question/';
 //======= Admin Related Urls===================//
 
 

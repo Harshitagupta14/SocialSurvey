@@ -16,10 +16,21 @@ class Survey_Model extends CI_Model {
         return $final_query->result_array();
     }
 
-    public function get_categories() {
-        $query = $this->db->get("tbl_survey_question_type");
-        $result = $query->result_array();
-        return $result;
+    public function get_survey_questions_by_args($id = FALSE, $question_no = FALSE) {
+
+        $survey_select = '`survey_question`.*';
+        $final_select = " $survey_select , survey_type.type_small_name";
+
+        $this->db->select($final_select);
+        $this->db->from("`tbl_survey_question` as `survey_question`");
+        $this->db->join("`tbl_survey_question_type` as `survey_type` ", ' survey_question.type_id_fk = survey_type.id', 'left');
+        $this->db->where("`survey_question.survey_fk_id`", $id);
+        if ($question_no) {
+            $this->db->where("`survey_question.question_no`", $question_no);
+        }
+        $this->db->order_by('survey_question.question_no', 'ASEC');
+        $final_query = $this->db->get();
+        return $final_query->result_array();
     }
 
 }
