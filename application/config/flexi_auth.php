@@ -5,13 +5,13 @@ if (!defined('BASEPATH'))
 /*
  * Name: flexi auth Config
  *
- * Author: 
+ * Author:
  * Rob Hussey
  * flexiauth@haseydesign.com
  * haseydesign.com/flexi-auth
  *
  * Copyright 2012 Rob Hussey
- * 
+ *
  * Previous Authors / Contributors:
  * Ben Edmunds, benedmunds.com
  * Phil Sturgeon, philsturgeon.co.uk
@@ -20,9 +20,9 @@ if (!defined('BASEPATH'))
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,9 +34,9 @@ if (!defined('BASEPATH'))
  * Requirements: PHP5 or above and Codeigniter 2.0+
  */
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // DATABASE NAMES / ALIASES
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * If required, it is possible to set your own name for each database table and column.
@@ -88,7 +88,7 @@ $config['database']['user_acc']['custom_columns'] = array(
  * User Group Table
  * The user group table is used to allocate a group classification to users, typically this is used to group users as either admins or public users.
  * The grouped users can then be delivered content specific to their group, or restricted access to set areas - i.e. an admin only area.
- * 
+ *
  * All columns are required.
  */
 $config['database']['user_group']['table'] = 'user_groups';
@@ -103,10 +103,10 @@ $config['database']['user_group']['columns']['admin'] = 'ugrp_admin';
 /**
  * User Privilege Table
  * The user privilege table is used to allocate role privileges to users.
- * Whilst very similar to user groups, multiple privileges can be assigned to a user, the users privilege (and group if desired) can then be 
+ * Whilst very similar to user groups, multiple privileges can be assigned to a user, the users privilege (and group if desired) can then be
  *  looked up to verify if a user has permission to perform an action or access specific data.
- * For example, 2 users could be in an 'Moderator' group, 1 of the users could be allowed to update data, whilst the other could only view the data. 
- * 
+ * For example, 2 users could be in an 'Moderator' group, 1 of the users could be allowed to update data, whilst the other could only view the data.
+ *
  * All columns are required.
  */
 $config['database']['user_privileges']['table'] = 'user_privileges';
@@ -117,7 +117,7 @@ $config['database']['user_privileges']['columns']['description'] = 'upriv_desc';
 /**
  * User Privilege Users Table
  * The user privilege user table is used to assign privileges to users. Multiple privileges can be assigned to a user.
- * 
+ *
  * All columns are required.
  */
 $config['database']['user_privilege_users']['table'] = 'user_privilege_users';
@@ -128,7 +128,7 @@ $config['database']['user_privilege_users']['columns']['privilege_id'] = 'upriv_
 /**
  * User Privilege Groups Table
  * The user privilege group table is used to assign privileges to user groups. Multiple privileges can be assigned to a user group.
- * 
+ *
  * All columns are required.
  */
 $config['database']['user_privilege_groups']['table'] = 'user_privilege_groups';
@@ -140,7 +140,7 @@ $config['database']['user_privilege_groups']['columns']['privilege_id'] = 'upriv
 
 /**
  * User Login Session Table
- * The user login session table is used to validate user login credentials. For security purposes, if a users credentitals do not match those  
+ * The user login session table is used to validate user login credentials. For security purposes, if a users credentitals do not match those
  * stored within the table, the user is automatically logged out.
  *
  * All columns are required.
@@ -157,14 +157,14 @@ $config['database']['user_sess']['columns']['date'] = 'usess_login_date';
 ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
- * Additional custom tables that are directly related to the user account table can be included in flexi auth CRUD functions by 
- * setting their database structure via the the $config['database'] array. 
- * 
- * Typically, such examples of a custom table you may wish to link to the user account table would be a user profile table listing the 
- * users name and contact details etc. 
- * 
+ * Additional custom tables that are directly related to the user account table can be included in flexi auth CRUD functions by
+ * setting their database structure via the the $config['database'] array.
+ *
+ * Typically, such examples of a custom table you may wish to link to the user account table would be a user profile table listing the
+ * users name and contact details etc.
+ *
  * You are not limited to the number of different custom tables you can define.
- * 
+ *
  * ### Example Custom Table Template ###
  * $config['database']['custom']['#Array Alias#']['table'] = '#Actual table name#';
  * $config['database']['custom']['#Array Alias#']['primary_key'] = '#Table primary key#';
@@ -187,7 +187,7 @@ $config['database']['custom']['user_profile']['primary_key'] = 'upro_id';
 $config['database']['custom']['user_profile']['foreign_key'] = 'upro_uacc_fk';
 $config['database']['custom']['user_profile']['join'] = 'user_profiles.upro_uacc_fk';
 $config['database']['custom']['user_profile']['custom_columns'] = array(
-    'upro_first_name', 'upro_last_name', 'upro_phone', 'upro_newsletter','upro_type','upro_country','upro_state','upro_city','upro_address','upro_postal_code','upro_company_detail','upro_company','upro_identity_image'
+    'upro_first_name', 'upro_last_name', 'upro_phone', 'upro_newsletter', 'upro_type', 'upro_country', 'upro_state', 'upro_city', 'upro_address', 'upro_postal_code', 'upro_company_detail', 'upro_company', 'upro_identity_image'
 );
 
 ###+++++++++++++++++++++++++++###
@@ -205,18 +205,18 @@ $config['database']['custom']['user_address']['foreign_key'] = 'uadd_uacc_fk';
 $config['database']['custom']['user_address']['join'] = 'user_address.uadd_uacc_fk';
 $config['database']['custom']['user_address']['custom_columns'] = array(
     'uadd_alias', 'uadd_recipient', 'uadd_phone', 'uadd_landmark', 'uadd_address', 'uadd_city', 'uadd_county',
-    'uadd_post_code', 'uadd_country','uadd_status'
+    'uadd_post_code', 'uadd_country', 'uadd_status'
 );
 
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // DATABASE SETTINGS
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * flexi auth Database Settings
  * If required, it is possible to set your own column names and data types for some database settings.
- * 
+ *
  * Note: Only change the value after the '=' sign, and not the $config array names.
  * Example: Change $config['database']['settings']['example'] = 'example_value_1' to $config['database']['settings']['example'] = 'example_value_2'
  */
@@ -235,7 +235,7 @@ $config['database']['settings']['primary_identity_col'] = 'uacc_email';
  * Set whether the users email address, username or both are to be used to identify users from data submitted via a login form.
  * This MUST include the ['primary_identity_col'] column set above (Default 'uacc_email').
  * If both the email address and username are used, then users will be able to login by submitting either value.
- * 
+ *
  * Note: The only valid columns are the users email address (Default column name 'uacc_email') or username (Default column name'uacc_username').
  */
 $config['database']['settings']['identity_cols'] = array('uacc_email', 'uacc_username');
@@ -243,33 +243,33 @@ $config['database']['settings']['identity_cols'] = array('uacc_email', 'uacc_use
 /**
  * User Search Query Columns
  * Set the table columns that are looked-up by the libraries search_users() function to match users against submitted search query terms.
- * 
+ *
  * Note: Any column within the user main account, custom or group tables can be added to array
  */
 $config['database']['settings']['search_user_cols'] = array('uacc_email', 'upro_first_name', 'upro_last_name');
 
 /**
  * Database Date / Time Format
- * Set a native PHP function to format the date and time correctly to be stored within the user tables. 
+ * Set a native PHP function to format the date and time correctly to be stored within the user tables.
  * Typically this will either be either DATETIME or TIMESTAMP.
  *
  * MySQL DATETIME = date('Y-m-d H:i:s');
  * Unix TIMESTAMP = time();
- * 
+ *
  * Note: Ensure you consistently use the same data type in all defined flexi auth tables for date and time data.
  */
 $config['database']['settings']['date_time'] = date('Y-m-d H:i:s');
 
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // SESSION NAMES / ALIASES
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * flexi auth Session
  * flexi auth uses CI sessions to store and serve authentication data between pages loads.
  * All flexi auth session data is stored together within one session array, this helps maintain a tidy session structure.
- * 
+ *
  * If required, it is possible to set your own name for each session variable.
  * Note: Only change the name in the apostrophes (after the '=' sign), and not the $config array names.
  * Example: Change $config['sessions']['user_id'] = 'user_id' to $config['sessions']['user_id'] = 'new_session_name'
@@ -307,7 +307,7 @@ $config['sessions']['logged_in_via_password'] = 'logged_in_via_password';
 /**
  * Login Session Token
  * The login session token is used to help validate a users login credentials against a stored database token.
- * 
+ *
  * Note: Only used when $config['security']['validate_login_onload'] = TRUE (Defined Below)
  */
 $config['sessions']['login_session_token'] = 'login_session_token';
@@ -319,14 +319,14 @@ $config['sessions']['login_session_token'] = 'login_session_token';
 $config['sessions']['math_captcha'] = 'math_captcha';
 
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // COOKIE NAMES / ALIASES
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * flexi auth Cookies
- * flexi auth uses cookies to store and serve authentication data for the next time a user visits the website.  
- * 
+ * flexi auth uses cookies to store and serve authentication data for the next time a user visits the website.
+ *
  * If required, it is possible to set your own name for each cookie variable.
  * Note: Only change the name in the apostrophes (after the '=' sign), and not the $config array names.
  * Example: Change $config['cookies']['user_id'] = 'user_id' to $config['cookies']['user_id'] = 'new_session_name'
@@ -344,7 +344,7 @@ $config['cookies']['remember_token'] = 'remember_token';
 /**
  * Login Session Cookie
  * The cookie login session token is used to invalidate a users login session when they close their browser by deleting itself.
- * 
+ *
  * Note: Only used when $config['security']['validate_login_onload'] = TRUE and $config['security']['logout_user_onclose'] = TRUE (Defined Below)
  */
 $config['cookies']['login_session_token'] = 'login_session_token';
@@ -352,15 +352,15 @@ $config['cookies']['login_session_token'] = 'login_session_token';
 /**
  * Login Via Password Cookie
  * The login via password cookie token is used to invalidate a users 'logged in via password' status when they close their browser by deleting itself.
- * 
+ *
  * Note: Only used when $config['security']['logout_user_onclose'] = FALSE (Defined Below)
  */
 $config['cookies']['login_via_password_token'] = 'login_via_password_token';
 
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // SECURITY CONFIGURATIONS
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * flexi auth Security Configurations
@@ -370,7 +370,7 @@ $config['cookies']['login_via_password_token'] = 'login_via_password_token';
  * Example: Change $config['security']['example'] = TRUE to $config['security']['example'] = FALSE
  */
 ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
-// LOGIN COOKIE AND SESSION SETTINGS 
+// LOGIN COOKIE AND SESSION SETTINGS
 ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
@@ -390,10 +390,10 @@ $config['security']['validate_login_onload'] = TRUE;
  * Setting the value as '0' would mean the session would not expire until CIs own session value (config['sess_expiration'] in CI config file) expired.
  *
  * Note: Only used when $config['security']['validate_login_onload'] = TRUE
- * !IMPORTANT: 
- *   If the CI config setting '$config['sess_expiration']' is lower, it will cause the session to expire prior to the 'login_session_expire' value.  
+ * !IMPORTANT:
+ *   If the CI config setting '$config['sess_expiration']' is lower, it will cause the session to expire prior to the 'login_session_expire' value.
  *   If 'Remember me' cookies are used, and a users login session expires, they will remain logged in via the 'Remember me' cookie.
- *   There are then functions within the library to check whether a user is logged in via entering a password, or via a cookie - typically sensitive data should 
+ *   There are then functions within the library to check whether a user is logged in via entering a password, or via a cookie - typically sensitive data should
  *   only be available to users logged in via a password, and less sensitive data to users logged in via 'Remember me' cookies.
  */
 $config['security']['login_session_expire'] = 60 * 60 * 3;
@@ -468,7 +468,7 @@ $config['security']['valid_password_chars'] = '\.\,\-_ a-z0-9';
  * Set the static (non-database stored) salt used for password and hash token generation.
  * @param string
  *
- * !IMPORTANT: 
+ * !IMPORTANT:
  * 	Do NOT change this salt once users have started registering accounts as their passwords will not work without the original salt.
  * 	CHANGE THE DEFAULT STATIC SALT SET BELOW TO YOUR OWN RANDOM SET OF CHARACTERS.
  */
@@ -515,13 +515,13 @@ $config['security']['login_attempt_limit'] = 3;
 /**
  * If a user has exceeded the failed login attempt limit, set the length of time they must wait before they can attempt to login again.
  * @param int
- * 
+ *
  * Note: The time ban is doubled if the failed attempts are 3 times higher than the limit defined via $config['security']['login_attempt_limit'].
- * Example: If 'login_attempt_limit' = 3 and 'login_attempt_time_ban' = 10, after 3 failed attempts, the user must wait 10 seconds between each next attempt, 
+ * Example: If 'login_attempt_limit' = 3 and 'login_attempt_time_ban' = 10, after 3 failed attempts, the user must wait 10 seconds between each next attempt,
  * after 9 consecutive failed attempts, the user must wait 20 seconds between each next attempt. Attempts within the time ban are ignored and not even checked as being valid.
  * !IMPORTANT: It is NOT recommended that this time ban is set for a long period of time (> 5 mins).
- * Long time bans could be abused by attackers to deny legitimate users access, it is designed to SLOW DOWN brute force attackers, not outright ban them. 
- * 
+ * Long time bans could be abused by attackers to deny legitimate users access, it is designed to SLOW DOWN brute force attackers, not outright ban them.
+ *
  * Example: Time in seconds, 0 = no time ban, 10 = 10 seconds, 60*3 = 3 minutes.
  */
 $config['security']['login_attempt_time_ban'] = 10;
@@ -561,9 +561,9 @@ $config['security']['recaptcha_theme'] = 'white';
 $config['security']['recaptcha_language'] = 'en';
 
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // GENERAL CONFIGURATION SETTINGS
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * General flexi auth Settings
@@ -607,15 +607,15 @@ $config['settings']['default_group_id'] = 1;
 /**
  * Set whether user privileges should be determined by individual privileges assigned per user, or via privileges assigned to a users user group.
  * @param array
- * 
+ *
  * Options: array('user','group'), array('user'), array('group')
  */
 $config['settings']['privilege_sources'] = array('user', 'group');
 
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // EMAIL CONFIGURATION SETTINGS
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * flexi auth Email Settings
@@ -668,9 +668,9 @@ $config['email']['email_template_forgot_password_complete'] = 'new_password.tpl.
  */
 $config['email']['email_template_update_email'] = 'update_email_address.tpl.php';
 
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // MESSAGE SETTINGS
-###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
 /**
  * Message Delimiter Settings

@@ -14,6 +14,11 @@ class Survey extends CI_Controller {
         $this->load->library('pagination');
         $this->auth = new stdClass;
         $this->load->library('flexi_auth');
+        if (!$this->flexi_auth->is_logged_in()) {
+            $this->flexi_auth->set_error_message('You must login to access this area.', TRUE);
+            $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
+            redirect($this->config->item('login_url'));
+        }
     }
 
     public function survey_step_1() {
@@ -65,31 +70,7 @@ class Survey extends CI_Controller {
 
         $this->load->view($this->config->item('template') . '/header_dashboard', $data);
         $this->load->view($this->config->item('template') . '/survey/step_2');
-        // $this->load->view($this->config->item('template') . '/footer_dashboard');
-    }
-
-    public function serializedFormDatajQuery2Array($serializedArr) {
-        $aFormData = array();
-        foreach ($serializedArr as $aRow) {
-
-            if (isset($aFormData[$aRow['name']]) && !is_array($aFormData[$aRow['name']])) {
-
-                $sValue = $aFormData[$aRow['name']];
-                $aFormData[$aRow['name']] = array();
-                $aFormData[$aRow['name']][] = $sValue;
-                $aFormData[$aRow['name']][] = $aRow['value'];
-                continue;
-            }
-
-            if (is_array($aFormData[$aRow['name']])) {
-                $aFormData[$aRow['name']][] = $sValue;
-                continue;
-            }
-
-            $aFormData[$aRow['name']] = $aRow['value'];
-        }
-
-        return $aFormData;
+        $this->load->view($this->config->item('template') . '/footer_dashboard');
     }
 
     public function ajax_save_question() {
@@ -124,10 +105,10 @@ class Survey extends CI_Controller {
         }
         $data_array = array(
             'question_title' => $this->input->post('question_title'),
-            'question_help_text' => $this->input->post('help_text_note'),
-            'question_one_word' => $this->input->post('unique_one_word'),
-            'question_limit_lower' => $this->input->post('qLimitLow'),
-            'question_limit_upper' => $this->input->post('qLimitUp'),
+            'question_help_text' => $this->input->post('question_help_text'),
+            'question_one_word' => $this->input->post('question_one_word'),
+            'question_limit_lower' => $this->input->post('question_limit_lower'),
+            'question_limit_upper' => $this->input->post('question_limit_upper'),
             'question_multiple_options' => $multiple_choice,
             'survey_fk_id' => $this->input->post('survey_id'),
             'type_id_fk' => $type_id,
@@ -150,8 +131,12 @@ class Survey extends CI_Controller {
         $id = $this->input->post('survey_id');
         $question_data = $this->survey->get_survey_questions_by_args($id);
         $question_list = '';
-        foreach ($question_data as $question) {
-            $question_list .= "<div data-question-id='" . $question['question_no'] . "' style='margin-bottom:10px;'> Question " . $question['question_no'] . "<span style='margin-left:30px;' class='btn btn-circle btn-icon-only btn-default' onclick='edit_question(" . $question['question_no'] . ");'><i class='fa fa-edit'></i></span></div>";
+        foreach ($question_data as $key => $value) {
+            $active = "class='row question-row'";
+            if ($key == 0) {
+                $active = "class='question-active row question-row'";
+            }
+            $question_list .= "<div data-question-id='" . $value['question_no'] . "' style='margin-bottom:10px;'" . $active . "><span class='badge badge-danger' style='margin-right:10px;'> " . $value['question_no'] . " </span>" . $value['question_title'] . "</br><div class='col-lg-7 col-md-7 col-sm-7 col-xs-7'><label class='label label-warning'>" . $value['type_name'] . "</label></div><div class='col-lg-5 col-md-5 col-sm-5 col-xs-5'><span class='btn btn-icon-only btn-default' onclick='edit_question(" . $value['question_no'] . ");'><i class='fa fa-edit'></i></span></div></div>";
         }
         if (count($question_data[0]) > 0) {
             $data = array('question_list' => $question_list,
@@ -166,9 +151,18 @@ class Survey extends CI_Controller {
     function ajax_edit_survey_question() {
         $id = $this->input->post('survey_id');
         $question_no = $this->input->post('question_no');
+        $question_list_data = $this->survey->get_survey_questions_by_args($id);
         $question_data = $this->survey->get_survey_questions_by_args($id, $question_no);
+        $question_list = '';
+        foreach ($question_list_data as $key => $value) {
+            $active = "class='row question-row'";
+            if ($key == $question_no - 1) {
+                $active = "class='question-active row question-row'";
+            }
+            $question_list .= "<div data-question-id='" . $value['question_no'] . "' style='margin-bottom:10px;'" . $active . "><span class='badge badge-danger' style='margin-right:10px;'> " . $value['question_no'] . " </span>" . $value['question_title'] . "</br><div class='col-lg-7 col-md-7 col-sm-7 col-xs-7'><label class='label label-warning'>" . $value['type_name'] . "</label></div><div class='col-lg-5 col-md-5 col-sm-5 col-xs-5'><span class='btn btn-icon-only btn-default' onclick='edit_question(" . $value['question_no'] . ");'><i class='fa fa-edit'></i></span></div></div>";
+        }
         if (count($question_data[0]) > 0) {
-            $data = array('question_data' => $question_data[0], 'success' => "true");
+            $data = array('question_list' => $question_list, 'question_data' => $question_data[0], 'success' => "true");
         } else {
             $data = array('success' => "false");
         }
@@ -181,7 +175,8 @@ class Survey extends CI_Controller {
         $question_no = $this->input->post('question_no');
         $cond = array('question_no' => $question_no,
             'survey_fk_id' => $id);
-        $response = $this->survey->delete_data('tbl_survey_question', $cond);
+        $response = $this->common_model->delete_data('tbl_survey_question', $cond);
+        $this->survey->rearrange_survey_question_no($question_no);
         if ($response) {
             $data = array('response' => $response, 'success' => "true");
         } else {

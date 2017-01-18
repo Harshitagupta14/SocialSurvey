@@ -30,12 +30,11 @@
                         <div class="page-content-wrap">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <span style="color: red;"> <?php print_r(validation_errors()); ?></span>
-                                    <form action="" class="form-horizontal" method="post" enctype="multipart/form-data">
+                                    <form action="" class="form-horizontal" id="survey_form" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="form-group form-md-line-input">
                                                 <div class="col-md-offset-4 col-md-4">
-                                                    <input class="form-control " id="form_control_1" placeholder="Survey Title" name="survey_title"  type="text">
+                                                    <input class="form-control " id="survey_title" placeholder="Survey Title" name="survey_title"  type="text">
 
                                                     <?php if (strip_tags(form_error('survey_title')) == '') { ?>
                                                         <span class="help-block">Enter a name for survey...</span>
@@ -75,12 +74,15 @@
                                                 <a href="<?php echo site_url('dashboard'); ?>" type="submit" class="btn btn-danger" value="Cancel" >Cancel</a>
                                             </div>
                                             <div class="col-md-4" style="margin-top:20px;">
-                                                <input type="submit" class="btn btn-primary" value="Submit" name="create_survey">
+                                                <input type="submit" class="btn btn-primary" value="Submit" id="create_survey" name="create_survey">
                                                 <input type="hidden" value="save" name="form_submit">
                                             </div>
                                         </div>
                                     </form>
-
+                                    <div id="toast-notify" class="mdl-js-snackbar mdl-snackbar">
+                                        <div class="mdl-snackbar__text"></div>
+                                        <button class="mdl-snackbar__action" type="button"></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +99,22 @@
                             reader.readAsDataURL(input.files[0]);
                         }
                     }
-
+                    $("#create_survey").click(function (event) {
+                        event.preventDefault();
+                        var valid = validate_form();
+                        if (valid) {
+                            $("#survey_form").submit();
+                        }
+                    });
+                    function validate_form() {
+                        var survey_title = $("#survey_title").val();
+                        if (survey_title == '') {
+                            var error = "TITLE OF THE SURVEY IS A REQUIRED FIELD";
+                            display_error(error);
+                            return false;
+                        }
+                        return true;
+                    }
                 </script>
 
                 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -107,3 +124,13 @@
                 <script src="<?= $this->config->item('adminassets'); ?>global/scripts/app.min.js" type="text/javascript"></script>
                 <!-- END THEME GLOBAL SCRIPTS -->
                 <!-- BEGIN PAGE LEVEL SCRIPTS -->
+                <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+                <script type="text/javascript">
+                    function display_error(error_message) { //common function for displayinga ll the error
+                        'use strict';
+                        var snackbarContainer = document.querySelector('#toast-notify');
+                        'use strict';
+                        var data = {message: error_message};
+                        snackbarContainer.MaterialSnackbar.showSnackbar(data);
+                    }
+                </script>

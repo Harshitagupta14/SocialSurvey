@@ -37,7 +37,64 @@
         <script src="<?= $this->config->item('adminassets'); ?>global/plugins/jquery.min.js" type="text/javascript"></script>
 
         <link rel="shortcut icon" href="favicon.ico" />
-
+        <style>
+            .mdl-snackbar {
+                border-radius: 2px;
+                max-width: 568px;
+                min-width: 288px;
+                transform: translate(-50%, 80px);
+            }
+            .mdl-snackbar{
+                background-color: #323232;
+                bottom: 0;
+                cursor: default;
+                display: flex;
+                font-family: "Roboto","Helvetica","Arial",sans-serif;
+                justify-content: space-between;
+                left: 40%;
+                pointer-events: none;
+                position: fixed;
+                transform: translate(0px, 80px);
+                transition: transform 0.25s cubic-bezier(0.4, 0, 1, 1) 0s;
+                will-change: transform;
+                z-index: 3;
+            }
+            .mdl-snackbar__text {
+                color: white;
+                float: left;
+                padding: 14px 12px 14px 24px;
+                vertical-align: middle;
+            }
+            .mdl-snackbar--active {
+                pointer-events: auto;
+                transform: translate(0px, 0px);
+                transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1) 0s;
+            }
+            .mdl-snackbar--active {
+                //transform: translate(-50%, 0px);
+            }
+            .mdl-snackbar__action {
+                align-self: center;
+                background: transparent none repeat scroll 0 0;
+                border: medium none;
+                color: rgb(244, 67, 54);
+                cursor: pointer;
+                float: right;
+                font-family: "Roboto","Helvetica","Arial",sans-serif;
+                font-size: 14px;
+                font-weight: 500;
+                letter-spacing: 0;
+                line-height: 1;
+                opacity: 0;
+                outline: medium none;
+                overflow: hidden;
+                padding: 14px 24px 14px 12px;
+                pointer-events: none;
+                text-align: center;
+                text-decoration: none;
+                text-transform: uppercase;
+            }
+        </style>
         <!-- END HEAD -->
         <script>
             var baseurl = '<?= base_url() ?>';
@@ -480,15 +537,15 @@
                     <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                        <li class="nav-item start active open">
-                            <a href="<?= base_url() ?>admin/dashboard" class="nav-link nav-toggle">
+                        <li class="nav-item start <?php if ($this->uri->segment(1) == 'dashboard') { ?>active open <?php } ?>">
+                            <a href="<?= base_url() ?>dashboard" class="nav-link nav-toggle">
                                 <i class="icon-home"></i>
                                 <span class="title">Dashboard</span>
                                 <span class="selected"></span>
                                 <span class="arrow open"></span>
                             </a>
                         </li>
-                        <li class="nav-item  ">
+                        <li class="nav-item  <?php if ($this->uri->segment(1) == 'survey') { ?>active open <?php } ?>">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
                                 <span class="title">Survey</span>
@@ -496,32 +553,13 @@
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>create-survey-step-one" class="nav-link ">
+                                    <a href="<?= base_url() ?>survey" class="nav-link ">
                                         <span class="title">Create Survey</span>
                                     </a>
                                 </li>
                                 <li class="nav-item  ">
                                     <a href="<?= base_url() ?>admin/product-add" class="nav-link ">
                                         <span class="title">Manage Existing Survey</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-puzzle"></i>
-                                <span class="title">Category</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>admin/category-list" class="nav-link ">
-                                        <span class="title"> Manage Category</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>admin/category-add" class="nav-link ">
-                                        <span class="title">Add Category</span>
                                     </a>
                                 </li>
                             </ul>
@@ -556,21 +594,22 @@
                              </ul>
                          </li> -->
 
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+
+                        <li class="nav-item <?php if ($this->uri->segment(1) == 'organization') { ?>active open <?php } ?>">
+                            <a href="<?= base_url() ?>organization" class="nav-link nav-toggle">
                                 <i class="icon-user"></i>
-                                <span class="title">User</span>
+                                <span class="title">Organization</span>
                                 <span class="arrow"></span>
                             </a>
-                            <ul class="sub-menu">
+                            <!--<ul class="sub-menu">
                                 <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>admin/customer-list" class="nav-link ">
+                                    <a href="<?= base_url() ?>organization" class="nav-link ">
                                         <i class="icon-user"></i>
-                                        <span class="title"> Manage Vendors</span>
+                                        <span class="title"> Manage Auditors</span>
                                     </a>
                                 </li>
 
-                            </ul>
+                            </ul> -->
                         </li>
 
                     </ul>

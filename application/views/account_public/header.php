@@ -480,15 +480,15 @@
                     <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <ul class="page-sidebar-menu  page-header-fixed page-sidebar-menu-hover-submenu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-                        <li class="nav-item start active open">
-                            <a href="<?= base_url() ?>admin/dashboard" class="nav-link nav-toggle">
+                        <li class="nav-item start <?php if ($this->uri->segment(1) == 'dashboard') { ?>active open <?php } ?>">
+                            <a href="<?= base_url() ?>dashboard" class="nav-link nav-toggle">
                                 <i class="icon-home"></i>
                                 <span class="title">Dashboard</span>
                                 <span class="selected"></span>
                                 <span class="arrow open"></span>
                             </a>
                         </li>
-                        <li class="nav-item  ">
+                        <li class="nav-item  <?php if ($this->uri->segment(1) == 'survey') { ?>active open <?php } ?>">
                             <a href="javascript:;" class="nav-link nav-toggle">
                                 <i class="icon-diamond"></i>
                                 <span class="title">Survey</span>
@@ -503,25 +503,6 @@
                                 <li class="nav-item  ">
                                     <a href="<?= base_url() ?>admin/product-add" class="nav-link ">
                                         <span class="title">Manage Existing Survey</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
-                                <i class="icon-puzzle"></i>
-                                <span class="title">Category</span>
-                                <span class="arrow"></span>
-                            </a>
-                            <ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>admin/category-list" class="nav-link ">
-                                        <span class="title"> Manage Category</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>admin/category-add" class="nav-link ">
-                                        <span class="title">Add Category</span>
                                     </a>
                                 </li>
                             </ul>
@@ -556,21 +537,22 @@
                              </ul>
                          </li> -->
 
-                        <li class="nav-item  ">
-                            <a href="javascript:;" class="nav-link nav-toggle">
+
+                        <li class="nav-item <?php if ($this->uri->segment(1) == 'organization') { ?>active open <?php } ?>">
+                            <a href="<?= base_url() ?>organization" class="nav-link nav-toggle">
                                 <i class="icon-user"></i>
-                                <span class="title">User</span>
+                                <span class="title">Organization</span>
                                 <span class="arrow"></span>
                             </a>
-                            <ul class="sub-menu">
+                            <!--<ul class="sub-menu">
                                 <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>admin/customer-list" class="nav-link ">
+                                    <a href="<?= base_url() ?>organization" class="nav-link ">
                                         <i class="icon-user"></i>
-                                        <span class="title"> Manage Vendors</span>
+                                        <span class="title"> Manage Auditors</span>
                                     </a>
                                 </li>
 
-                            </ul>
+                            </ul> -->
                         </li>
 
                     </ul>

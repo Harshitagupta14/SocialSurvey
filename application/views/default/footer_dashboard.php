@@ -9,7 +9,7 @@
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/excanvas.min.js"></script>
 <![endif]-->
 <!-- BEGIN CORE PLUGINS -->
-<script src="<?= $this->config->item('adminassets'); ?>global/plugins/jquery.min.js" type="text/javascript"></script>
+
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/js.cookie.min.js" type="text/javascript"></script>
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>

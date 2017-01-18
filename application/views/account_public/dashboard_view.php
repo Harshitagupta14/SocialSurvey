@@ -50,7 +50,11 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <h4><?php echo $survey['survey_title']; ?></h4>
-                                    <span class="label label-warning"> Draft/Pubished </span>
+                                    <?php if ($survey['survey_status'] == "draft") { ?>
+                                        <span class="label label-warning"> Draft </span>
+                                    <?php } else { ?>
+                                        <span class="label label-danger"> Pubished </span>
+                                    <?php } ?>
                                 </div>
                             </div>
                             <div class="row">
