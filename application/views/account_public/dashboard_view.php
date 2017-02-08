@@ -26,7 +26,7 @@
         <!-- END PAGE HEADER-->
 
         <div class="row" id="survey_container">
-            <?php foreach ($survey_feeds as $survey) { ?>
+            <?php foreach ($survey_feeds as $survey) {  ?>
                 <div class="col-md-4" data-survey-id="<?php echo $survey['survey_id']; ?>">
                     <!-- BEGIN Portlet PORTLET-->
                     <div class="portlet light">
@@ -51,9 +51,9 @@
                                 <div class="col-md-12">
                                     <h4><?php echo $survey['survey_title']; ?></h4>
                                     <?php if ($survey['survey_status'] == "draft") { ?>
-                                        <span class="label label-warning"> Draft </span>
+                                    <span class="label label-warning" id="<?php echo $survey['survey_id']; ?>"> Draft </span>
                                     <?php } else { ?>
-                                        <span class="label label-danger"> Pubished </span>
+                                    <span class="label label-danger" id="<?php echo $survey['survey_id']; ?>"> Pubished </span>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -63,9 +63,15 @@
                                         <a class="btn btn-circle btn-icon-only btn-default" href="<?php echo site_url('survey/' . $survey['survey_id']); ?>">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                                        <?php if ($survey['survey_status'] == "draft") { ?>
+                                        <a id="unpublish" class="btn btn-circle btn-icon-only btn-default" href="#" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>','<?php echo $survey['survey_status']; ?>')">
                                             <i class="icon-cloud-upload"></i>
                                         </a>
+                                        <?php } else { ?>
+                                        <a id="unpublish" class="btn btn-circle btn-icon-only btn-danger" href="#" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>','<?php echo $survey['survey_status']; ?>')">
+                                            <i class="icon-cloud-upload"></i>
+                                        </a>
+                                          <?php } ?>
                                         <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
                                             <i class="icon-trash"></i>
                                         </a>
@@ -640,4 +646,35 @@
             </div>
             <!-- END QUICK SIDEBAR -->
         </div>
+        <script type='text/javascript'>
 
+            function unpublish_data(survey_id,survey_status) {
+               var survey_id = survey_id;
+                if (survey_status == 'published') {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url(); ?>" + "ajax_unpublish_data",
+                        dataType: 'html',
+                        data: {survey_id: survey_id},
+                        beforeSend: function () {
+                            $('.question-overlay').show();
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Publishing the Questions, Please wait.</p>');
+                            $('.question-modal').show();
+                        },
+                        success: function (stat) {
+                            var data = JSON.parse(stat);
+                            if (data.success == "true") {
+                                $('.question-overlay').hide();
+                                $('.question-modal').html('');
+                                $('.question-modal').hide();
+                                document.getElementById(survey_id).innerHTML = "Draft";
+                                document.getElementById(survey_id).className = "label label-warning";
+                            } 
+
+                        }
+                    });
+                } else {
+                    alert("Already in draft");
+                }
+            }
+        </script>

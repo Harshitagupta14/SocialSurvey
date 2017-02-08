@@ -187,4 +187,31 @@ class Survey extends CI_Controller {
         die;
     }
 
+    function ajax_publish_data() {
+        $id = $this->input->post('survey_id');
+        $data = array("survey_status" => 'published' , "publish_time" => date('Y-m-d h:i:s'));
+        $cond = array('id' => $id);
+        $response = $this->common_model->update_data('tbl_survey', $cond, $data);
+        if ($response) {
+            $data = array('response' => $response, 'success' => "true");
+        } else {
+            $data = array('success' => "false");
+        }
+        echo json_encode($data);
+        die;
+    }
+      function ajax_unpublish_data() {
+        $id = $this->input->post('survey_id');
+        $data = array("survey_status" => 'draft');
+        $cond = array('survey_id' => $id);
+        $response = $this->common_model->update_data('tbl_survey', $cond, $data);
+        if ($response) {
+            $data = array('response' => $response, 'success' => "true");
+        } else {
+            $data = array('success' => "false");
+        }
+        echo json_encode($data);
+        die;
+    }
+
 }

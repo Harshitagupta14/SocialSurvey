@@ -64,11 +64,11 @@
                 <!-- DOC: Remove "hide" class to enable the page header actions -->
                 <div class="page-actions">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-circle btn-outline red dropdown-toggle" data-toggle="dropdown">
+<!--                        <button type="button" class="btn btn-circle btn-outline red dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-plus"></i>&nbsp;
                             <span class="hidden-sm hidden-xs">New&nbsp;</span>&nbsp;
                             <i class="fa fa-angle-down"></i>
-                        </button>
+                        </button>-->
                         <ul class="dropdown-menu" role="menu">
                             <li>
                                 <a href="javascript:;">
@@ -119,7 +119,7 @@
                         <ul class="nav navbar-nav pull-right">
                             <!-- BEGIN NOTIFICATION DROPDOWN -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                            <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+<!--                            <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                     <i class="icon-bell"></i>
                                     <span class="badge badge-default"> 7 </span>
@@ -217,9 +217,9 @@
                                     </li>
                                 </ul>
                             </li>
-                            <!-- END NOTIFICATION DROPDOWN -->
-                            <!-- BEGIN INBOX DROPDOWN -->
-                            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                             END NOTIFICATION DROPDOWN 
+                             BEGIN INBOX DROPDOWN 
+                             DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte 
                             <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
                                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                     <i class="icon-envelope-open"></i>
@@ -292,9 +292,9 @@
                                     </li>
                                 </ul>
                             </li>
-                            <!-- END INBOX DROPDOWN -->
-                            <!-- BEGIN TODO DROPDOWN -->
-                            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                             END INBOX DROPDOWN 
+                             BEGIN TODO DROPDOWN 
+                             DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte 
                             <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
                                 <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                                     <i class="icon-calendar"></i>
@@ -402,7 +402,7 @@
                                         </ul>
                                     </li>
                                 </ul>
-                            </li>
+                            </li>-->
                             <!-- END TODO DROPDOWN -->
                             <!-- BEGIN USER LOGIN DROPDOWN -->
                             <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
