@@ -1,35 +1,59 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en"><head>
+        <meta charset="utf-8">
+        <title>SocialSurvey</title>
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <head>
-        <meta charset="utf-8" />
-        <title>SocialCop|Login </title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta content="width=device-width, initial-scale=1" name="viewport" />
-        <meta content="" name="description" />
-        <meta content="" name="author" />
-        <!-- BEGIN GLOBAL MANDATORY STYLES -->
-        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="<?= $this->config->item('adminassets'); ?>global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= $this->config->item('adminassets'); ?>global/plugins/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css" />
-        <link href="<?= $this->config->item('adminassets'); ?>global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-        <!-- END GLOBAL MANDATORY STYLES -->
-        <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <link href="<?= $this->config->item('adminassets'); ?>global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= $this->config->item('adminassets'); ?>global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <!-- END PAGE LEVEL PLUGINS -->
-        <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="<?= $this->config->item('adminassets'); ?>global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="<?= $this->config->item('adminassets'); ?>global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
-        <!-- END THEME GLOBAL STYLES -->
-        <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="<?= $this->config->item('adminassets'); ?>pages/css/login-5.min.css" rel="stylesheet" type="text/css" />
-        <!-- END PAGE LEVEL STYLES -->
-        <!-- BEGIN THEME LAYOUT STYLES -->
-        <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" />
-        <script>
-            var baseurl = '<?= base_url() ?>';
-        </script>
+        <meta property="og:title" content="">
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="">
+        <meta property="og:site_name" content="">
+        <meta property="og:description" content="">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="<?= $this->config->item('frontassets') ?>video-parralax/css/font-awesome.min.css">
+        <link rel="stylesheet" href="<?= $this->config->item('frontassets') ?>video-parralax/css/animate.css">
+        <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+
+        <link rel="stylesheet" href="<?= $this->config->item('frontassets') ?>video-parralax/css/bootstrap.min.css">
+        <link rel="stylesheet" href="<?= $this->config->item('frontassets') ?>video-parralax/css/main.css">
+
+        <script src="<?= $this->config->item('frontassets') ?>video-parralax/js/modernizr-2.7.1.js"></script>
+        <style>
+            .header-video {
+                position: relative;
+                overflow: hidden;
+            }
+
+            .header-video iframe,
+            .header-video video {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+
+            .header-video iframe {
+                height: 100%;
+                width: 100%;
+            }
+
+            .header-video video {
+                width: 100%;
+            }
+
+            .header-video__teaser-video {
+                width: 100%;
+                height: auto;
+            }
+
+            .header-video__media {
+                width: 100%;
+                height: auto;
+            }
+        </style>
     </head>

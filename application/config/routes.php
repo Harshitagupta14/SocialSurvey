@@ -114,6 +114,17 @@ $route['ajax-fetch-survey-feeds'] = 'welcome/fetch_survey_feeds/';
 $route['ajax-fetch-survey-questions'] = 'survey/ajax_get_survey_questions/';
 $route['ajax-edit-survey-question'] = 'survey/ajax_edit_survey_question/';
 $route['ajax-delete-survey-question'] = 'survey/ajax_delete_survey_question/';
+
+
+//Organization Routes
+
+$route['organization'] = 'organization/index/';
+$route['ajax-register-surveyor'] = 'organization/ajax_register_surveyor/';
+$route['ajax-change-surveyor-status'] = 'organization/ajax_change_surveyor_status/';
+$route['ajax-update-organization-details'] = 'organization/ajax_update_organization_details/';
+
+
+
 //======= Admin Related Urls===================//
 
 

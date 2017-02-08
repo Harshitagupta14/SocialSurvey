@@ -52,6 +52,9 @@
                 <div class="theme-option" id="question-list">
 
                 </div>
+                <div class="theme-option">
+                    <button class="btn btn-danger" id="survey_publish_btn" type="submit" style="display:inline-block; margin-left:20%;"><span><i aria-hidden="true" class="icon-cloud-upload"></i>Publish</span><div></div></button>
+                </div>
             </div>
         </div>
         <br/><br/><br/>
@@ -123,6 +126,7 @@
                                 <div class="col-lg-3 col-md-4 col-xs-12">
                                     <div class="mt-element-ribbon bg-grey-steel">
                                         <p class="ribbon ribbon-color-primary uppercase" id="question">Question 1</p>
+                                        <p style="float: right; margin-right: 10px;" id="survey_question_time"></p>
                                         <!--<input class="ribbon ribbon-color-primary uppercase" id="question" value="Question 1"/>-->
     <!--                                    <input type="hidden" id="question_no" value="1"/>-->
                                         <p class="ribbon-content"><button  class="btn btn-primary" id="question_save_btn" type="submit" style="display:none;"></button>
@@ -197,7 +201,7 @@
                             if (data.success === "true") {
                     if (data.success_state === "save") {
                     change_to_save_btn();
-                            reset_form_fields();
+                            //reset_form_fields();
                             $('.question-overlay').hide();
                             $('.question-modal').html('');
                             $('.question-modal').hide();
@@ -205,15 +209,17 @@
                             var next_question_no = data.next_question_no;
                             $('#question-list').append("<div data-question-id='" + prev_question_no + "' style='margin-bottom:10px;' class='row question-row'> <span class='badge badge-danger'> " + prev_question_no + " </span> - " + question_title_input + " </br><div class='col-lg-7 col-md-7 col-sm-7 col-xs-7'><label class='label label-warning'>" + selected_type + "</label></div><div class='col-lg-5 col-md-5 col-sm-5 col-xs-5'><span  class='btn btn-icon-only btn-default' onclick='edit_question(" + prev_question_no + ")';><i class='fa fa-edit'></i></span></div></div>");
                             $('.question-overlay').show();
-                            $('.question-modal').html('<span onclick="add_new_question()" class="btn btn-primary add_question"> + Add New Question </span>');
+                            $('.question-modal').html('<h4 style="margin-top:60px; color:#fff;"><i class="fa fa-check-circle m-r-5"></i>Your Question was saved succesfully</h4><span onclick="add_new_question()" class="btn btn-primary add_question"  style="margin-bottom:150px;"> + Add New Question </span>');
+                            $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.question_data.add_time) + " ago");
                             $('.add_question').attr("onclick", "add_new_question()");
                             $('.question-modal').show();
-                            $('#question').html("Question " + next_question_no);
-                            $('#question_no').val(next_question_no);
+                            //$('#question').html("Question " + next_question_no);
+                            //$('#question_no').val(next_question_no);
                     } else   if (data.success_state === "update") {
                     change_to_update_btn();
                             var question_no = $('#question_no').val();
                             $('#question-list > div[data-question-id="' + question_no + '"]').html("<span class='badge badge-danger' style='margin-right:10px;'> " + question_no + " </span>" + question_title_input + " </br><div class='col-lg-7 col-md-7 col-sm-7 col-xs-7'><label class='label label-warning'>" + selected_type + "</label></div><div class='col-lg-5 col-md-5 col-sm-5 col-xs-5'><span class='btn btn-icon-only btn-default' onclick='edit_question(" + question_no + ")';><i class='fa fa-edit'></i></span></div>");
+                            $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.question_data.add_time) + " ago");
                             $('.question-overlay').hide();
                             $('.question-modal').html('');
                             $('.question-modal').hide();
@@ -259,6 +265,7 @@
                     setTimeout(function(){
                     change_to_update_btn();
                             $('#question-list').html(data.question_list);
+                            $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.first_question.add_time) + " ago");
                             handle_edit_question(data);
                     }, 3000);
                     } else if (data.success === "false"){
@@ -291,7 +298,7 @@
             $("#unique_one_word_input").val('');
             $("#qLimitLow").val('');
             $("#qLimitUp").val('');
-            $("#select2-single-input-sm").val('');//Survey Type
+            $("#select2-single-input-sm").val(''); //Survey Type
             $('.bootstrap-tagsinput .tag').remove();
             $("#multiple_choice option:selected").remove();
             $('#multiple_choice input').val('');
@@ -311,6 +318,7 @@
             $('#question').html("Question " + next_question_no);
             $('#question_no').val(next_question_no);
             $('.add_question').removeAttr("onclick");
+            $('#survey_question_time').html("");
             change_to_save_btn();
     }
 
@@ -336,6 +344,7 @@
                             $('#question-list').html(data.question_list);
                             setTimeout(function(){
                             $('#question').html("Question " + question_no);
+                                    $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.question_data.add_time) + " ago");
                                     $('#question_no').val(question_no);
                                     //    $('#question-list > div[data-question-id="' + question_no + '"]').html("<div data-question-id='" + question_no + "' style='margin-bottom:10px;' class='question-active row question-row'> <span class='badge badge-danger' style='margin-right:10px;'> " + question_no + " </span>" + data.question_data.question_title + " </br><div class='col-lg-7 col-md-7 col-sm-7 col-xs-7'><label class='label label-warning'>" + data.question_data.type_name + "</label></div><div class='col-lg-5 col-md-5 col-sm-5 col-xs-5'><span class='btn btn-icon-only btn-default' onclick='edit_question(" + question_no + ")';><i class='fa fa-edit'></i></span></div></div>");
                                     $('#question_tools').html("<span style='margin-left:15px;' class='btn btn-circle btn-icon-only btn-default' onclick='delete_question(" + question_no + ");'><i class='icon-trash'></i></span>");
@@ -385,7 +394,7 @@
             var result = question_data.question_multiple_options.split('|');
             console.log(result);
             var i;
-            for (i = 0;i < result.length;i++){
+            for (i = 0; i < result.length; i++){
     $('select#multiple_choice').tagsinput('refresh');
             $('select#multiple_choice').tagsinput('add', result[i]);
     }
@@ -473,7 +482,7 @@
             help_text_note_surveyor_inner_col_div.appendChild(help_text_note_surveyor_label);
             help_text_note_surveyor_inner_col_div.appendChild(help_text_note_surveyor_help_block);
             help_text_note_surveyor_div.appendChild(help_text_note_surveyor_inner_col_div);
-            question_block_row_div.appendChild(help_text_note_surveyor_div);var short_keyword_div = document.createElement('div');
+            question_block_row_div.appendChild(help_text_note_surveyor_div); var short_keyword_div = document.createElement('div');
             short_keyword_div.className = "col-md-6";
             short_keyword_div.setAttribute("id", "unique_one_word");
             var short_keyword_inner_col_div = document.createElement('div');
@@ -511,12 +520,12 @@
             sb_max_characters_div.className = "col-md-3";
             sb_max_characters_div.setAttribute("id", "mq_choice_low");
             var sb_max_characters_inner_div = document.createElement('div');
-            sb_max_characters_inner_div.className = "form-group form-md-line-input";var sb_max_characters_input = document.createElement('input');
+            sb_max_characters_inner_div.className = "form-group form-md-line-input"; var sb_max_characters_input = document.createElement('input');
             sb_max_characters_input.className = "form-control";
             sb_max_characters_input.setAttribute("id", "qLimitLow");
             sb_max_characters_input.setAttribute("name", "question_limit_lower");
             sb_max_characters_input.setAttribute("type", "text");
-            sb_max_characters_input.setAttribute("value", "100");var sb_max_characters_label = document.createElement('label');
+            sb_max_characters_input.setAttribute("value", "100"); var sb_max_characters_label = document.createElement('label');
             sb_max_characters_label.setAttribute("for", "form_control_4");
             sb_max_characters_label.innerHTML = "Max Cahracters Allowed";
             var sb_max_characters_help_block = document.createElement('span');
@@ -532,7 +541,7 @@
     sb_max_characters_input.setAttribute("value", data.question_limit_lower);
     }
     }
-    return sb_max_characters_row_div;}
+    return sb_max_characters_row_div; }
 
     function create_mq(low_value, upper_value, data = '') {
 
@@ -540,17 +549,17 @@
     var mq_choice_div = document.createElement('div');
             mq_choice_div.className = "row";
             mq_choice_div.setAttribute("id", "mq_choice");
-            var mq_choice_low_div = document.createElement('div');mq_choice_low_div.className = "col-md-3";
-            mq_choice_low_div.setAttribute("id", "mq_choice_low");var mq_choice_low_inner_div = document.createElement('div');
+            var mq_choice_low_div = document.createElement('div'); mq_choice_low_div.className = "col-md-3";
+            mq_choice_low_div.setAttribute("id", "mq_choice_low"); var mq_choice_low_inner_div = document.createElement('div');
             mq_choice_low_inner_div.className = "form-group form-md-line-input";
-            var mq_choice_low_input = document.createElement('input');mq_choice_low_input.className = "form-control";
+            var mq_choice_low_input = document.createElement('input'); mq_choice_low_input.className = "form-control";
             mq_choice_low_input.setAttribute("id", "qLimitLow");
             mq_choice_low_input.setAttribute("name", "question_limit_lower");
             mq_choice_low_input.setAttribute("placeholder", low_value);
             mq_choice_low_input.setAttribute("type", "text");
             mq_choice_low_input.setAttribute("value", "1");
             var mq_choice_low_label = document.createElement('label');
-            mq_choice_low_label.setAttribute("for", "form_control_2");mq_choice_low_label.innerHTML = low_value;
+            mq_choice_low_label.setAttribute("for", "form_control_2"); mq_choice_low_label.innerHTML = low_value;
             var mq_choice_low_help_block = document.createElement('span');
             mq_choice_low_help_block.className = "help-block";
             mq_choice_low_help_block.innerHTML = low_value;
@@ -559,8 +568,8 @@
             mq_choice_low_inner_div.appendChild(mq_choice_low_help_block);
             mq_choice_low_div.appendChild(mq_choice_low_inner_div);
             mq_choice_div.appendChild(mq_choice_low_div);
-            var mq_choice_upper_div = document.createElement('div');mq_choice_upper_div.className = "col-md-3";
-            mq_choice_upper_div.setAttribute("id", "mq_choice_upper");var mq_choice_upper_inner_div = document.createElement('div');
+            var mq_choice_upper_div = document.createElement('div'); mq_choice_upper_div.className = "col-md-3";
+            mq_choice_upper_div.setAttribute("id", "mq_choice_upper"); var mq_choice_upper_inner_div = document.createElement('div');
             mq_choice_upper_inner_div.className = "form-group form-md-line-input";
             var mq_choice_upper_input = document.createElement('input');
             mq_choice_upper_input.className = "form-control";
@@ -616,7 +625,7 @@
             $(formdata).each(function(index, obj){
     data[obj.name] = obj.value;
     });
-            console.log(data);// Old Data
+            console.log(data); // Old Data
             $("#mq-block").hide();
             var type = $(this).val();
             console.log(type);
@@ -634,7 +643,7 @@
     }
     if (type == "nm") {
     var nm_choice_html = create_mq("Lower Limit", "Upper Limit");
-            $("#question_block").append(nm_choice_html);}
+            $("#question_block").append(nm_choice_html); }
     });
             $('.toggler').click(function (e) {
     e.preventDefault();
@@ -647,7 +656,43 @@
             $('.toggler-close').hide();
             $('.theme-options').hide();
             $('.toggler').show();
-    });</script>
+    });
+            function approxDateDiff(mysqlDate) {
+            // Split timestamp into [ Y, M, D, h, m, s ]
+            var t = mysqlDate.split(/[- :]/);
+                    // Apply each element to the Date function
+                    var startDate = new Date(t[0], t[1] - 1, t[2], t[3], t[4], t[5]);
+                    var now = new Date();
+                    var difference = (now.getTime() - startDate.getTime()) / 1000 | 0;
+                    if ((difference / (60 * 60 * 24 * 365) | 0)) {
+            var years = Math.round(difference / (60 * 60 * 24 * 365));
+                    return  years == 1 ? years + ' Year' : years + ' Years';
+            }
+            if ((difference / (60 * 60 * 24 * 30) | 0)) {
+            var months = Math.round(difference / (60 * 60 * 24 * 30));
+                    return  months + (months == 1 ? ' Month' : ' Months');
+            }
+            if ((difference / (60 * 60 * 24) | 0)) {
+            var days = Math.round(difference / (60 * 60 * 24));
+                    return  days + (days == 1 ? ' Day' : ' Days');
+            }
+            if ((difference / (60 * 60) | 0)) {
+            var hours = Math.round(difference / (60 * 60));
+                    return  hours + (hours == 1 ? ' Hour' : ' Hours');
+            }
+            if ((difference / (60) | 0)) {
+            var minutes = Math.round(difference / (60));
+                    return  minutes + (minutes == 1 ? ' Minute' : ' Minutes');
+            }
+            if (difference) {
+            var seconds = difference;
+                    return  seconds + (seconds == 1 ? ' sec' : ' secs');
+            }
+
+
+            }
+
+</script>
 
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>

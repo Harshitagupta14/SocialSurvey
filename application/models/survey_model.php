@@ -38,6 +38,18 @@ class Survey_Model extends CI_Model {
         $this->db->update('tbl_survey_question');
     }
 
+    public function get_surveyor_by_args($parent_id = FALSE) {
+        $survey_select = '`user_accounts`.*';
+        $final_select = " $survey_select ,`user_profiles`.*";
+        $this->db->select($final_select);
+        $this->db->from("`user_accounts`");
+        $this->db->join("`user_profiles`", ' user_profiles.upro_uacc_fk  = user_accounts.uacc_id', 'left');
+        $this->db->where("`user_accounts.uacc_parent_id_fk`", $parent_id);
+        $this->db->order_by('user_accounts.uacc_id', 'ASEC');
+        $final_query = $this->db->get();
+        return $final_query->result_array();
+    }
+
 }
 
 ?>

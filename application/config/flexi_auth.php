@@ -58,6 +58,7 @@ $config['database']['user_acc']['table'] = 'user_accounts';
 $config['database']['user_acc']['join'] = 'user_accounts.uacc_id';
 $config['database']['user_acc']['columns']['id'] = 'uacc_id';
 $config['database']['user_acc']['columns']['group_id'] = 'uacc_group_fk';
+$config['database']['user_acc']['columns']['parent_id'] = 'uacc_parent_id_fk';
 $config['database']['user_acc']['columns']['email'] = 'uacc_email';
 $config['database']['user_acc']['columns']['username'] = 'uacc_username';
 $config['database']['user_acc']['columns']['password'] = 'uacc_password';

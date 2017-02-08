@@ -68,6 +68,8 @@
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?= $this->config->item('adminassets') ?>pages/scripts/table-datatables-colreorder.min.js" type="text/javascript"></script>
-</body>
+<script src="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript"></script>
+<script src="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
 
 </html>

@@ -17,20 +17,14 @@ class Welcome extends CI_Controller {
     }
 
     public function index() {
-        /**  $data['METATITLE'] = "Home";
-          $data['METAKEYWORDS'] = "Home";
-          $data['METADESCRIPTION'] = "Home";
-          $data['current_page_slug'] = "Home";
-          $data['banner_slider'] = $this->common_model->getBannerRecords('1');
-          $data['banner_promotional'] = $this->common_model->getBannerRecords('2');
-          $data['home_product_types'] = $this->product->get_product_types(6);
-          $data['home_categories'] = $this->product->get_categories(0, 4);
-          $data['city_id'] = $this->session->userdata('city');
-          $data['category_data'] = $this->common_model->getFieldsFromAnyTable('parent_id', 0, 'tbl_category', FALSE, FALSE, 'active');
-          $this->load->view($this->config->item('template') . '/header', $data);
-          $this->load->view($this->config->item('template') . '/home');
-          $this->load->view($this->config->item('template') . '/footer'); */
-        redirect(site_url('login'));
+        $data['METATITLE'] = "Home";
+        $data['METAKEYWORDS'] = "Home";
+        $data['METADESCRIPTION'] = "Home";
+        $data['current_page_slug'] = "Home";
+        $this->load->view($this->config->item('template') . '/header', $data);
+        $this->load->view($this->config->item('template') . '/home');
+        $this->load->view($this->config->item('template') . '/footer');
+        //redirect(site_url('login'));
     }
 
     public function compare() {

@@ -37,7 +37,7 @@
         <div class="user-login-5">
             <div class="row bs-reset">
                 <div class="col-md-6 bs-reset mt-login-5-bsfix">
-                    <div class="login-bg" style="background-image:url(http://localhost/pos1/assets/admin/pages/img/login/bg1.jpg)">
+                    <div class="login-bg" style="background-image:url(http://localhost/SocialSurvey/assets/admin/pages/img/login/bg1.jpg)">
                         <!--<img class="login-logo" src="<?= $this->config->item('adminassets'); ?>pages/img/login/logo.png" /> -->
                     </div>
                 </div>

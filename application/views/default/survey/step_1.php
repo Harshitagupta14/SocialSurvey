@@ -49,11 +49,9 @@
                                             <div class="col-md-offset-4 col-md-4">
                                                 <label for="category" class="control-label" style="margin-bottom:5px;">Category</label>
                                                 <select class="bs-select form-control" name="survey_category" id="category">
-                                                    <option value="AF">Afghanistan</option>
-                                                    <option value="AL">Albania</option>
-                                                    <option value="DZ">Algeria</option>
-                                                    <option value="AS">American Samoa</option>
-                                                    <option value="AD">Andorra</option>
+                                                    <?php foreach ($survey_category_data as $survey_category) { ?>
+                                                        <option value="<?php echo $survey_category['category_name']; ?>"><?php echo $survey_category['category_name']; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                                 <span class="help-block" style="color: red;"><?= strip_tags(form_error('survey_category')) ?></span>
                                             </div>
@@ -63,8 +61,8 @@
                                             <div class="col-md-offset-4 col-md-4">
                                                 <label for="type" class="control-label" style="margin-bottom:5px;">Type</label>
                                                 <select class="bs-select form-control" name="survey_type" id="category">
-                                                    <option value="SI">Simple</option>
-                                                    <option value="OB">Observation</option>
+                                                    <option value="Simple">Simple</option>
+                                                    <option value="Observation">Observation</option>
                                                 </select>
                                                 <span class="help-block" style="color: red;"><?= strip_tags(form_error('survey_type')) ?></span>
                                             </div>

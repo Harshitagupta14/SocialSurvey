@@ -13,7 +13,7 @@ class Category extends CI_Controller {
         $this->load->library('pagination');
         $this->auth = new stdClass;
         $this->load->library('flexi_auth');
-        $this->common_model->check_is_city_set();
+        //$this->common_model->check_is_city_set();
     }
 
     public function index() {
@@ -63,7 +63,6 @@ class Category extends CI_Controller {
 
         $data['dataURL'] = $dataURL = 'category/getProductsData/' . $catId . '/?';
         $countRecord = $this->product->get_products_count($catId, FALSE);
-        //pr($countRecord);die;
         $config['base_url'] = base_url() . $dataURL;
         $config['per_page'] = 9;
         $config['total_rows'] = $countRecord;

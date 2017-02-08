@@ -102,7 +102,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
      * @return bool
      * @author Rob Hussey
      */
-    public function insert_user($email, $username, $password, $custom_data = FALSE, $group_id = FALSE) {
+    public function insert_user($email, $username, $password, $custom_data = FALSE, $group_id = FALSE, $instant_activate = 0) {
 // Check that an email address and password have been set.
 // If a username is defined as an identity column, ensure it is also set.
         if (empty($email) || empty($password) ||
@@ -150,6 +150,19 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
             $group_id = $this->auth->auth_settings['default_group_id'];
         }
 
+        // Get parent ID if it was passed in additional data array.
+        if (isset($custom_data[$this->auth->database_config['user_acc']['columns']['parent_id']]) && is_numeric($custom_data[$this->auth->database_config['user_acc']['columns']['parent_id']])) {
+            $parent_id = $custom_data[$this->auth->database_config['user_acc']['columns']['parent_id']];
+            unset($custom_data[$this->auth->database_config['user_acc']['columns']['parent_id']]);
+        }
+// Else, if a $parent_id was not passed to the function, use the default parent id 0.
+        else if (!is_numeric($parent_id)) {
+            $parent_id = 0;
+        }
+
+
+
+
         $ip_address = $this->input->ip_address();
 
         $store_database_salt = $this->auth->auth_security['store_database_salt'];
@@ -166,6 +179,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
 // Main user account table.
         $sql_insert = array(
             $this->auth->tbl_col_user_account['group_id'] => $group_id,
+            $this->auth->tbl_col_user_account['parent_id'] => $parent_id,
             $this->auth->tbl_col_user_account['email'] => $email,
             $this->auth->tbl_col_user_account['username'] => ($username) ? $username : '',
             $this->auth->tbl_col_user_account['password'] => $hash_password,
@@ -173,7 +187,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
             $this->auth->tbl_col_user_account['last_login_date'] => $this->database_date_time(),
             $this->auth->tbl_col_user_account['date_added'] => $this->database_date_time(),
             $this->auth->tbl_col_user_account['activation_token'] => $activation_token,
-            $this->auth->tbl_col_user_account['active'] => 0,
+            $this->auth->tbl_col_user_account['active'] => $instant_activate,
             $this->auth->tbl_col_user_account['suspend'] => $suspend_account
         );
 
@@ -202,6 +216,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
 ###+++++++++++++++++++++++++++++++++###
 // Complete SQL transaction.
         $this->db->trans_complete();
+
 
         return is_numeric($user_id) ? $user_id : FALSE;
     }

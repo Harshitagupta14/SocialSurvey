@@ -12,6 +12,7 @@ class Survey extends CI_Controller {
         $this->load->model('survey_model', 'survey');
         $this->load->library('form_validation');
         $this->load->library('pagination');
+        $this->load->library('components');
         $this->auth = new stdClass;
         $this->load->library('flexi_auth');
         if (!$this->flexi_auth->is_logged_in()) {
@@ -22,7 +23,7 @@ class Survey extends CI_Controller {
     }
 
     public function survey_step_1() {
-        $data['category_data'] = $this->common_model->getFieldsFromAnyTable('parent_id', 0, 'tbl_category', FALSE, FALSE, 'active');
+        $data['survey_category_data'] = $this->common_model->fetch_where('tbl_survey_category', '*', array('parent_id' => '0', 'status' => 'active'));
         $data['METATITLE'] = "Create Survey - Step 1";
         $data['METAKEYWORDS'] = "Create Survey - Step 1";
         $data['METADESCRIPTION'] = "Create Survey - Step 1";
@@ -57,7 +58,7 @@ class Survey extends CI_Controller {
     }
 
     public function survey_step_2($date_md = NULL) {
-        $survey_id = $this->common_model->fetch_where('tbl_survey', 'id', array('survey_id' => $date_md))[0];
+        $data['survey_data'] = $survey_data = $this->common_model->fetch_where('tbl_survey', '*', array('survey_id' => $date_md))[0];
         $data['METATITLE'] = "Create Survey - Step 1";
         $data['METAKEYWORDS'] = "Create Survey - Step 1";
         $data['METADESCRIPTION'] = "Create Survey - Step 1";
@@ -65,7 +66,7 @@ class Survey extends CI_Controller {
         //$data['current_page_slug'] = "categories";
         $data['breadcrumb'] = '<li class="active">Services</li>';
         $data['survey_types'] = $this->common_model->fetch_where('tbl_survey_question_type');
-        $data['survey_id'] = $survey_id['id'];
+        $data['survey_id'] = $survey_data['id'];
         //$data['table_survey_id'] = $date_md;
 
         $this->load->view($this->config->item('template') . '/header_dashboard', $data);
