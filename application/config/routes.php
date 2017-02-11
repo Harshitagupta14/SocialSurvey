@@ -114,7 +114,8 @@ $route['ajax-fetch-survey-feeds'] = 'welcome/fetch_survey_feeds/';
 $route['ajax-fetch-survey-questions'] = 'survey/ajax_get_survey_questions/';
 $route['ajax-edit-survey-question'] = 'survey/ajax_edit_survey_question/';
 $route['ajax-delete-survey-question'] = 'survey/ajax_delete_survey_question/';
-
+$route['ajax_publish_data'] = 'survey/ajax_publish_data/';
+$route['ajax_unpublish_data'] = 'survey/ajax_unpublish_data/';
 
 //Organization Routes
 

@@ -53,7 +53,7 @@
 
                 </div>
                 <div class="theme-option">
-                    <button class="btn btn-danger" id="survey_publish_btn" type="submit" style="display:inline-block; margin-left:20%;"><span><i aria-hidden="true" class="icon-cloud-upload"></i>Publish</span><div></div></button>
+                    <button class="btn btn-danger" id="survey_publish_btn" type="submit" style="display:inline-block; margin-left:20%;" onclick="publish_data()"><span><i aria-hidden="true" class="icon-cloud-upload"></i>Publish</span><div></div></button>
                 </div>
             </div>
         </div>
@@ -167,7 +167,7 @@
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
-
+var base_url= '<?php echo base_url(); ?>';
             $(document).ready(function () {
     load_question();
     });
@@ -187,11 +187,11 @@
                     beforeSend: function(){
                     if (question_state == "update"){
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Updating Question Data...</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Updating Question Data...</p>');
                             $('.question-modal').show();
                     } else if (question_state == "save"){
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Save Question Data...</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Save Question Data...</p>');
                             $('.question-modal').show();
                     }
                     },
@@ -256,7 +256,7 @@
                     data: {survey_id: survey_id},
                     beforeSend: function(){
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Questionaries...</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Questionaries...</p>');
                             $('.question-modal').show();
                     },
                     success: function (stat) {
@@ -333,7 +333,7 @@
                     data: {survey_id: survey_id, question_no:question_no},
                     beforeSend: function(){
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Question For Editing</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Question For Editing</p>');
                             $('.question-modal').show();
                     },
                     success: function (stat) {
@@ -419,7 +419,7 @@
                     data: {survey_id: survey_id, question_no:question_no},
                     beforeSend: function(){
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Deleting the Question, Please wait.</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Deleting the Question, Please wait.</p>');
                             $('.question-modal').show();
                     },
                     success: function (stat) {
@@ -691,7 +691,31 @@
 
 
             }
+function publish_data(){
+    var survey_id = '<?php echo $survey_id; ?>';
+            $.ajax({
+            type: "POST",
+                    url: "<?php echo base_url(); ?>" + "ajax_publish_data",
+                    dataType: 'html',
+                    data: {survey_id: survey_id},
+                    beforeSend: function(){
+                    $('.question-overlay').show();
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Publishing the Questions, Please wait.</p>');
+                            $('.question-modal').show();
+                    },
+                    success: function (stat) {
+                    var data = JSON.parse(stat);
+                            if (data.success == "true"){
+                     $('.question-overlay').hide();
+                            $('.question-modal').html('');
+                            $('.question-modal').hide();
+                    } else{
+                    alert("Something went Wrong!!!");
+                    }
 
+                    }
+            });
+}
 </script>
 
 
