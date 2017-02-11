@@ -2,7 +2,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>SocialCop|Login </title>
+        <title>SocialSurvey|Login </title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -46,7 +46,7 @@
                         <?php if (!empty($message)) { ?>
                             <?php echo $message; ?>
                         <?php } ?>
-                        <h1>SOCIALCOP LOGIN</h1>
+                        <h1>SOCIALSURVEY LOGIN</h1>
                         <form action="" class=" " method="post">
                             <div class="alert alert-danger display-hide">
                                 <button class="close" data-close="alert"></button>
@@ -113,7 +113,7 @@
                             </div>
                             <div class="col-xs-7 bs-reset">
                                 <div class="login-copyright text-right">
-                                    <p>Copyright &copy; SOCIALCOP PVT LTD 2016</p>
+                                    <p>Copyright &copy; Universal E-Solution PVt. Ltd 2017</p>
                                 </div>
                             </div>
                         </div>

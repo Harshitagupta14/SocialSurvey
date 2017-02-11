@@ -67,8 +67,11 @@ class Survey extends CI_Controller {
         $data['breadcrumb'] = '<li class="active">Services</li>';
         $data['survey_types'] = $this->common_model->fetch_where('tbl_survey_question_type');
         $data['survey_id'] = $survey_data['id'];
-        //$data['table_survey_id'] = $date_md;
-
+        $data['survey_title'] = $survey_data['survey_title'];
+        $data['table_survey_id'] = $date_md;
+        if ($survey_data['publish_time'] != '0000-00-00 00:00:00') {
+            $data['publish_update'] = $this->components->time_elapsed_string(date($survey_data['publish_time']));
+        }
         $this->load->view($this->config->item('template') . '/header_dashboard', $data);
         $this->load->view($this->config->item('template') . '/survey/step_2');
         $this->load->view($this->config->item('template') . '/footer_dashboard');
@@ -121,6 +124,7 @@ class Survey extends CI_Controller {
             return $this->db->insert_id();
         } else {
             $this->common_model->update_data('tbl_survey_question', array('survey_fk_id' => $this->input->post('survey_id'), 'question_no' => $this->input->post('question_no')), $data_array);
+            $data['question_data'] = $this->common_model->fetch_where('tbl_survey_question', '*', array('survey_fk_id' => $this->input->post('survey_id'), 'question_no' => $this->input->post('question_no')))[0];
             $data['success'] = "true";
             $data['success_state'] = "update";
             echo json_encode($data);
@@ -178,10 +182,14 @@ class Survey extends CI_Controller {
             'survey_fk_id' => $id);
         $response = $this->common_model->delete_data('tbl_survey_question', $cond);
         $this->survey->rearrange_survey_question_no($question_no);
+        $question_count = $this->common_model->num_rows('tbl_survey_question', array('survey_fk_id' => $id));
+        if ($question_count == 0) {
+            $this->common_model->update_data('tbl_survey', array('id' => $id), array("survey_status" => 'draft'));
+        }
         if ($response) {
-            $data = array('response' => $response, 'success' => "true");
+            $data = array('response' => $response, 'question_count' => $question_count, 'success' => "true");
         } else {
-            $data = array('success' => "false");
+            $data = array('question_count' => $question_count, 'success' => "false");
         }
         echo json_encode($data);
         die;
@@ -189,18 +197,20 @@ class Survey extends CI_Controller {
 
     function ajax_publish_data() {
         $id = $this->input->post('survey_id');
-        $data = array("survey_status" => 'published' , "publish_time" => date('Y-m-d h:i:s'));
+        $data = array("survey_status" => 'published', "publish_time" => date('Y-m-d h:i:s'));
         $cond = array('id' => $id);
         $response = $this->common_model->update_data('tbl_survey', $cond, $data);
+        $update_time = $this->components->time_elapsed_string(date('Y-m-d h:i:s'));
         if ($response) {
-            $data = array('response' => $response, 'success' => "true");
+            $data = array('response' => $response, 'update_time' => $update_time, 'success' => "true");
         } else {
             $data = array('success' => "false");
         }
         echo json_encode($data);
         die;
     }
-      function ajax_unpublish_data() {
+
+    function ajax_unpublish_data() {
         $id = $this->input->post('survey_id');
         $data = array("survey_status" => 'draft');
         $cond = array('survey_id' => $id);

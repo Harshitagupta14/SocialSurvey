@@ -2,7 +2,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>SocialCop|Login </title>
+        <title>SocialSurvey|Register </title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -43,7 +43,7 @@
                 </div>
                 <div class="col-md-6 login-container bs-reset mt-login-5-bsfix">
                     <div class="login-content" style="margin-top:20%;">
-                        <h1>SOCIALCOP REGISTRATION</h1>
+                        <h1>SOCIALSURVEY REGISTRATION</h1>
                         <form action="" class=" " method="post">
                             <div class="alert alert-danger display-hide">
                                 <button class="close" data-close="alert"></button>
@@ -123,7 +123,7 @@
                             </div>
                             <div class="col-xs-7 bs-reset">
                                 <div class="login-copyright text-right">
-                                    <p>Copyright &copy; SOCIALCOP PVT LTD 2016</p>
+                                    <p>Copyright &copy; Universal E-Solution Pvt. Ltd 2017</p>
                                 </div>
                             </div>
                         </div>

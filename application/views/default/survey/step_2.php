@@ -4,8 +4,14 @@
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
 <style>
-    .question-active{background-color:#32c5d2;}
-    .question-row{ margin-left: -12px; margin-right: -12px;}
+    .question-active {
+        background-color: #32c5d2;
+    }
+
+    .question-row {
+        margin-left: -12px;
+        margin-right: -12px;
+    }
 </style>
 <style>
     .question-overlay {
@@ -14,10 +20,11 @@
         left: 0;
         height: 100%;
         width: 100%;
-        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(0, 0, 0, 0.5);
         z-index: 10;
-        display:none;
+        display: none;
     }
+
     .question-modal {
         width: 300px;
         height: 200px;
@@ -31,7 +38,8 @@
         border-radius: 5px;
         text-align: center;
         z-index: 11;
-        display:none;/* 1px higher than the overlay layer */
+        display: none;
+        /* 1px higher than the overlay layer */
     }
 </style>
 <!-- END PAGE LEVEL PLUGINS -->
@@ -53,91 +61,81 @@
 
                 </div>
                 <div class="theme-option">
-                    <button class="btn btn-danger" id="survey_publish_btn" type="submit" style="display:inline-block; margin-left:20%;" onclick="publish_data()"><span><i aria-hidden="true" class="icon-cloud-upload"></i>Publish</span><div></div></button>
+                    <span id="publish_update" style="width:100%; text-transform:capitalize; text-align:center; margin-bottom:5px;"><?php echo (isset($publish_update)) ? 'Published ' . $publish_update : ''; ?></span>
+                    <button class="btn btn-danger" id="survey_publish_btn" type="submit" style="display:inline-block; margin-left:30%;" onclick="publish_data()"><span><i aria-hidden="true" class="icon-cloud-upload"></i>Publish</span><div></div></button>
                 </div>
             </div>
         </div>
-        <br/><br/><br/>
-        <div class="page-bar">
-            <ul class="page-breadcrumb">
-                <li>
-                    <i class="icon-home"></i>
-                    <a href="<?= site_url('admin/dashboard') ?>">Home</a>
-                    <i class="fa fa-angle-right"></i>
-                </li>
-                <li class="active"><?php echo isset($product_id) ? $breadcum_edit : $breadcum ?></li>
-            </ul>
+        <br/>
+        <div class="col-md-6">
+            <h1 class="page-title"><?php echo ucfirst($survey_title); ?>
+                <small>Survey</small>
+            </h1>
         </div>
+
         <form method="post" id="survey_form">
             <div class="row">
                 <div class="col-md-12">
                     <div class="question-overlay"></div>
                     <div class="question-modal"></div>
-                    <?php if ($this->session->flashdata('ProductSuccess')) { ?>
-                        <div class="alert alert-success"> <?= $this->session->flashdata('ProductSuccess') ?></div>
-                    <?php } ?>
                     <div class="portlet box green">
                         <div class="portlet-title">
-                            <div class="caption">
-                                <i class="fa fa-globe"></i><?php if ($product_id) { ?>Edit<?php } else { ?> Add<?php } ?> Question</div>
-                        </div>
-                        <div class="portlet light ">
+                            <div class="portlet light ">
+                                <div class="portlet-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="select2-single-input-sm" class="control-label">Select Survey Question Type</label>
 
-                            <div class="portlet-body">
-
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for="select2-single-input-sm" class="control-label">Select Survey Question Type</label>
-
-                                        <select id="select2-single-input-sm" name="survey_type" class="form-control input-sm select2-multiple">
-                                            <?php
-                                            foreach ($survey_types as $survey) {
-                                                if ($survey['type_parent_id'] == 0) {
-                                                    ?>
-                                                    <optgroup label="<?php echo $survey['type_name']; ?>"></optgroup>
-                                                <?php } else { ?>
-                                                    <option value="<?php echo $survey['type_small_name']; ?>"><?php echo $survey['type_name']; ?></option>
-                                                    <?php
+                                            <select id="select2-single-input-sm" name="survey_type" class="form-control input-sm select2-multiple">
+                                                <?php
+                                                foreach ($survey_types as $survey) {
+                                                    if ($survey['type_parent_id'] == 0) {
+                                                        ?>
+                                                        <optgroup label="<?php echo $survey['type_name']; ?>"></optgroup>
+                                                    <?php } else { ?>
+                                                        <option value="<?php echo $survey['type_small_name']; ?>"><?php echo $survey['type_name']; ?></option>
+                                                        <?php
+                                                    }
                                                 }
-                                            }
-                                            ?>
-                                        </select>
+                                                ?>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <input type="hidden" value="<?php echo $id; ?>" name="id" id="id"/>
-                            <input type="hidden" value="<?php echo $survey_id; ?>" name="survey_id" id="survey_id"/>
-                            <input type="hidden" value="<?php echo (isset($question_no) && $question_no != '') ? $question_no : '1'; ?>" name="question_no" id="question_no"/>
-                            <input type="hidden" value="save" name="question_state" id="question_state"/>
-                            <!-- Default Question Block -->
-                            <div id="question-block" style="margin-top:50px;"></div>
-                            <!-- Default Question Block Ends -->
+                                <input type="hidden" value="<?php echo $id; ?>" name="id" id="id" />
+                                <input type="hidden" value="<?php echo $survey_id; ?>" name="survey_id" id="survey_id" />
+                                <input type="hidden" value="<?php echo (isset($question_no) && $question_no != '') ? $question_no : '1'; ?>" name="question_no" id="question_no" />
+                                <input type="hidden" value="save" name="question_state" id="question_state" />
+                                <input type="hidden" value="" id="publish_check" />
+                                <!-- Default Question Block -->
+                                <div id="question-block" style="margin-top:50px;"></div>
+                                <!-- Default Question Block Ends -->
 
-                            <!-- Multiple Option Question Block -->
-                            <div id="mq-block" style="display:none;">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <select multiple data-role="tagsinput"  name="multiple_choice[]" placeholder="Multiple Choice Options" id="multiple_choice"></select>
+                                <!-- Multiple Option Question Block -->
+                                <div id="mq-block" style="display:none;">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <select multiple data-role="tagsinput" name="multiple_choice[]" placeholder="Multiple Choice Options" id="multiple_choice"></select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- Multiple Option Question Block Ends -->
-                            <div class="row" style="margin-top:20px;">
-                                <div class="col-lg-3 col-md-4 col-xs-12">
-                                    <div class="mt-element-ribbon bg-grey-steel">
-                                        <p class="ribbon ribbon-color-primary uppercase" id="question">Question 1</p>
-                                        <p style="float: right; margin-right: 10px;" id="survey_question_time"></p>
-                                        <!--<input class="ribbon ribbon-color-primary uppercase" id="question" value="Question 1"/>-->
-    <!--                                    <input type="hidden" id="question_no" value="1"/>-->
-                                        <p class="ribbon-content"><button  class="btn btn-primary" id="question_save_btn" type="submit" style="display:none;"></button>
-                                            <span id="question_tools"></span></p>
+                                <!-- Multiple Option Question Block Ends -->
+                                <div class="row" style="margin-top:20px;">
+                                    <div class="col-lg-3 col-md-4 col-xs-12">
+                                        <div class="mt-element-ribbon bg-grey-steel">
+                                            <p class="ribbon ribbon-color-primary uppercase" id="question">Question 1</p>
+                                            <p style="float: right; margin-right: 10px;" id="survey_question_time"></p>
+                                            <!--<input class="ribbon ribbon-color-primary uppercase" id="question" value="Question 1"/>-->
+                                            <!--                                    <input type="hidden" id="question_no" value="1"/>-->
+                                            <p class="ribbon-content"><button class="btn btn-primary" id="question_save_btn" type="submit" style="display:none;"></button>
+                                                <span id="question_tools"></span></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </form>
 
         <div id="toast-notify" class="mdl-js-snackbar mdl-snackbar">
@@ -153,7 +151,7 @@
             if (input.files && input.files[0]) {
             var reader = new FileReader();
                     //alert(input.id);
-                    reader.onload = function (e) {
+                    reader.onload = function(e) {
                     $('#' + input.id + '_preview').attr('src', e.target.result);
                     }
             reader.readAsDataURL(input.files[0]);
@@ -166,41 +164,57 @@
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/typeahead/handlebars.min.js" type="text/javascript"></script>
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/typeahead/typeahead.bundle.min.js" type="text/javascript"></script>
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script type="text/javascript">
-var base_url= '<?php echo base_url(); ?>';
-            $(document).ready(function () {
+            function display_error(error_message) { //common function for displayinga ll the error
+            'use strict';
+                    var snackbarContainer = document.querySelector('#toast-notify');
+                    'use strict';
+                    var data = {
+                    message: error_message
+                    };
+                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+            }
+</script>
+<script>
+    var base_url = '<?php echo base_url(); ?>';
+            $(document).ready(function() {
     load_question();
     });
-            $("#question_save_btn").click(function (e) {
+            $("#question_save_btn").click(function(e) {
     e.preventDefault();
             var selected_type = $("#select2-single-input-sm option:selected").text();
             var question_title_input = $("#question_title_input").val();
             var valid = validate_form();
-            if (valid){
+            if (valid) {
     var question_state = $('#question_state').val();
             var str = $("#survey_form").serialize();
             $.ajax({
             type: "POST",
                     url: "<?php echo base_url(); ?>" + "ajax-save-question",
                     dataType: 'json',
-                    data: {str: str},
-                    beforeSend: function(){
-                    if (question_state == "update"){
+                    data: {
+                    str: str
+                    },
+                    beforeSend: function() {
+                    if (question_state == "update") {
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Updating Question Data...</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="' + base_url + 'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Updating Question Data...</p>');
                             $('.question-modal').show();
-                    } else if (question_state == "save"){
+                    } else if (question_state == "save") {
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Save Question Data...</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="' + base_url + 'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Save Question Data...</p>');
                             $('.question-modal').show();
                     }
                     },
-                    complete: function (stat) {
+                    complete: function(stat) {
                     var response = stat.responseText;
                             var data = JSON.parse(response);
                             if (data.success === "true") {
-                    if (data.success_state === "save") {
-                    change_to_save_btn();
+                    document.getElementById('publish_check').value = 'yes';
+                            if (data.success_state === "save") {
+                    document.getElementById('publish_check').value = 'yes';
+                            change_to_save_btn();
                             //reset_form_fields();
                             $('.question-overlay').hide();
                             $('.question-modal').html('');
@@ -215,8 +229,9 @@ var base_url= '<?php echo base_url(); ?>';
                             $('.question-modal').show();
                             //$('#question').html("Question " + next_question_no);
                             //$('#question_no').val(next_question_no);
-                    } else   if (data.success_state === "update") {
-                    change_to_update_btn();
+                    } else if (data.success_state === "update") {
+                    document.getElementById('publish_check').value = 'yes';
+                            change_to_update_btn();
                             var question_no = $('#question_no').val();
                             $('#question-list > div[data-question-id="' + question_no + '"]').html("<span class='badge badge-danger' style='margin-right:10px;'> " + question_no + " </span>" + question_title_input + " </br><div class='col-lg-7 col-md-7 col-sm-7 col-xs-7'><label class='label label-warning'>" + selected_type + "</label></div><div class='col-lg-5 col-md-5 col-sm-5 col-xs-5'><span class='btn btn-icon-only btn-default' onclick='edit_question(" + question_no + ")';><i class='fa fa-edit'></i></span></div>");
                             $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.question_data.add_time) + " ago");
@@ -235,17 +250,18 @@ var base_url= '<?php echo base_url(); ?>';
             });
     }
     });
-            function change_to_save_btn(){
+            function change_to_save_btn() {
             $('#question_save_btn').attr('style', 'display:inline-block;');
                     $('#question_save_btn').attr('class', 'btn btn-primary')
                     $('#question_save_btn').html('<span><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Save</span>');
             }
 
-    function change_to_update_btn(){
+    function change_to_update_btn() {
     $('#question_save_btn').attr('style', 'display:inline-block;');
             $('#question_save_btn').attr('class', 'btn btn-danger')
             $('#question_save_btn').html('<span><i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;Update</span>');
     }
+
     function load_question() {
 
     var survey_id = '<?php echo $survey_id; ?>';
@@ -253,37 +269,43 @@ var base_url= '<?php echo base_url(); ?>';
             type: "POST",
                     url: "<?php echo base_url(); ?>" + "ajax-fetch-survey-questions",
                     dataType: 'html',
-                    data: {survey_id: survey_id},
-                    beforeSend: function(){
+                    data: {
+                    survey_id: survey_id
+                    },
+                    beforeSend: function() {
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Questionaries...</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="' + base_url + 'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Questionaries...</p>');
                             $('.question-modal').show();
                     },
-                    success: function (stat) {
+                    success: function(stat) {
                     var data = JSON.parse(stat);
-                            if (data.success === "true"){
-                    setTimeout(function(){
-                    change_to_update_btn();
-                            $('#question-list').html(data.question_list);
-                            $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.first_question.add_time) + " ago");
-                            handle_edit_question(data);
-                    }, 3000);
-                    } else if (data.success === "false"){
-
-                    $('#question-list').html('');
+                            if (data.success === "true") {
+                    document.getElementById('publish_check').value = 'yes';
+                            setTimeout(function() {
+                            change_to_update_btn();
+                                    $('#question-list').html(data.question_list);
+                                    $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.first_question.add_time) + " ago");
+                                    handle_edit_question(data);
+                            }, 3000);
+                    } else if (data.success === "false") {
+                    document.getElementById('publish_check').value = 'no';
+                            $('#question-list').html('');
                             reset_form_fields();
                             $('.add_question').removeAttr("onclick");
                             var html_div = create_default_fields();
                             $("#question-block").html(html_div);
                             var sb_html = create_sb();
                             $("#question_block").append(sb_html);
-                            setTimeout(function(){
+                            $("#select2-single-input-sm").val("sb");
+                            setTimeout(function() {
                             $('.question-overlay').hide();
                                     $('.question-modal').html('');
                                     $('.question-modal').hide();
                             }, 2000);
                             $('#question_tools').html('');
                             $('#question_no').val(1);
+                            $('#survey_question_time').html('');
+                            $('#publish_update').html('');
                             $('#question_state').val('save');
                             change_to_save_btn();
                     }
@@ -292,7 +314,7 @@ var base_url= '<?php echo base_url(); ?>';
             });
     }
 
-    function reset_form_fields(){
+    function reset_form_fields() {
     $("#question_title_input").val('');
             $("#help_text_note_input").val('');
             $("#unique_one_word_input").val('');
@@ -322,7 +344,7 @@ var base_url= '<?php echo base_url(); ?>';
             change_to_save_btn();
     }
 
-    function edit_question(question_no){
+    function edit_question(question_no) {
 
     var survey_id = '<?php echo $survey_id; ?>';
             var question_no = question_no;
@@ -330,19 +352,22 @@ var base_url= '<?php echo base_url(); ?>';
             type: "POST",
                     url: "<?php echo base_url(); ?>" + "ajax-edit-survey-question",
                     dataType: 'html',
-                    data: {survey_id: survey_id, question_no:question_no},
-                    beforeSend: function(){
+                    data: {
+                    survey_id: survey_id,
+                            question_no: question_no
+                    },
+                    beforeSend: function() {
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Question For Editing</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="' + base_url + 'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Loading Question For Editing</p>');
                             $('.question-modal').show();
                     },
-                    success: function (stat) {
+                    success: function(stat) {
                     var data = JSON.parse(stat);
-                            if (data.success === "true"){
+                            if (data.success === "true") {
                     $('.add_question').attr("onclick", "add_new_question()");
                             change_to_update_btn();
                             $('#question-list').html(data.question_list);
-                            setTimeout(function(){
+                            setTimeout(function() {
                             $('#question').html("Question " + question_no);
                                     $('#survey_question_time').html("<i class='fa fa-clock-o' aria-hidden='true'></i>" + approxDateDiff(data.question_data.add_time) + " ago");
                                     $('#question_no').val(question_no);
@@ -350,7 +375,7 @@ var base_url= '<?php echo base_url(); ?>';
                                     $('#question_tools').html("<span style='margin-left:15px;' class='btn btn-circle btn-icon-only btn-default' onclick='delete_question(" + question_no + ");'><i class='icon-trash'></i></span>");
                                     handle_edit_question(data);
                             }, 3000);
-                    } else if (data.success === "false"){
+                    } else if (data.success === "false") {
                     alert("Something Went Wrong, Please try Reloading the Survey.")
                     }
                     }
@@ -370,11 +395,11 @@ var base_url= '<?php echo base_url(); ?>';
             $('.question-modal').hide();
             console.log(data);
             //Setting Default Fields Values
-            if (data.first_question){
+            if (data.first_question) {
     var html_div = create_default_fields(data.first_question);
             var question_data = data.first_question;
             $('#question_tools').html("<span style='margin-left:15px;' class='btn btn-circle btn-icon-only btn-default' onclick='delete_question(" + question_data.question_no + ");'><i class='icon-trash'></i></span>");
-    } else{
+    } else {
     var question_data = data.question_data;
             var html_div = create_default_fields(question_data);
     }
@@ -394,7 +419,7 @@ var base_url= '<?php echo base_url(); ?>';
             var result = question_data.question_multiple_options.split('|');
             console.log(result);
             var i;
-            for (i = 0; i < result.length; i++){
+            for (i = 0; i < result.length; i++) {
     $('select#multiple_choice').tagsinput('refresh');
             $('select#multiple_choice').tagsinput('add', result[i]);
     }
@@ -409,24 +434,35 @@ var base_url= '<?php echo base_url(); ?>';
 
     }
 
-    function delete_question(question_no){
+    function delete_question(question_no) {
     var survey_id = '<?php echo $survey_id; ?>';
             var last_question_no = $("#question-list div:last-child").attr('data-question-id');
             $.ajax({
             type: "POST",
                     url: "<?php echo base_url(); ?>" + "ajax-delete-survey-question",
                     dataType: 'html',
-                    data: {survey_id: survey_id, question_no:question_no},
-                    beforeSend: function(){
+                    data: {
+                    survey_id: survey_id,
+                            question_no: question_no
+                    },
+                    beforeSend: function() {
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Deleting the Question, Please wait.</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="' + base_url + 'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Deleting the Question, Please wait.</p>');
                             $('.question-modal').show();
                     },
-                    success: function (stat) {
+                    success: function(stat) {
                     var data = JSON.parse(stat);
-                            if (data.success == "true"){
+                            if (data.success == "true") {
+                    if (data.question_count == 0) {
+                    document.getElementById('publish_check').value = 'no';
+                            $('#survey_question_time').html('');
+                    }
                     load_question();
-                    } else{
+                    } else {
+                    if (data.question_count == 0) {
+                    document.getElementById('publish_check').value = 'no';
+                            $('#survey_question_time').html('');
+                    }
                     alert("Something went Wrong!!!");
                     }
 
@@ -482,7 +518,8 @@ var base_url= '<?php echo base_url(); ?>';
             help_text_note_surveyor_inner_col_div.appendChild(help_text_note_surveyor_label);
             help_text_note_surveyor_inner_col_div.appendChild(help_text_note_surveyor_help_block);
             help_text_note_surveyor_div.appendChild(help_text_note_surveyor_inner_col_div);
-            question_block_row_div.appendChild(help_text_note_surveyor_div); var short_keyword_div = document.createElement('div');
+            question_block_row_div.appendChild(help_text_note_surveyor_div);
+            var short_keyword_div = document.createElement('div');
             short_keyword_div.className = "col-md-6";
             short_keyword_div.setAttribute("id", "unique_one_word");
             var short_keyword_inner_col_div = document.createElement('div');
@@ -520,12 +557,14 @@ var base_url= '<?php echo base_url(); ?>';
             sb_max_characters_div.className = "col-md-3";
             sb_max_characters_div.setAttribute("id", "mq_choice_low");
             var sb_max_characters_inner_div = document.createElement('div');
-            sb_max_characters_inner_div.className = "form-group form-md-line-input"; var sb_max_characters_input = document.createElement('input');
+            sb_max_characters_inner_div.className = "form-group form-md-line-input";
+            var sb_max_characters_input = document.createElement('input');
             sb_max_characters_input.className = "form-control";
             sb_max_characters_input.setAttribute("id", "qLimitLow");
             sb_max_characters_input.setAttribute("name", "question_limit_lower");
             sb_max_characters_input.setAttribute("type", "text");
-            sb_max_characters_input.setAttribute("value", "100"); var sb_max_characters_label = document.createElement('label');
+            sb_max_characters_input.setAttribute("value", "100");
+            var sb_max_characters_label = document.createElement('label');
             sb_max_characters_label.setAttribute("for", "form_control_4");
             sb_max_characters_label.innerHTML = "Max Cahracters Allowed";
             var sb_max_characters_help_block = document.createElement('span');
@@ -536,12 +575,13 @@ var base_url= '<?php echo base_url(); ?>';
             sb_max_characters_inner_div.appendChild(sb_max_characters_help_block);
             sb_max_characters_div.appendChild(sb_max_characters_inner_div);
             sb_max_characters_row_div.appendChild(sb_max_characters_div);
-            if (data){
-    if (typeof (data.question_limit_lower) !== 'undefined'){
+            if (data) {
+    if (typeof (data.question_limit_lower) !== 'undefined') {
     sb_max_characters_input.setAttribute("value", data.question_limit_lower);
     }
     }
-    return sb_max_characters_row_div; }
+    return sb_max_characters_row_div;
+    }
 
     function create_mq(low_value, upper_value, data = '') {
 
@@ -549,17 +589,21 @@ var base_url= '<?php echo base_url(); ?>';
     var mq_choice_div = document.createElement('div');
             mq_choice_div.className = "row";
             mq_choice_div.setAttribute("id", "mq_choice");
-            var mq_choice_low_div = document.createElement('div'); mq_choice_low_div.className = "col-md-3";
-            mq_choice_low_div.setAttribute("id", "mq_choice_low"); var mq_choice_low_inner_div = document.createElement('div');
+            var mq_choice_low_div = document.createElement('div');
+            mq_choice_low_div.className = "col-md-3";
+            mq_choice_low_div.setAttribute("id", "mq_choice_low");
+            var mq_choice_low_inner_div = document.createElement('div');
             mq_choice_low_inner_div.className = "form-group form-md-line-input";
-            var mq_choice_low_input = document.createElement('input'); mq_choice_low_input.className = "form-control";
+            var mq_choice_low_input = document.createElement('input');
+            mq_choice_low_input.className = "form-control";
             mq_choice_low_input.setAttribute("id", "qLimitLow");
             mq_choice_low_input.setAttribute("name", "question_limit_lower");
             mq_choice_low_input.setAttribute("placeholder", low_value);
             mq_choice_low_input.setAttribute("type", "text");
             mq_choice_low_input.setAttribute("value", "1");
             var mq_choice_low_label = document.createElement('label');
-            mq_choice_low_label.setAttribute("for", "form_control_2"); mq_choice_low_label.innerHTML = low_value;
+            mq_choice_low_label.setAttribute("for", "form_control_2");
+            mq_choice_low_label.innerHTML = low_value;
             var mq_choice_low_help_block = document.createElement('span');
             mq_choice_low_help_block.className = "help-block";
             mq_choice_low_help_block.innerHTML = low_value;
@@ -568,8 +612,10 @@ var base_url= '<?php echo base_url(); ?>';
             mq_choice_low_inner_div.appendChild(mq_choice_low_help_block);
             mq_choice_low_div.appendChild(mq_choice_low_inner_div);
             mq_choice_div.appendChild(mq_choice_low_div);
-            var mq_choice_upper_div = document.createElement('div'); mq_choice_upper_div.className = "col-md-3";
-            mq_choice_upper_div.setAttribute("id", "mq_choice_upper"); var mq_choice_upper_inner_div = document.createElement('div');
+            var mq_choice_upper_div = document.createElement('div');
+            mq_choice_upper_div.className = "col-md-3";
+            mq_choice_upper_div.setAttribute("id", "mq_choice_upper");
+            var mq_choice_upper_inner_div = document.createElement('div');
             mq_choice_upper_inner_div.className = "form-group form-md-line-input";
             var mq_choice_upper_input = document.createElement('input');
             mq_choice_upper_input.className = "form-control";
@@ -589,11 +635,11 @@ var base_url= '<?php echo base_url(); ?>';
             mq_choice_upper_inner_div.appendChild(mq_choice_upper_help_block);
             mq_choice_upper_div.appendChild(mq_choice_upper_inner_div);
             mq_choice_div.appendChild(mq_choice_upper_div);
-            if (data != ''){
-    if (typeof (data.question_limit_lower) !== 'undefined'){
+            if (data != '') {
+    if (typeof (data.question_limit_lower) !== 'undefined') {
     mq_choice_low_input.setAttribute("value", data.question_limit_lower);
     }
-    if (typeof (data.question_limit_upper) !== 'undefined'){
+    if (typeof (data.question_limit_upper) !== 'undefined') {
     mq_choice_upper_input.setAttribute("value", data.question_limit_upper);
     }
     }
@@ -604,13 +650,13 @@ var base_url= '<?php echo base_url(); ?>';
     var question_type = $("#select2-single-input-sm").val();
             var multiple_choice = $('#multiple_choice').val();
             var question_title_input = $("#question_title_input").val();
-            if (question_title_input == ''){
+            if (question_title_input == '') {
     var error = "TITLE OF THE QUESTION IS A REQUIRED FIELD";
             display_error(error);
             return false;
     }
-    if (question_type == "mq"){
-    if (multiple_choice == null){
+    if (question_type == "mq") {
+    if (multiple_choice == null) {
     var error = "MULTIPLE CHOICE OPTIONS IS A REQUIRED FIELD";
             display_error(error);
             return false;
@@ -618,11 +664,11 @@ var base_url= '<?php echo base_url(); ?>';
     }
     return true;
     }
-    $("#select2-single-input-sm").change(function () {
+    $("#select2-single-input-sm").change(function() {
     //Maintaining Old Data State
     var formdata = $("#survey_form").serializeArray();
             var data = {};
-            $(formdata).each(function(index, obj){
+            $(formdata).each(function(index, obj) {
     data[obj.name] = obj.value;
     });
             console.log(data); // Old Data
@@ -643,15 +689,16 @@ var base_url= '<?php echo base_url(); ?>';
     }
     if (type == "nm") {
     var nm_choice_html = create_mq("Lower Limit", "Upper Limit");
-            $("#question_block").append(nm_choice_html); }
+            $("#question_block").append(nm_choice_html);
+    }
     });
-            $('.toggler').click(function (e) {
+            $('.toggler').click(function(e) {
     e.preventDefault();
             $('.toggler-close').show();
             $('.theme-options').show();
             $('.toggler').hide();
     });
-            $('.toggler-close').click(function (e) {
+            $('.toggler-close').click(function(e) {
     e.preventDefault();
             $('.toggler-close').hide();
             $('.theme-options').hide();
@@ -666,66 +713,61 @@ var base_url= '<?php echo base_url(); ?>';
                     var difference = (now.getTime() - startDate.getTime()) / 1000 | 0;
                     if ((difference / (60 * 60 * 24 * 365) | 0)) {
             var years = Math.round(difference / (60 * 60 * 24 * 365));
-                    return  years == 1 ? years + ' Year' : years + ' Years';
+                    return years == 1 ? years + ' Year' : years + ' Years';
             }
             if ((difference / (60 * 60 * 24 * 30) | 0)) {
             var months = Math.round(difference / (60 * 60 * 24 * 30));
-                    return  months + (months == 1 ? ' Month' : ' Months');
+                    return months + (months == 1 ? ' Month' : ' Months');
             }
             if ((difference / (60 * 60 * 24) | 0)) {
             var days = Math.round(difference / (60 * 60 * 24));
-                    return  days + (days == 1 ? ' Day' : ' Days');
+                    return days + (days == 1 ? ' Day' : ' Days');
             }
             if ((difference / (60 * 60) | 0)) {
             var hours = Math.round(difference / (60 * 60));
-                    return  hours + (hours == 1 ? ' Hour' : ' Hours');
+                    return hours + (hours == 1 ? ' Hour' : ' Hours');
             }
             if ((difference / (60) | 0)) {
             var minutes = Math.round(difference / (60));
-                    return  minutes + (minutes == 1 ? ' Minute' : ' Minutes');
+                    return minutes + (minutes == 1 ? ' Minute' : ' Minutes');
             }
             if (difference) {
             var seconds = difference;
-                    return  seconds + (seconds == 1 ? ' sec' : ' secs');
+                    return seconds + (seconds == 1 ? ' sec' : ' secs');
             }
 
 
             }
-function publish_data(){
+
+    function publish_data() {
+    var is_publish_allowed = document.getElementById('publish_check').value;
+            if (is_publish_allowed == 'yes') {
     var survey_id = '<?php echo $survey_id; ?>';
             $.ajax({
             type: "POST",
                     url: "<?php echo base_url(); ?>" + "ajax_publish_data",
-                    dataType: 'html',
-                    data: {survey_id: survey_id},
-                    beforeSend: function(){
+                    dataType: 'json',
+                    data: {
+                    survey_id: survey_id
+                    },
+                    beforeSend: function() {
                     $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="'+base_url+'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Publishing the Questions, Please wait.</p>');
+                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="' + base_url + 'assets/frontend/img/preloader.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Publishing the Questions, Please wait.</p>');
                             $('.question-modal').show();
                     },
-                    success: function (stat) {
-                    var data = JSON.parse(stat);
-                            if (data.success == "true"){
-                     $('.question-overlay').hide();
+                    success: function(stat) {
+                    // var data = JSON.parse(stat);
+                    if (stat.success == "true") {
+                    $('.question-overlay').hide();
                             $('.question-modal').html('');
                             $('.question-modal').hide();
-                    } else{
+                            $('#publish_update').html('Published ' + stat.update_time);
+                    } else {
                     alert("Something went Wrong!!!");
                     }
 
                     }
             });
-}
-</script>
-
-
-<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
-<script type="text/javascript">
-            function display_error(error_message) { //common function for displayinga ll the error
-            'use strict';
-                    var snackbarContainer = document.querySelector('#toast-notify');
-                    'use strict';
-                    var data = {message: error_message};
-                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
-            }
+    }
+    }
 </script>
