@@ -188,7 +188,7 @@ $config['database']['custom']['user_profile']['primary_key'] = 'upro_id';
 $config['database']['custom']['user_profile']['foreign_key'] = 'upro_uacc_fk';
 $config['database']['custom']['user_profile']['join'] = 'user_profiles.upro_uacc_fk';
 $config['database']['custom']['user_profile']['custom_columns'] = array(
-    'upro_first_name', 'upro_last_name', 'upro_phone', 'upro_newsletter', 'upro_type', 'upro_country', 'upro_state', 'upro_city', 'upro_address', 'upro_postal_code', 'upro_company_detail', 'upro_company', 'upro_identity_image'
+    'upro_first_name', 'upro_last_name', 'upro_phone', 'upro_newsletter', 'upro_type', 'upro_country', 'upro_state', 'upro_city', 'upro_address', 'upro_postal_code', 'upro_company_detail', 'upro_company', 'upro_identity_image', 'upro_views'
 );
 
 ###+++++++++++++++++++++++++++###

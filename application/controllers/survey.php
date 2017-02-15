@@ -74,23 +74,85 @@ class Survey extends CI_Controller {
         }
         $this->load->view($this->config->item('template') . '/header_dashboard', $data);
         $this->load->view($this->config->item('template') . '/survey/step_2');
+        $this->load->view($this->config->item('template') . '/survey/step_2_footer', $data);
         $this->load->view($this->config->item('template') . '/footer_dashboard');
     }
 
     public function ajax_save_question() {
         parse_str($_POST['str'], $_POST);
-        if ($_POST && $_POST['question_title'] != '') {
-            $id = $this->handle_save_survey_question();
-        }
-        if ($id == '') {
-            $data['success'] = "false";
+        $type = $this->input->post("survey_type");
+        $config = array(
+            'default' => array(
+                array(
+                    'field' => 'question_title',
+                    'label' => 'Question Title',
+                    'rules' => 'required',
+                ),
+                array(
+                    'field' => 'survey_type',
+                    'label' => 'Survey Type',
+                    'rules' => 'required',
+                ),
+            ),
+            'sb' => array(
+                array(
+                    'field' => 'question_limit_upper',
+                    'label' => 'Max Characters allowed',
+                    'rules' => 'required|numeric',
+                ),
+            ),
+            'mq' => array(
+                array(
+                    'field' => 'multiple_choice',
+                    'label' => 'Multiple Choice',
+                    'rules' => 'required',
+                ),
+                array(
+                    'field' => 'question_limit_lower',
+                    'label' => 'Min Characters allowed',
+                    'rules' => 'required|numeric',
+                ),
+                array(
+                    'field' => 'question_limit_upper',
+                    'label' => 'Max Characters allowed',
+                    'rules' => 'required|numeric',
+                ),
+            ),
+            'nm' => array(
+                array(
+                    'field' => 'question_limit_lower',
+                    'label' => 'Min Characters allowed',
+                    'rules' => 'required|numeric',
+                ),
+            ),
+        );
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($config['default']);
+        if ($this->form_validation->run() === TRUE) {
+            $this->form_validation->set_rules($config[$type]);
+            if ($this->form_validation->run() === TRUE) {
+                if ($_POST && $_POST['question_title'] != '') {
+                    $id = $this->handle_save_survey_question();
+                }
+                if ($id == '') {
+                    $data['success'] = "false";
+                } else {
+                    $next_question_no = $this->input->post('question_no') + 1;
+                    $data['prev_question_no'] = $this->input->post('question_no');
+                    $data['next_question_no'] = $next_question_no;
+                    $data['question_data'] = $this->common_model->fetch_where('tbl_survey_question', '*', array('id' => $id))[0];
+                    $data['success'] = "true";
+                    $data['success_state'] = "save";
+                }
+            } else {
+                $this->form_validation->set_error_delimiters('', '');
+                $data['success'] = "false";
+                $data['error'] = validation_errors();
+            }
         } else {
-            $next_question_no = $this->input->post('question_no') + 1;
-            $data['prev_question_no'] = $this->input->post('question_no');
-            $data['next_question_no'] = $next_question_no;
-            $data['question_data'] = $this->common_model->fetch_where('tbl_survey_question', '*', array('id' => $id))[0];
-            $data['success'] = "true";
-            $data['success_state'] = "save";
+            $this->form_validation->set_error_delimiters('', '');
+            $data['success'] = "false";
+            $data['error'] = validation_errors();
         }
         echo json_encode($data);
         die;

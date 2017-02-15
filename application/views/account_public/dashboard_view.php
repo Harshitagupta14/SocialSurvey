@@ -1,4 +1,61 @@
-
+<style>
+    .mdl-snackbar {
+        border-radius: 2px;
+        max-width: 568px;
+        min-width: 288px;
+        transform: translate(-50%, 80px);
+    }
+    .mdl-snackbar{
+        background-color: #323232;
+        bottom: 0;
+        cursor: default;
+        display: flex;
+        font-family: "Roboto","Helvetica","Arial",sans-serif;
+        justify-content: space-between;
+        left: 40%;
+        pointer-events: none;
+        position: fixed;
+        transform: translate(0px, 80px);
+        transition: transform 0.25s cubic-bezier(0.4, 0, 1, 1) 0s;
+        will-change: transform;
+        z-index: 3;
+    }
+    .mdl-snackbar__text {
+        color: white;
+        float: left;
+        padding: 14px 12px 14px 24px;
+        vertical-align: middle;
+    }
+    .mdl-snackbar--active {
+        pointer-events: auto;
+        transform: translate(0px, 0px);
+        transition: transform 0.25s cubic-bezier(0, 0, 0.2, 1) 0s;
+    }
+    .mdl-snackbar--active {
+        //transform: translate(-50%, 0px);
+    }
+    .mdl-snackbar__action {
+        align-self: center;
+        background: transparent none repeat scroll 0 0;
+        border: medium none;
+        color: rgb(244, 67, 54);
+        cursor: pointer;
+        float: right;
+        font-family: "Roboto","Helvetica","Arial",sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 1;
+        opacity: 0;
+        outline: medium none;
+        overflow: hidden;
+        padding: 14px 24px 14px 12px;
+        pointer-events: none;
+        text-align: center;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+</style>
 
 <!-- BEGIN CONTENT -->
 <div class="page-content-wrapper" >
@@ -26,7 +83,7 @@
         <!-- END PAGE HEADER-->
 
         <div class="row" id="survey_container">
-            <?php foreach ($survey_feeds as $survey) {  ?>
+            <?php foreach ($survey_feeds as $survey) { ?>
                 <div class="col-md-4" data-survey-id="<?php echo $survey['survey_id']; ?>">
                     <!-- BEGIN Portlet PORTLET-->
                     <div class="portlet light">
@@ -51,29 +108,23 @@
                                 <div class="col-md-12">
                                     <h4><?php echo $survey['survey_title']; ?></h4>
                                     <?php if ($survey['survey_status'] == "draft") { ?>
-                                    <span class="label label-warning" id="<?php echo $survey['survey_id']; ?>"> Draft </span>
+                                        <span class="label label-warning" id="<?php echo $survey['survey_id']; ?>"> Draft </span>
                                     <?php } else { ?>
-                                    <span class="label label-danger" id="<?php echo $survey['survey_id']; ?>"> Pubished </span>
+                                        <span class="label label-danger" id="<?php echo $survey['survey_id']; ?>"> Pubished </span>
                                     <?php } ?>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="actions" style="float:right;">
-                                        <a class="btn btn-circle btn-icon-only btn-default" href="<?php echo site_url('survey/' . $survey['survey_id']); ?>">
+                                        <a class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Edit Survey" href="<?php echo site_url('survey/' . $survey['survey_id']); ?>">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <?php if ($survey['survey_status'] == "draft") { ?>
-                                        <a id="unpublish" class="btn btn-circle btn-icon-only btn-default" href="#" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>','<?php echo $survey['survey_status']; ?>')">
-                                            <i class="icon-cloud-upload"></i>
+                                        <a id="unpublish" class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="UnPublish Survey" href="javascript:;" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>', '<?php echo $survey['survey_status']; ?>')">
+                                            <i class="icon-cloud-download" ></i>
                                         </a>
-                                        <?php } else { ?>
-                                        <a id="unpublish" class="btn btn-circle btn-icon-only btn-danger" href="#" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>','<?php echo $survey['survey_status']; ?>')">
-                                            <i class="icon-cloud-upload"></i>
-                                        </a>
-                                          <?php } ?>
-                                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-                                            <i class="icon-trash"></i>
+                                        <a class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Delete Survey" href="javascript:;">
+                                            <i class="icon-trash" ></i>
                                         </a>
                                     </div>
 
@@ -644,37 +695,60 @@
                     </div>
                 </div>
             </div>
-            <!-- END QUICK SIDEBAR -->
+            <div id="toast-notify" class="mdl-js-snackbar mdl-snackbar">
+                <div class="mdl-snackbar__text"></div>
+                <button class="mdl-snackbar__action" type="button"></button>
+            </div>
         </div>
-        <script type='text/javascript'>
+    </div>
+    <!-- END QUICK SIDEBAR -->
+</div>
 
-            function unpublish_data(survey_id,survey_status) {
-               var survey_id = survey_id;
-                if (survey_status == 'published') {
-                    $.ajax({
-                        type: "POST",
-                        url: "<?php echo base_url(); ?>" + "ajax_unpublish_data",
-                        dataType: 'html',
-                        data: {survey_id: survey_id},
-                        beforeSend: function () {
-                            $('.question-overlay').show();
-                            $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Publishing the Questions, Please wait.</p>');
-                            $('.question-modal').show();
-                        },
-                        success: function (stat) {
-                            var data = JSON.parse(stat);
-                            if (data.success == "true") {
-                                $('.question-overlay').hide();
-                                $('.question-modal').html('');
-                                $('.question-modal').hide();
-                                document.getElementById(survey_id).innerHTML = "Draft";
-                                document.getElementById(survey_id).className = "label label-warning";
-                            } 
+<script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+<script type="text/javascript">
+                                            function display_error(error_message) { //common function for displayinga ll the error
 
-                        }
-                    });
-                } else {
-                    alert("Already in draft");
+                                                'use strict';
+                                                var snackbarContainer = document.querySelector('#toast-notify');
+                                                'use strict';
+                                                var data = {
+                                                    message: error_message
+                                                };
+                                                snackbarContainer.MaterialSnackbar.showSnackbar(data);
+                                            }
+</script>
+<script type='text/javascript'>
+
+    function unpublish_data(survey_id, survey_status) {
+        var survey_id = survey_id;
+        if (survey_status == 'published') {
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "ajax_unpublish_data",
+                dataType: 'html',
+                data: {survey_id: survey_id},
+                beforeSend: function () {
+                    $('.question-overlay').show();
+                    $('.question-modal').html('<img class="alignleft wp-image-725 size-full" draggable="false" src="http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_1.gif" alt="Loading icon cube" width="64" height="64"><p style="margin:-130px 0 16px; color:#fff;">Publishing the Questions, Please wait.</p>');
+                    $('.question-modal').show();
+                },
+                success: function (stat) {
+                    var data = JSON.parse(stat);
+                    if (data.success == "true") {
+                        $('.question-overlay').hide();
+                        $('.question-modal').html('');
+                        $('.question-modal').hide();
+                        document.getElementById(survey_id).innerHTML = "Draft";
+                        document.getElementById(survey_id).className = "label label-warning";
+                        display_error("SURVEY UNPUBLISHED SUCCESSFULLY.");
+                    } else {
+                        display_error("SURVEY UNPUBLISHED SUCCESSFULLY.");
+                    }
+
                 }
-            }
-        </script>
+            });
+        } else {
+            display_error("SURVEY UNPUBLISHED SUCCESSFULLY.");
+        }
+    }
+</script>
