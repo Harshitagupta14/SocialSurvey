@@ -52,8 +52,8 @@ class Survey extends CI_Controller {
                 $this->session->set_flashdata('error', validation_errors());
             }
         }
-        $this->load->view($this->config->item('template') . '/header_dashboard', $data);
-        $this->load->view($this->config->item('template') . '/survey/step_1');
+        $this->load->view($this->config->item('template') . '/survey/header/header_dashboard', $data);
+        $this->load->view($this->config->item('template') . '/survey/main_contents/step_1');
         $this->load->view($this->config->item('template') . '/footer_dashboard');
     }
 
@@ -72,9 +72,9 @@ class Survey extends CI_Controller {
         if ($survey_data['publish_time'] != '0000-00-00 00:00:00') {
             $data['publish_update'] = $this->components->time_elapsed_string(date($survey_data['publish_time']));
         }
-        $this->load->view($this->config->item('template') . '/header_dashboard', $data);
-        $this->load->view($this->config->item('template') . '/survey/step_2');
-        $this->load->view($this->config->item('template') . '/survey/step_2_footer', $data);
+        $this->load->view($this->config->item('template') . '/survey/header/header_dashboard', $data);
+        $this->load->view($this->config->item('template') . '/survey/main_contents/step_2');
+        $this->load->view($this->config->item('template') . '/survey/footer/step_2_footer', $data);
         $this->load->view($this->config->item('template') . '/footer_dashboard');
     }
 

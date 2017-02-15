@@ -104,6 +104,7 @@ $route['account/addresses'] = 'account/auth_public/manage_address_book';
 $route['account/create-address'] = 'account/auth_public/insert_address';
 $route['account/update-address/(:num)'] = 'account/auth_public/update_address/$1';
 $route['account/delete-address/(:num)'] = 'account/auth_public/delete_address/$1';
+$route['ajax_update_organization_details_first_time'] = 'account/auth_public/ajax_update_organization_details_first_time';
 $route['account/logout'] = 'account/login/logout';
 $route['register'] = 'account/login/register_account';
 
