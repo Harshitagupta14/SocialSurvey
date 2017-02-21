@@ -89,7 +89,7 @@
             if (count($survey_feeds) > 0) {
                 foreach ($survey_feeds as $survey) {
                     ?>
-                    <div class="col-md-4" data-survey-id="<?php echo $survey['survey_id']; ?>">
+                    <div class="col-md-4" data-survey-id="<?php echo $survey['survey_id']; ?>" id="<?php echo $survey['survey_id']; ?>">
                         <!-- BEGIN Portlet PORTLET-->
                         <div class="portlet light">
                             <div class="portlet-title">
@@ -128,11 +128,10 @@
                                             <a id="unpublish" class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="UnPublish Survey" href="javascript:;" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>', '<?php echo $survey['survey_status']; ?>')">
                                                 <i class="icon-cloud-download" ></i>
                                             </a>
-                                            <a class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Delete Survey" href="javascript:;">
+                                            <a id="delete_survey" data-toggle="modal" class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Delete Survey" href="#" data-survey-id="<?php echo $survey['survey_id']; ?>" onClick="delete_modal('<?php echo $survey['survey_id']; ?>')">
                                                 <i class="icon-trash" ></i>
                                             </a>
                                         </div>
-
                                         <div class="mdl-grid " id="card_view_container"></div>
 
 
@@ -146,8 +145,29 @@
                     No Survey Data Present.
                 </div>
             <?php } ?>
+            <input type="hidden" id="delete_id">
             <!-- END CONTENT -->
             <!-- BEGIN QUICK SIDEBAR -->
+            <div id="survey_delete_option" class="modal fade">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">Delete Selected Survey?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <center>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button type="button" data-dismiss="modal" class="btn btn-outline btn-danger" onclick="delete_survey();" style="width:100%;">YES</button><br/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" data-dismiss="modal" class="btn btn-outline btn-warning" style="width:100%;">NO</button>
+                                    </div>
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                    <div id="modals">
+                    </div>
             <a href="javascript:;" class="page-quick-sidebar-toggler">
                 <i class="icon-login"></i>
             </a>
@@ -718,16 +738,16 @@
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script type="text/javascript">
-                                                function display_error(error_message) { //common function for displayinga ll the error
+                                        function display_error(error_message) { //common function for displayinga ll the error
 
-                                                    'use strict';
-                                                    var snackbarContainer = document.querySelector('#toast-notify');
-                                                    'use strict';
-                                                    var data = {
-                                                        message: error_message
-                                                    };
-                                                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
-                                                }
+                                            'use strict';
+                                            var snackbarContainer = document.querySelector('#toast-notify');
+                                            'use strict';
+                                            var data = {
+                                                message: error_message
+                                            };
+                                            snackbarContainer.MaterialSnackbar.showSnackbar(data);
+                                        }
 </script>
 <script type='text/javascript'>
 
@@ -763,4 +783,24 @@
             display_error("SURVEY UNPUBLISHED SUCCESSFULLY.");
         }
     }
+  
+    function delete_survey() {
+        var survey_id = document.getElementById('delete_id').value;
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url(); ?>" + "ajax-delete-survey",
+            dataType: 'html',
+            data: {survey_id: survey_id},
+            success: function (stat) {
+                var elem = document.getElementById(survey_id);
+                elem.parentNode.removeChild(elem);
+                console.log(stat);
+            },
+        });
+
+    }
+    function delete_modal(survey_id){
+        document.getElementById('delete_id').value = survey_id;
+        $('#survey_delete_option').modal('show')
+       }
 </script>
