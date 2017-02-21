@@ -30,7 +30,7 @@ class Survey extends CI_Controller {
         //$data['current_page_slug'] = "categories";
         $data['breadcrumb'] = '<li class="active">Services</li>';
         if (!empty($_POST)) {
-            $this->form_validation->set_rules('survey_title', 'Survey Title', 'trim|required|is_unique[tbl_survey.survey_title]');
+            $this->form_validation->set_rules('survey_title', 'Survey Title', 'trim|required');
             $this->form_validation->set_rules('survey_category', 'Category', 'trim|required');
             if ($this->form_validation->run() == TRUE) {
                 $date = date('Y-m-d H:i:s');
@@ -46,6 +46,7 @@ class Survey extends CI_Controller {
                 $this->common_model->insert_data('tbl_survey', $data_survey);
                 $uniqueId = uniqid($this->input->ip_address(), TRUE);
                 $this->session->set_userdata('my_session_id', md5($uniqueId));
+                $this->session->set_flashdata('message', '<div class="alert alert-success" id="message" role="alert"><p class="text-primary">Survey <b>' . $this->input->post('survey_title') . '</b> created successfully start adding question to it.</p></div>');
                 redirect('survey/' . $date_md);
                 exit();
             } else {
@@ -54,7 +55,7 @@ class Survey extends CI_Controller {
         }
         $this->load->view($this->config->item('template') . '/survey/header/header_dashboard', $data);
         $this->load->view($this->config->item('template') . '/survey/main_contents/step_1');
-        $this->load->view($this->config->item('template') . '/footer_dashboard');
+        $this->load->view($this->config->item('template') . '/survey/footer/footer_dashboard');
     }
 
     public function survey_step_2($date_md = NULL) {
@@ -75,7 +76,7 @@ class Survey extends CI_Controller {
         $this->load->view($this->config->item('template') . '/survey/header/header_dashboard', $data);
         $this->load->view($this->config->item('template') . '/survey/main_contents/step_2');
         $this->load->view($this->config->item('template') . '/survey/footer/step_2_footer', $data);
-        $this->load->view($this->config->item('template') . '/footer_dashboard');
+        $this->load->view($this->config->item('template') . '/survey/footer/footer_dashboard');
     }
 
     public function ajax_save_question() {

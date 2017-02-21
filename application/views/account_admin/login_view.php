@@ -54,7 +54,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-xs-6">
-                                    <input id="sender-email" type="text" name="login_identity" class="form-control form-control-solid placeholder-no-fix form-group" placeholder="Username Or Email-Id" required /> </div>
+                                    <input id="sender-email" type="text" name="login_identity" class="form-control form-control-solid placeholder-no-fix form-group" placeholder="Email-Id" required /> </div>
                                 <div class="col-xs-6">
                                     <input type="password" name="login_password" class="form-control form-control-solid placeholder-no-fix form-group" placeholder="Password" id="user-pass" required /> </div>
                             </div>

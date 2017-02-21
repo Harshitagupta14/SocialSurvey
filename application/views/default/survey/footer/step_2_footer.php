@@ -31,7 +31,12 @@
             }
 </script>
 <script>
-    var base_url = '<?php echo base_url(); ?>';
+    setTimeout(function(){
+    if (typeof (document.querySelector('#message')) != 'undefined' && document.querySelector('#message') != null) {
+    document.querySelector('#message').style.display = "none";
+    }
+    }, 3000);
+            var base_url = '<?php echo base_url(); ?>';
             $(document).ready(function() {
     load_question();
     });
@@ -260,6 +265,7 @@
             if (data.first_question) {
     var html_div = create_default_fields(data.first_question);
             var question_data = data.first_question;
+            $('#question').html("Question " + question_data.question_no);
             $('#question_tools').html("<span style='margin-left:15px;' class='btn btn-circle btn-icon-only btn-default' onclick='delete_question(" + question_data.question_no + ");'><i class='icon-trash'></i></span>");
     } else {
     var question_data = data.question_data;
@@ -439,8 +445,8 @@
             sb_max_characters_div.appendChild(sb_max_characters_inner_div);
             sb_max_characters_row_div.appendChild(sb_max_characters_div);
             if (data) {
-    if (typeof (data.question_limit_lower) !== 'undefined') {
-    sb_max_characters_input.setAttribute("value", data.question_limit_lower);
+    if (typeof (data.question_limit_upper) !== 'undefined') {
+    sb_max_characters_input.setAttribute("value", data.question_limit_upper);
     }
     }
     return sb_max_characters_row_div;
@@ -534,6 +540,10 @@
     //SUBJECTIVE
     if (selected_type == "sb") {
     if (qLimitUp == 0) {
+    var error = "MAX CHARCTERS ALLOWED OPTIONS CANNOT BE ZERO";
+            display_error(error);
+            return false;
+    }if (qLimitUp == '') {
     var error = "MAX CHARCTERS ALLOWED OPTIONS IS A REQUIRED FIELD";
             display_error(error);
             return false;
@@ -556,6 +566,11 @@
     if (selected_type == "nm") {
     if (qLimitLow == 0) {
     var error = "LOWER LIMIT OPTIONS IS A REQUIRED FIELD";
+            display_error(error);
+            return false;
+    }
+    if (qLimitUp == 0) {
+    var error = "UPPER LIMIT OPTIONS IS A REQUIRED FIELD";
             display_error(error);
             return false;
     }

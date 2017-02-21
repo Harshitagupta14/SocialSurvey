@@ -85,57 +85,67 @@
         <!-- END PAGE HEADER-->
 
         <div class="row" id="survey_container">
-            <?php foreach ($survey_feeds as $survey) { ?>
-                <div class="col-md-4" data-survey-id="<?php echo $survey['survey_id']; ?>">
-                    <!-- BEGIN Portlet PORTLET-->
-                    <div class="portlet light">
-                        <div class="portlet-title">
-                            <ul class="nav nav-pills">
-                                <li class="tooltips" data-container="body" data-placement="top" data-original-title="Questios">
-                                    <a href="#" style="background-color:#eee;"> <i class="fa fa-question-circle m-r-5"></i>
-                                        <span class="badge badge-danger"> <?php echo $survey['question_count']; ?> </span>
-                                    </a>
-                                </li>
-                                <li  class="tooltips" data-container="body" data-placement="top" data-original-title="Responses">
-                                    <a href="#" style="background-color:#eee;"> <i class="fa fa-area-chart"></i>
-                                        <span class="badge badge-danger"> 3 </span>
-                                    </a>
-                                </li>
-                                <li style="float:right;"><i class="fa fa-clock-o" aria-hidden="true"></i> <?php echo $this->components->time_elapsed_string($survey['add_time']); ?></li>
-                            </ul>
+            <?php
+            if (count($survey_feeds) > 0) {
+                foreach ($survey_feeds as $survey) {
+                    ?>
+                    <div class="col-md-4" data-survey-id="<?php echo $survey['survey_id']; ?>">
+                        <!-- BEGIN Portlet PORTLET-->
+                        <div class="portlet light">
+                            <div class="portlet-title">
+                                <ul class="nav nav-pills">
+                                    <li class="tooltips" data-container="body" data-placement="top" data-original-title="Questios">
+                                        <a href="#" style="background-color:#eee;"> <i class="fa fa-question-circle m-r-5"></i>
+                                            <span class="badge badge-danger"> <?php echo $survey['question_count']; ?> </span>
+                                        </a>
+                                    </li>
+                                    <li  class="tooltips" data-container="body" data-placement="top" data-original-title="Responses">
+                                        <a href="#" style="background-color:#eee;"> <i class="fa fa-area-chart"></i>
+                                            <span class="badge badge-danger"> 3 </span>
+                                        </a>
+                                    </li>
+                                    <li style="float:right;"><i class="fa fa-clock-o" aria-hidden="true"></i> <?php echo $this->components->time_elapsed_string($survey['add_time']); ?></li>
+                                </ul>
 
-                        </div>
-                        <div class="portlet-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h4><?php echo $survey['survey_title']; ?></h4>
-                                    <?php if ($survey['survey_status'] == "draft") { ?>
-                                        <span class="label label-warning" id="<?php echo $survey['survey_id']; ?>"> Draft </span>
-                                    <?php } else { ?>
-                                        <span class="label label-danger" id="<?php echo $survey['survey_id']; ?>"> Pubished </span>
-                                    <?php } ?>
-                                </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="actions" style="float:right;">
-                                        <a class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Edit Survey" href="<?php echo site_url('survey/' . $survey['survey_id']); ?>">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                        <a id="unpublish" class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="UnPublish Survey" href="javascript:;" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>', '<?php echo $survey['survey_status']; ?>')">
-                                            <i class="icon-cloud-download" ></i>
-                                        </a>
-                                        <a class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Delete Survey" href="javascript:;">
-                                            <i class="icon-trash" ></i>
-                                        </a>
+                            <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4><?php echo $survey['survey_title']; ?></h4>
+                                        <?php if ($survey['survey_status'] == "draft") { ?>
+                                            <span class="label label-warning" id="<?php echo $survey['survey_id']; ?>"> Draft </span>
+                                        <?php } else { ?>
+                                            <span class="label label-danger" id="<?php echo $survey['survey_id']; ?>"> Pubished </span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="actions" style="float:right;">
+                                            <a class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Edit Survey" href="<?php echo site_url('survey/' . $survey['survey_id']); ?>">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a id="unpublish" class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="UnPublish Survey" href="javascript:;" data-survey-status="<?php echo $survey['survey_status']; ?>" onclick="unpublish_data('<?php echo $survey['survey_id']; ?>', '<?php echo $survey['survey_status']; ?>')">
+                                                <i class="icon-cloud-download" ></i>
+                                            </a>
+                                            <a class="btn btn-circle btn-icon-only btn-default tooltips" data-container="body" data-placement="bottom" data-html="true" data-original-title="Delete Survey" href="javascript:;">
+                                                <i class="icon-trash" ></i>
+                                            </a>
+                                        </div>
+
+                                        <div class="mdl-grid " id="card_view_container"></div>
+
+
                                     </div>
 
-                                    <div class="mdl-grid " id="card_view_container"></div>
-
-
-                                </div>
-
-                            </div>  </div>  </div>  </div> <?php } ?>
+                                </div>  </div>  </div>  </div> <?php
+                }
+            } else {
+                ?>
+                <div class="col-md-4">
+                    No Survey Data Present.
+                </div>
+            <?php } ?>
             <!-- END CONTENT -->
             <!-- BEGIN QUICK SIDEBAR -->
             <a href="javascript:;" class="page-quick-sidebar-toggler">
@@ -708,16 +718,16 @@
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script type="text/javascript">
-                                        function display_error(error_message) { //common function for displayinga ll the error
+                                                function display_error(error_message) { //common function for displayinga ll the error
 
-                                            'use strict';
-                                            var snackbarContainer = document.querySelector('#toast-notify');
-                                            'use strict';
-                                            var data = {
-                                                message: error_message
-                                            };
-                                            snackbarContainer.MaterialSnackbar.showSnackbar(data);
-                                        }
+                                                    'use strict';
+                                                    var snackbarContainer = document.querySelector('#toast-notify');
+                                                    'use strict';
+                                                    var data = {
+                                                        message: error_message
+                                                    };
+                                                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
+                                                }
 </script>
 <script type='text/javascript'>
 

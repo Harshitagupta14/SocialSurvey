@@ -76,7 +76,6 @@ $config['database']['user_acc']['columns']['failed_login_ip'] = 'uacc_fail_login
 $config['database']['user_acc']['columns']['failed_login_ban_date'] = 'uacc_date_fail_login_ban';
 $config['database']['user_acc']['columns']['last_login_date'] = 'uacc_date_last_login';
 $config['database']['user_acc']['columns']['date_added'] = 'uacc_date_added';
-$config['database']['user_acc']['columns']['active'] = 'uacc_active';
 
 // Custom columns can be added to the main user account table to enable library functions to handle additional custom data stored within the table.
 $config['database']['user_acc']['custom_columns'] = array(
@@ -188,7 +187,7 @@ $config['database']['custom']['user_profile']['primary_key'] = 'upro_id';
 $config['database']['custom']['user_profile']['foreign_key'] = 'upro_uacc_fk';
 $config['database']['custom']['user_profile']['join'] = 'user_profiles.upro_uacc_fk';
 $config['database']['custom']['user_profile']['custom_columns'] = array(
-    'upro_first_name', 'upro_last_name', 'upro_phone', 'upro_newsletter', 'upro_type', 'upro_country', 'upro_state', 'upro_city', 'upro_address', 'upro_postal_code', 'upro_company_detail', 'upro_company', 'upro_identity_image', 'upro_views'
+    'upro_first_name', 'upro_last_name', 'upro_phone', 'upro_newsletter', 'upro_type', 'upro_country', 'upro_state', 'upro_city', 'upro_address', 'upro_postal_code', 'upro_company_detail', 'upro_company', 'upro_identity_image'
 );
 
 ###+++++++++++++++++++++++++++###
@@ -281,7 +280,7 @@ $config['database']['settings']['date_time'] = date('Y-m-d H:i:s');
  * Auth Session Name
  * Set the root auth session name saved as an array in the CI session, all other flexi auth session data is then stored within this array.
  */
-$config['sessions']['name'] = 'SofaByFancy_Sessions';
+$config['sessions']['name'] = 'SocialSurvey_Sessions';
 
 /**
  * Primary User Indentifier Session

@@ -36,12 +36,11 @@ class Auth_Public extends CI_Controller {
         $this->data['survey_feeds'] = $this->survey->get_survey_feeds();
         $this->data['upro_views'] = $upro_views = $this->data['user']['upro_views'];
         $upro_new_value = 2;
-        if($upro_views == 1){
-        $this->common_model->update_data('user_profiles', array('upro_id' => $this->flexi_auth->get_user_by_identity_row_array()['upro_id']), array('upro_views' => $upro_new_value));
+        if ($upro_views == 1) {
+            $this->common_model->update_data('user_profiles', array('upro_id' => $this->flexi_auth->get_user_by_identity_row_array()['upro_id']), array('upro_views' => $upro_new_value));
         }
         $this->load->view($this->config->item('template') . '/dashboard/header/header', $this->data);
         $this->load->view($this->config->item('template') . '/dashboard/main_contents/dashboard_view', $this->data);
-        $this->load->view($this->config->item('template') . '/dashboard/footer/footer_modal', $this->data);
         $this->load->view($this->config->item('template') . '/dashboard/footer/footer', $this->data);
     }
 
@@ -130,25 +129,6 @@ class Auth_Public extends CI_Controller {
 //       $o = $this->order->getOrderIdByCustomerId($customer_id);
         //pr( $this->data['user']);die;
         $this->load->view($this->config->item('public_login_folder') . '/order_history_view', $this->data);
-    }
-    
-    public function ajax_update_organization_details_first_time() {
-        $organization_id = $this->input->post('organization_id');
-        $organization_type = $this->input->post('organization_type');
-        $organization_name = $this->input->post('organization_name');
-        $upro_new_value = 2;
-        $response = $this->common_model->update_data('user_profiles', array('upro_uacc_fk' => $organization_id), array('upro_company_type' => $organization_type, 'upro_company' => $organization_name, 'upro_views' => $upro_new_value));
-        if ($response) {
-            $data = array(
-                'success' => 'true',
-            );
-        } else {
-            $data = array(
-                'success' => 'false',
-            );
-        }
-        echo json_encode($data);
-        die;
     }
 
 }

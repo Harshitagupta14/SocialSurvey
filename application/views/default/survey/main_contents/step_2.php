@@ -45,6 +45,7 @@
 <!-- END PAGE LEVEL PLUGINS -->
 
 <div class="page-content-wrapper">
+
     <div class="page-content">
         <div class="theme-panel">
             <div class="toggler tooltips" data-container="body" data-placement="left" data-html="true" data-original-title="Click To Manage Survey Questions" style="display: none;">
@@ -67,6 +68,9 @@
             </div>
         </div>
         <br/>
+        <?php if ($this->session->flashdata('message')) { ?>
+            <?php echo $this->session->flashdata('message'); ?>
+        <?php } ?>
         <div class="col-md-6">
             <h1 class="page-title"><?php echo ucfirst($survey_title); ?>
                 <small>Survey</small>
@@ -144,4 +148,4 @@
         </div>
     </div>
 </div>
-
+</div>

@@ -118,10 +118,14 @@ class Auth_model extends CI_Model {
                 'upro_first_name' => $this->input->post('register_first_name'),
                 'upro_last_name' => $this->input->post('register_last_name'),
                 'upro_phone' => $this->input->post('register_phone_number'),
-                'upro_newsletter' => 1
+                'upro_newsletter' => 1,
+                'ugrp_id' => 1,
+                'uacc_parent_id_fk' => 0,
+                'uacc_active' => 0
             );
-            $instant_activate = TRUE;
-            $response = $this->flexi_auth->insert_user($email, $username, $password, $profile_data, 1, $instant_activate);
+            $instant_activate = FALSE;
+            $response = $this->flexi_auth->insert_user($email, $username, $password, $profile_data, 1, 0);
+            //$this->common_model->update_data('user_accounts', array('uacc_id' => $response), array('uacc_active' => '0'));
             if ($response) {
                 $email_data = array('identity' => $email);
                 $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);

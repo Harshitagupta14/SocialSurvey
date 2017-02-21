@@ -12,7 +12,7 @@
                     <a href="<?= site_url('dashboard') ?>">Home</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
-                <li class="active"><?php echo isset($product_id) ? $breadcum_edit : $breadcum ?></li>
+                <li class="active"><span>Create Survey</span></li>
             </ul>
         </div>
 
