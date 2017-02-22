@@ -101,7 +101,7 @@
                                     </li>
                                     <li  class="tooltips" data-container="body" data-placement="top" data-original-title="Responses">
                                         <a href="#" style="background-color:#eee;"> <i class="fa fa-area-chart"></i>
-                                            <span class="badge badge-danger"> 3 </span>
+                                            <span class="badge badge-danger"><?php echo $survey['response_count']; ?>  </span>
                                         </a>
                                     </li>
                                     <li style="float:right;"><i class="fa fa-clock-o" aria-hidden="true"></i> <?php echo $this->components->time_elapsed_string($survey['add_time']); ?></li>
@@ -718,16 +718,16 @@
 
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script type="text/javascript">
-                                                function display_error(error_message) { //common function for displayinga ll the error
+                                        function display_error(error_message) { //common function for displayinga ll the error
 
-                                                    'use strict';
-                                                    var snackbarContainer = document.querySelector('#toast-notify');
-                                                    'use strict';
-                                                    var data = {
-                                                        message: error_message
-                                                    };
-                                                    snackbarContainer.MaterialSnackbar.showSnackbar(data);
-                                                }
+                                            'use strict';
+                                            var snackbarContainer = document.querySelector('#toast-notify');
+                                            'use strict';
+                                            var data = {
+                                                message: error_message
+                                            };
+                                            snackbarContainer.MaterialSnackbar.showSnackbar(data);
+                                        }
 </script>
 <script type='text/javascript'>
 
