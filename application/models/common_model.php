@@ -377,7 +377,7 @@ class Common_Model extends CI_Model {
             }
         }
     }
-
+// --------------------------------------------------------------------------------------------------
     function num_rows($table, $cond) {
         $this->db->where($cond);
         return $this->db->get($table)->num_rows();

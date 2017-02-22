@@ -116,6 +116,7 @@ $route['ajax-edit-survey-question'] = 'survey/ajax_edit_survey_question/';
 $route['ajax-delete-survey-question'] = 'survey/ajax_delete_survey_question/';
 $route['ajax_publish_data'] = 'survey/ajax_publish_data/';
 $route['ajax_unpublish_data'] = 'survey/ajax_unpublish_data/';
+$route['ajax-delete-survey'] = 'survey/ajax_delete_survey/';
 
 //Organization Routes
 
