@@ -42,7 +42,7 @@
         <script>
             var baseurl = '<?= base_url() ?>';
         </script>
-     </head>
+    </head>
     <body class="page-header-fixed page-sidebar-closed-hide-logo page-container-bg-solid page-md"  id="scrollable_container">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
@@ -509,15 +509,16 @@
                                 <span class="title">Organization</span>
                                 <span class="arrow"></span>
                             </a>
-                            <!--<ul class="sub-menu">
-                                <li class="nav-item  ">
-                                    <a href="<?= base_url() ?>organization" class="nav-link ">
-                                        <i class="icon-user"></i>
-                                        <span class="title"> Manage Auditors</span>
-                                    </a>
-                                </li>
 
-                            </ul> -->
+                        </li>
+
+                        <li class="nav-item <?php if ($this->uri->segment(1) == 'reports') { ?>active open <?php } ?>">
+                            <a href="<?= base_url() ?>reports" class="nav-link nav-toggle">
+                                <i class="icon-bar-chart"></i>
+                                <span class="title">Reports</span>
+                                <span class="arrow"></span>
+                            </a>
+
                         </li>
 
                     </ul>

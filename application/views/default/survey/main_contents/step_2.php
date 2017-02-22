@@ -88,7 +88,7 @@
                                 <div class="portlet-body">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <label for="select2-single-input-sm" class="control-label">Select Survey Question Type</label>
+                                            <label for="select2-single-input-sm" style="color:#000;" class="control-label">Select Survey Question Type</label>
 
                                             <select id="select2-single-input-sm" name="survey_type" class="form-control input-sm select2-multiple">
                                                 <?php
@@ -104,48 +104,57 @@
                                                 ?>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" value="<?php echo $id; ?>" name="id" id="id" />
-                                <input type="hidden" value="<?php echo $survey_id; ?>" name="survey_id" id="survey_id" />
-                                <input type="hidden" value="<?php echo (isset($question_no) && $question_no != '') ? $question_no : '1'; ?>" name="question_no" id="question_no" />
-                                <input type="hidden" value="save" name="question_state" id="question_state" />
-                                <input type="hidden" value="" id="publish_check" />
-                                <!-- Default Question Block -->
-                                <div id="question-block" style="margin-top:50px;"></div>
-                                <!-- Default Question Block Ends -->
-
-                                <!-- Multiple Option Question Block -->
-                                <div id="mq-block" style="display:none;">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <select multiple data-role="tagsinput" name="multiple_choice[]" placeholder="Multiple Choice Options" id="multiple_choice" name="multiple_choice"></select>
+                                        <div class="col-md-offset-3 col-md-3" style="margin-top:25px;"><div class="md-checkbox has-success">
+                                                <div class="md-checkbox has-success">
+                                                    <input id="checkbox14" name="question_mandatory" value="1" class="md-check question_mandatory" type="checkbox" checked="checked">
+                                                    <label for="checkbox14">
+                                                        <span class="inc"></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>Mandatory</label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Multiple Option Question Block Ends -->
-                                <div class="row" style="margin-top:20px;">
-                                    <div class="col-lg-3 col-md-4 col-xs-12">
-                                        <div class="mt-element-ribbon bg-grey-steel">
-                                            <p class="ribbon ribbon-color-primary uppercase" id="question">Question 1</p>
-                                            <p style="float: right; margin-right: 10px;" id="survey_question_time"></p>
-                                            <!--<input class="ribbon ribbon-color-primary uppercase" id="question" value="Question 1"/>-->
-                                            <!--                                    <input type="hidden" id="question_no" value="1"/>-->
-                                            <p class="ribbon-content"><button class="btn btn-primary" id="question_save_btn" type="submit" style="display:none;"></button>
-                                                <span id="question_tools"></span></p>
+                                    <input type="hidden" value="<?php echo $id; ?>" name="id" id="id" />
+                                    <input type="hidden" value="<?php echo $survey_id; ?>" name="survey_id" id="survey_id" />
+                                    <input type="hidden" value="<?php echo (isset($question_no) && $question_no != '') ? $question_no : '1'; ?>" name="question_no" id="question_no" />
+                                    <input type="hidden" value="save" name="question_state" id="question_state" />
+                                    <input type="hidden" value="" id="publish_check" />
+                                    <!-- Default Question Block -->
+                                    <div id="question-block" style="margin-top:50px;"></div>
+                                    <!-- Default Question Block Ends -->
+
+                                    <!-- Multiple Option Question Block -->
+                                    <div id="mq-block" style="display:none;">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <select multiple data-role="tagsinput" name="multiple_choice[]" placeholder="Multiple Choice Options" id="multiple_choice" name="multiple_choice"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Multiple Option Question Block Ends -->
+                                    <div class="row" style="margin-top:20px;">
+                                        <div class="col-lg-3 col-md-4 col-xs-12">
+                                            <div class="mt-element-ribbon bg-grey-steel">
+                                                <p class="ribbon ribbon-color-primary uppercase" id="question">Question 1</p>
+                                                <p style="float: right; margin-right: 10px;" id="survey_question_time"></p>
+                                                <!--<input class="ribbon ribbon-color-primary uppercase" id="question" value="Question 1"/>-->
+                                                <!--                                    <input type="hidden" id="question_no" value="1"/>-->
+                                                <p class="ribbon-content"><button class="btn btn-primary" id="question_save_btn" type="submit" style="display:none;"></button>
+                                                    <span id="question_tools"></span></p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-        </form>
+                    </form>
 
-        <div id="toast-notify" class="mdl-js-snackbar mdl-snackbar">
-            <div class="mdl-snackbar__text"></div>
-            <button class="mdl-snackbar__action" type="button"></button>
-        </div>
+                    <div id="toast-notify" class="mdl-js-snackbar mdl-snackbar">
+                        <div class="mdl-snackbar__text"></div>
+                        <button class="mdl-snackbar__action" type="button"></button>
+                    </div>
+                </div>
+            </div>
     </div>
-</div>
-</div>

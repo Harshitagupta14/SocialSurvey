@@ -125,7 +125,8 @@ $route['ajax-register-surveyor'] = 'organization/ajax_register_surveyor/';
 $route['ajax-change-surveyor-status'] = 'organization/ajax_change_surveyor_status/';
 $route['ajax-update-organization-details'] = 'organization/ajax_update_organization_details/';
 
-
+//Reports
+$route['reports'] = 'report/index/';
 
 //======= Admin Related Urls===================//
 

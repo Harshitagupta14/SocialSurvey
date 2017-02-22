@@ -170,8 +170,10 @@ class Survey extends CI_Controller {
         } else {
             $multiple_choice = 0;
         }
+        $question_mandatory = $this->input->post('question_mandatory');
         $data_array = array(
             'question_title' => $this->input->post('question_title'),
+            'question_mandatory' => (isset($question_mandatory)) ? $question_mandatory : 0,
             'question_help_text' => $this->input->post('question_help_text'),
             'question_one_word' => $this->input->post('question_one_word'),
             'question_limit_lower' => $this->input->post('question_limit_lower'),
@@ -290,14 +292,14 @@ class Survey extends CI_Controller {
     function ajax_delete_survey() {
         $id = $this->input->post('survey_id');
         $cond = array("survey_id" => $id);
-        $fetch_id = $this->common_model->fetch_cell('tbl_survey','id',$cond);
+        $fetch_id = $this->common_model->fetch_cell('tbl_survey', 'id', $cond);
         $cond1 = array("survey_fk_id" => $fetch_id);
-        $fetch_id_response = $this->common_model->fetch_cell('tbl_survey_response','id',$cond1);
+        $fetch_id_response = $this->common_model->fetch_cell('tbl_survey_response', 'id', $cond1);
         $cond2 = array("survey_res_fk_id" => $fetch_id_response);
-        $response = $this->common_model->delete_data('tbl_survey',$cond);
-        $response1 = $this->common_model->delete_data('tbl_survey_question',$cond1);
-        $response2 = $this->common_model->delete_data('tbl_survey_response',$cond1);
-        $response3 = $this->common_model->delete_data('tbl_survey_question_response',$cond2);
+        $response = $this->common_model->delete_data('tbl_survey', $cond);
+        $response1 = $this->common_model->delete_data('tbl_survey_question', $cond1);
+        $response2 = $this->common_model->delete_data('tbl_survey_response', $cond1);
+        $response3 = $this->common_model->delete_data('tbl_survey_question_response', $cond2);
         if ($response) {
             $data = array('response' => $response, 'response1' => $response1, 'response2' => $response2, 'response3' => $response3, 'success' => "true");
         } else {
