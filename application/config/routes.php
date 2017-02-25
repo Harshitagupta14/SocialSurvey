@@ -303,9 +303,9 @@ $route['secure-panel/list-status-of-users/(:any)'] = 'account/auth_admin/list_us
 $route['secure-panel/delete-unactivated-users'] = 'account/auth_admin/delete_unactivated_users';
 $route['secure-panel/failed-users'] = 'account/auth_admin/failed_login_users';
 
+//---------Report Routes---------------
 
-
-
+$route['ajax-search-questions'] = 'report/ajax_search_questions';
 //$route['(:any)'] = 'content/index/$1';
 
 
