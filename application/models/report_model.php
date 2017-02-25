@@ -37,31 +37,31 @@ class Report_Model extends CI_Model {
         //Survey Status
         $status = $this->input->post('publish_draft');
 
-        foreach ($auditors as $auditor) {
-            if ($auditor == "all") {
-                $surveyor = "NO";
-                break;
-            } else {
-                $surveyor = "YES";
-            }
+        if (in_array("all", $auditors)) {
+            $surveyor = "NO";
+        } else {
+            $surveyor = "YES";
         }
 
-        $initial_select = "`survey_response`.*,`survey_response`.`id` as response_id,`survey_response_question`.`survey_res_fk_id` ,GROUP_CONCAT(`survey_response_question`.`question_no`) as question_no,GROUP_CONCAT(`survey_response_question`.`question_response`) as question_response";
+        $initial_select = "`survey_response`.*,`survey_response`.`id` as response_id,`survey_response_question`.`survey_res_fk_id` ,GROUP_CONCAT(`survey_response_question`.`question_no`) as question_no,GROUP_CONCAT(`survey_response_question`.`question_response`) as question_response,GROUP_CONCAT(`survey_response_question`.`question_type`) as question_type,`survey_response`.add_time,`user_profile`.upro_first_name";
 
         $final_select = " $initial_select ";
 
-        $final_query = $this->db->select($final_select)
+        $this->db->select($final_select)
                 ->from("`tbl_survey_response` as `survey_response`")
                 ->join("`tbl_survey_question_response` as `survey_response_question`  ", ' survey_response_question.survey_res_fk_id = survey_response.id', 'left')
+                ->join("`user_profiles` as `user_profile`  ", ' user_profile.upro_id = survey_response.surveyor_fk_id', 'left')
                 ->where("`survey_response`.`survey_fk_id`", $survey_id)
                 ->where("`survey_response`.`survey_res_status`", $status)
-                ->where("`survey_response`.add_time  >=", $newformat_start_date)
-                ->where("`survey_response`.add_time  <=", $newformat_last_date)
-                //->where_in("`survey_response`.`surveyor_fk_id`", $auditors)
-                ->group_by('`survey_response_question`.`survey_res_fk_id`')
+                ->where("DATE(`survey_response`.add_time)  >=", $newformat_start_date)
+                ->where("DATE(`survey_response`.add_time)  <=", $newformat_last_date);
+                if($surveyor == "YES"){
+                $this->db->where_in("`survey_response`.`surveyor_fk_id`", $auditors);
+                }
+              $final_query = $this->db->group_by('`survey_response_question`.`survey_res_fk_id`')
                 ->order_by('`survey_response_question`.`survey_res_fk_id`', 'ASC')
                 ->get();
-        //echo $this->db->last_query();
+//        echo $this->db->last_query();
         return $final_query->result_array();
     }
 

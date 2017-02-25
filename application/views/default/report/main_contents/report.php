@@ -84,6 +84,7 @@
                         selected_survey: selected_survey, date: date, selected_auditor: selected_auditor, publish_draft: publish_draft
                     },
                     success: function (stat) {
+                        view_data.length = 0;
                         var table;
                         table = $('#sample_2').DataTable({destroy: true,
                             bLengthChange: false,
@@ -92,7 +93,7 @@
                             table.clear();
                         }
                         for (var i = 0; i < stat.reports.length; i++) {
-                            table.row.add([(i + 1), stat.reports[i].upro_first_name, stat.reports[i].survey_res_status, stat.reports[i].response_add_time, "<a href='#' onclick='javascript:view_response(" + i + ")'><i class='fa fa-eye' aria-hidden='true'></i>&nbsp;</a><a href><i class='fa fa-trash-o' aria-hidden='true'></i></a>"]);
+                            table.row.add([(i + 1), stat.reports[i].upro_first_name, stat.reports[i].survey_res_status, stat.reports[i].add_time, "<a href='#' onclick='javascript:view_response(" + i + ")'><i class='fa fa-eye' aria-hidden='true'></i>&nbsp;</a><a href><i class='fa fa-trash-o' aria-hidden='true'></i></a>"]);
                             view_data.push(JSON.stringify(stat.reports[i]));
 
                         }
@@ -104,7 +105,16 @@
 
             function view_response(i) {
                 var data = JSON.parse(view_data[i]);
-                document.getElementById('view_data').innerHTML = data.id;
+                var modal_html = "<table class='table table-striped table-bordered table-hover table-checkable order-column'><thead><th>SNO</th><th>Question Number</th><th>Question Response</th><th>Question Type</th></thead>";
+                var question_array = data.question_no.split(",");
+                var question_array_size = question_array.length;
+                var question_response = data.question_response.split(",");
+                var question_type = data.question_type.split(",");
+                for (i = 0; i < question_array_size; i++) {
+                    modal_html += "<tr><td>" + (i+1) + "</td><td>" + question_array[i]+"</td><td>" + question_response[i] + "</td><td>" + question_type[i] + "</td></tr>";
+                }
+                modal_html += "</table>";
+                document.getElementById('view_data').innerHTML = modal_html;
                 $('#response_view').modal('show');
             }
         </script>
