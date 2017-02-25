@@ -69,7 +69,7 @@
         <div id="data_table"></div>
         <div id="pageNavPosition"></div>
         <script>
-            var view_data = new Array();  
+            var view_data = new Array();
             $("#search_button").click(function (e) {
                 e.preventDefault();
                 var selected_survey = $("#selected_survey option:selected").val();
@@ -78,7 +78,7 @@
                 var publish_draft = $("#publish_draft option:selected").val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "ajax-search-questions",
+                    url: "<?php echo base_url(); ?>" + "ajax-generate-surveyor-report",
                     dataType: 'json',
                     data: {
                         selected_survey: selected_survey, date: date, selected_auditor: selected_auditor, publish_draft: publish_draft
@@ -92,19 +92,19 @@
                             table.clear();
                         }
                         for (var i = 0; i < stat.reports.length; i++) {
-                            table.row.add([(i + 1), stat.reports[i].upro_first_name, stat.reports[i].survey_res_status, stat.reports[i].response_add_time, "<a href='#' onclick='javascript:view_response("+i+")'><i class='fa fa-eye' aria-hidden='true'></i>&nbsp;</a><a href><i class='fa fa-trash-o' aria-hidden='true'></i></a>"]);
+                            table.row.add([(i + 1), stat.reports[i].upro_first_name, stat.reports[i].survey_res_status, stat.reports[i].response_add_time, "<a href='#' onclick='javascript:view_response(" + i + ")'><i class='fa fa-eye' aria-hidden='true'></i>&nbsp;</a><a href><i class='fa fa-trash-o' aria-hidden='true'></i></a>"]);
                             view_data.push(JSON.stringify(stat.reports[i]));
-                            
+
                         }
                         table.draw();
                     }
                 });
 
             });
-       
+
             function view_response(i) {
-            var data = JSON.parse(view_data[i]);
-               document.getElementById('view_data').innerHTML = data.id ;
+                var data = JSON.parse(view_data[i]);
+                document.getElementById('view_data').innerHTML = data.id;
                 $('#response_view').modal('show');
             }
         </script>
@@ -115,7 +115,7 @@
                 <h4 class="modal-title">View</h4>
             </div>
             <div class="modal-body" id="view_data">
-                
+
             </div>
         </div>
 

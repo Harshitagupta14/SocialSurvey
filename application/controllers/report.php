@@ -10,6 +10,7 @@ class Report extends CI_Controller {
         $this->load->model('product_model', 'product');
         $this->load->model('content_model', 'post');
         $this->load->model('survey_model', 'survey');
+        $this->load->model('report_model', 'report');
         $this->load->library('form_validation');
         $this->load->library('pagination');
         $this->load->library('components');
@@ -36,23 +37,10 @@ class Report extends CI_Controller {
         $this->load->view($this->config->item('template') . '/report/footer/footer_report');
     }
 
-    function ajax_search_questions() {
-        
-         $data['reports'] = $this->survey->get_reports_by_survey_id();
-        //print_r($data);die;
-//        $selected_survey = $this->input->post('selected_survey');
-//        $date = $this->input->post('date');
-//        $auditors = $this->input->post('selected_auditor');
-//        $selected_auditor = implode("|", $auditor);
-//        $publish_draft = $this->input->post('publish_draft');
-        
-//        if ($publish_draft) {
-//            $data = array('publish_draft' => $publish_draft, 'selected_survey' => $selected_survey,'date' => $date,'selected_auditor' => $selected_auditor, 'success' => "true");
-//        } else {
-//            $data = array('success' => "false");
-//        }
+    function ajax_generate_surveyor_reports() {
+        $data['reports'] = $this->report->get_reports();
         echo json_encode($data);
-       die;
+        die;
     }
 
 }
