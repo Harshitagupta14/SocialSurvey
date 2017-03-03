@@ -17,142 +17,166 @@
     .btn:not(.md-skip){
         padding:8px 44px 8px;
     }
+    .search-inputs-padding{padding:0px 0px 0px 15px;}
 </style>
+
+
+
+
+
+
+
+
+
 <div class="page-content-wrapper">
     <div class="page-content">
-        <form action="#" class="form-horizontal">
-            <div class="form-group">
-                <div class="col-md-4">
-                    <div class="input-group select2-bootstrap-append">
-                        <select id="selected_survey" class="form-control select2">
-                            <option>Select Survey</option>
-                            <?php foreach ($surveys as $survey) { ?>
-                                <option value="<?php echo $survey["survey_id"]; ?>"><?php echo $survey["survey_title"]; ?></option>
-                            <?php } ?>
-                        </select>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="portlet light ">
+                    <div class="portlet-title">
+                        <div class="caption caption-md">
+                            <i class="icon-bar-chart theme-font hide"></i>
+                            <span class="caption-subject font-blue-madison bold uppercase">Generate Reports</span>
+                        </div>
                     </div>
+                    <form action="#" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-10 search-inputs-padding">
+                                <div class="input-group select2-bootstrap-append">
+                                    <select id="selected_survey" class="form-control select2">
+                                        <option>Select Survey</option>
+                                        <?php foreach ($surveys as $survey) { ?>
+                                            <option value="<?php echo $survey["survey_id"]; ?>"><?php echo $survey["survey_title"]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-md-10 search-inputs-padding">
+                                <div id="reportrange" class="btn default">
+                                    <i class="fa fa-calendar"></i> &nbsp;
+                                    <span id="date">February 22, 2017 - February 22, 2017</span>
+                                    <b class="fa fa-angle-down"></b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10 search-inputs-padding">
+                                <div class="input-group select2-bootstrap-append">
+                                    <select id="multi-append" class="form-control select2" multiple data-placeholder="Select Auditor" name="multi-append[]">
+                                        <option value="all">All Auditors</option>
+                                        <?php foreach ($auditors as $auditor) { ?>
+                                            <option value="<?php echo $auditor["uacc_id"]; ?>"><?php echo $auditor["uacc_username"]; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10 search-inputs-padding">
+                                <div class="input-group select2-bootstrap-append">
+                                    <select id="publish_draft" class="form-control select2">
+                                        <option value="published">Published</option>
+                                        <option value="draft">Drafted</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" name="submit" id="search_button">Fetch</button>
+                    </form>
                 </div>
             </div>
-            <div class="form-group ">
-                <div class="col-md-4">
-                    <div id="reportrange" class="btn default">
-                        <i class="fa fa-calendar"></i> &nbsp;
-                        <span id="date">February 22, 2017 - February 22, 2017</span>
-                        <b class="fa fa-angle-down"></b>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-4">
-                    <div class="input-group select2-bootstrap-append">
-                        <select id="multi-append" class="form-control select2" multiple placeholder="Select Surveyor" name="multi-append[]">
-                            <option value="all">All Auditors</option>
-                            <?php foreach ($auditors as $auditor) { ?>
-                                <option value="<?php echo $auditor["uacc_id"]; ?>"><?php echo $auditor["uacc_username"]; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-4">
-                    <div class="input-group select2-bootstrap-append">
-                        <select id="publish_draft" class="form-control select2">
-                            <option value="published">Published</option>
-                            <option value="draft">Drafted</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" name="submit" id="search_button">Fetch</button>
-        </form>
-        <div id="data_table"></div>
-        <div id="pageNavPosition"></div>
-        <script>
-            var view_data = new Array();
-            $("#search_button").click(function (e) {
-                e.preventDefault();
-                var selected_survey = $("#selected_survey option:selected").val();
-                var date = $("#date").text();
-                var selected_auditor = $("#multi-append").val();
-                var publish_draft = $("#publish_draft option:selected").val();
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url(); ?>" + "ajax-generate-surveyor-report",
-                    dataType: 'json',
-                    data: {
-                        selected_survey: selected_survey, date: date, selected_auditor: selected_auditor, publish_draft: publish_draft
-                    },
-                    success: function (stat) {
-                        view_data.length = 0;
-                        var table;
-                        table = $('#sample_2').DataTable({destroy: true,
-                            bLengthChange: false,
-                            paging: false});
-                        if (table) {
-                            table.clear();
-                        }
-                        for (var i = 0; i < stat.reports.length; i++) {
-                            table.row.add([(i + 1), stat.reports[i].upro_first_name, stat.reports[i].survey_res_status, stat.reports[i].add_time, "<a href='#' onclick='javascript:view_response(" + i + ")'><i class='fa fa-eye' aria-hidden='true'></i>&nbsp;</a><a href><i class='fa fa-trash-o' aria-hidden='true'></i></a>"]);
-                            view_data.push(JSON.stringify(stat.reports[i]));
+            <!--Table -->
+            <div class="col-md-8">
+                <table class="table table-striped table-bordered table-hover table-checkable order-column" id="reports_table">
+                    <thead>
+                        <tr>
+                            <th> SNO. </th>
+                            <th> Auditor  </th>
+                            <th> Status </th>
+                            <th> Sync Date </th>
+                            <th> Actions </th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                        }
-                        table.draw();
-                    }
-                });
-
-            });
-
-            function view_response(i) {
-                var data = JSON.parse(view_data[i]);
-                var modal_html = "<table class='table table-striped table-bordered table-hover table-checkable order-column'><thead><th>SNO</th><th>Question Number</th><th>Question Response</th><th>Question Type</th></thead>";
-                var question_array = data.question_no.split(",");
-                var question_array_size = question_array.length;
-                var question_response = data.question_response.split(",");
-                var question_type = data.question_type.split(",");
-                for (i = 0; i < question_array_size; i++) {
-                    modal_html += "<tr><td>" + (i+1) + "</td><td>" + question_array[i]+"</td><td>" + question_response[i] + "</td><td>" + question_type[i] + "</td></tr>";
-                }
-                modal_html += "</table>";
-                document.getElementById('view_data').innerHTML = modal_html;
-                $('#response_view').modal('show');
-            }
-        </script>
-
-        <div id="response_view" class="modal fade">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">View</h4>
-            </div>
-            <div class="modal-body" id="view_data">
-
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <!--Table -->
-        <table class="table table-striped table-bordered table-hover table-checkable order-column" id="sample_2">
-            <thead>
-                <tr>
-<!--                    <th>
-                        <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                            <input type="checkbox" class="group-checkable" data-set="#sample_2 .checkboxes" />
-                            <span></span>
-                        </label>
-                    </th>-->
-                    <th> SNO </th>
-                    <th> Auditor  </th>
-                    <th> Status </th>
-                    <th> Joined </th>
-                    <th> Actions </th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
     </div>
 </div>
+<div id="response_view" class="modal fade">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title">View</h4>
+    </div>
+    <div class="modal-body" id="view_data">
 
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        $('.sidebar-toggler').click();
+        $('#reports_table').DataTable({destroy: true,
+            bLengthChange: false,
+            paging: false});
+    }
+    var view_data = new Array();
+    $("#search_button").click(function (e) {
+        e.preventDefault();
+        var selected_survey = $("#selected_survey option:selected").val();
+        var date = $("#date").text();
+        var selected_auditor = $("#multi-append").val();
+        var publish_draft = $("#publish_draft option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url(); ?>" + "ajax-generate-surveyor-report",
+            dataType: 'json',
+            data: {
+                selected_survey: selected_survey, date: date, selected_auditor: selected_auditor, publish_draft: publish_draft
+            },
+            success: function (stat) {
+                view_data.length = 0;
+                var table;
+                table = $('#reports_table').DataTable({destroy: true,
+                    bLengthChange: false,
+                    paging: false});
+                if (table) {
+                    table.clear();
+                }
+                for (var i = 0; i < stat.reports.length; i++) {
+                    if (stat.reports[i].survey_res_status == 'draft') {
+                        var lbl_color = 'warning';
+                    } else {
+                        lbl_color = 'info';
+                    }
+
+                    table.row.add([(i + 1), stat.reports[i].upro_first_name, "<label class='label label-" + lbl_color + "'>" + stat.reports[i].survey_res_status + "</label>", stat.reports[i].add_time, "<span class='btn btn-circle btn-icon-only btn-default' onclick='javascript:view_response(" + i + ")'><i class='fa fa-eye' aria-hidden='true'></i>&nbsp;</span><span class='btn btn-circle btn-icon-only btn-default'><i class='fa fa-trash-o' aria-hidden='true'></i></span>"]);
+                    view_data.push(JSON.stringify(stat.reports[i]));
+
+                }
+                table.draw();
+            }
+        });
+
+    });
+    function view_response(i) {
+        var data = JSON.parse(view_data[i]);
+        var modal_html = "<table class='table table-striped table-bordered table-hover table-checkable order-column'><thead><th>SNO</th><th>Question Number</th><th>Question Response</th><th>Question Type</th></thead>";
+        var question_array = data.question_no.split(",");
+        var question_array_size = question_array.length;
+        var question_response = data.question_response.split(",");
+        var question_type = data.question_type.split(",");
+        for (i = 0; i < question_array_size; i++) {
+            modal_html += "<tr><td>" + (i + 1) + "</td><td>" + question_array[i] + "</td><td>" + question_response[i] + "</td><td><label class='label label-info'>" + question_type[i] + "</label></td></tr>";
+        }
+        modal_html += "</table>";
+        document.getElementById('view_data').innerHTML = modal_html;
+        $('#response_view').modal('show');
+    }
+</script>
 
 
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>

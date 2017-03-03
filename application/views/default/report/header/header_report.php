@@ -5,7 +5,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>SocialSurvey</title>
+        <title>SocialSurvey | Reports</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1" name="viewport" />
         <meta content="" name="description" />
@@ -35,7 +35,7 @@
         <link href="<?= $this->config->item('adminassets'); ?>layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME LAYOUT STYLES -->
         <script src="<?= $this->config->item('adminassets'); ?>global/plugins/jquery.min.js" type="text/javascript"></script>
-  
+
         <link rel="shortcut icon" href="favicon.ico" />
         <style>
             .mdl-snackbar {

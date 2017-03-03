@@ -57,6 +57,7 @@ class Organization extends CI_Controller {
                 'upro_first_name' => $upro_first_name,
                 'upro_last_name' => $upro_last_name,
                 'upro_phone' => $upro_phone,
+                'upro_type' => 'upro_type',
                 'upro_newsletter' => '',
                 'ugrp_id' => '3',
                 'uacc_parent_id_fk' => $this->flexi_auth->get_user_by_identity_row_array()['uacc_id']
