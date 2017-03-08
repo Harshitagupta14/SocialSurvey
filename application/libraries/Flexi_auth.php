@@ -5,13 +5,13 @@ if (!defined('BASEPATH'))
 /*
  * Name: flexi auth
  *
- * Author: 
+ * Author:
  * Rob Hussey
  * flexiauth@haseydesign.com
  * haseydesign.com/flexi-auth
  *
  * Copyright 2012 Rob Hussey
- * 
+ *
  * Previous Authors / Contributors:
  * Ben Edmunds, benedmunds.com
  * Phil Sturgeon, philsturgeon.co.uk
@@ -21,9 +21,9 @@ if (!defined('BASEPATH'))
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,9 +46,9 @@ class Flexi_auth extends Flexi_auth_lite {
         $this->CI->load->model('flexi_auth_model');
     }
 
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
     // LOGIN / VALIDATION FUNCTIONS
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
     /**
      * login
@@ -70,6 +70,7 @@ class Flexi_auth extends Flexi_auth_lite {
 
         return FALSE;
     }
+
     public function check_user_existence($identity = FALSE) {
         if ($this->CI->flexi_auth_model->check_user_existence($identity)) {
             $this->CI->flexi_auth_model->set_status_message('user_existence_successful', 'config');
@@ -124,7 +125,7 @@ class Flexi_auth extends Flexi_auth_lite {
     /**
      * math_captcha
      * Generates a math captcha question and answer.
-     * The question is returned as a string, whilst the answer is set as a CI flash session. 
+     * The question is returned as a string, whilst the answer is set as a CI flash session.
      * Use the 'validate_math_captcha()' function to validate the users submitted answer.
      *
      * @return string
@@ -173,13 +174,13 @@ class Flexi_auth extends Flexi_auth_lite {
         return (bool) preg_match("/^[" . $this->CI->auth->auth_security['valid_password_chars'] . "]+$/i", $password);
     }
 
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
     // USER TASK FUNCTIONS
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
     /**
      * activate_user
-     * Activates a users account allowing them to login to their account. 
+     * Activates a users account allowing them to login to their account.
      * If $verify_token = TRUE, a valid $activation_token must also be submitted.
      *
      * @return void
@@ -285,7 +286,7 @@ class Flexi_auth extends Flexi_auth_lite {
 
     /**
      * validate_current_password
-     * Validates a submitted 'Current' password against the database for a specific user. 
+     * Validates a submitted 'Current' password against the database for a specific user.
      *
      * @return bool
      * @author Rob Hussey
@@ -296,7 +297,7 @@ class Flexi_auth extends Flexi_auth_lite {
 
     /**
      * change_password
-     * Validates a submitted 'Current' password against the database, if valid, the database is updated with the 'New' password. 
+     * Validates a submitted 'Current' password against the database, if valid, the database is updated with the 'New' password.
      *
      * @return bool
      * @author Mathew Davies
@@ -503,9 +504,9 @@ class Flexi_auth extends Flexi_auth_lite {
         return FALSE;
     }
 
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
     // USER MANAGEMENT / CRUD FUNCTIONS
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
     /**
      * insert_user
@@ -582,8 +583,8 @@ class Flexi_auth extends Flexi_auth_lite {
      * @author Phil Sturgeon
      */
     public function update_user($user_id, $user_data) {
-         if($user_id=='1') {
-              $this->CI->flexi_auth_model->set_status_message('delete_successful', 'config');
+        if ($user_id == '1') {
+            $this->CI->flexi_auth_model->set_status_message('delete_successful', 'config');
             return TRUE;
         } else if ($this->CI->flexi_auth_model->update_user($user_id, $user_data)) {
             $this->CI->flexi_auth_model->set_status_message('update_successful', 'config');
@@ -602,15 +603,14 @@ class Flexi_auth extends Flexi_auth_lite {
      * @author Phil Sturgeon
      */
     public function delete_user($user_id) {
-        if($user_id=='1') {
-              $this->CI->flexi_auth_model->set_status_message('delete_successful', 'config');
+        if ($user_id == '1') {
+            $this->CI->flexi_auth_model->set_status_message('delete_successful', 'config');
             return TRUE;
-        }
-        else if ($this->CI->flexi_auth_model->delete_user($user_id)) {
+        } else if ($this->CI->flexi_auth_model->delete_user($user_id)) {
             $this->CI->flexi_auth_model->set_status_message('delete_successful', 'config');
             return TRUE;
         }
-        
+
         $this->CI->flexi_auth_model->set_error_message('delete_unsuccessful', 'config');
         return FALSE;
     }
@@ -760,8 +760,7 @@ class Flexi_auth extends Flexi_auth_lite {
      */
     public function insert_privilege($name, $description = NULL, $custom_data = array()) {
         if ($privilege_id = $this->CI->flexi_auth_model->insert_privilege($name, $description, $custom_data))
-            ;
-        {
+            ; {
             $this->CI->flexi_auth_model->set_status_message('update_successful', 'config');
             return $privilege_id;
         }
@@ -815,8 +814,7 @@ class Flexi_auth extends Flexi_auth_lite {
      */
     public function insert_privilege_user($user_id, $privilege_id) {
         if ($privilege_id = $this->CI->flexi_auth_model->insert_privilege_user($user_id, $privilege_id))
-            ;
-        {
+            ; {
             $this->CI->flexi_auth_model->set_status_message('update_successful', 'config');
             return $privilege_id;
         }
@@ -853,8 +851,7 @@ class Flexi_auth extends Flexi_auth_lite {
      */
     public function insert_user_group_privilege($group_id, $privilege_id) {
         if ($privilege_id = $this->CI->flexi_auth_model->insert_user_group_privilege($group_id, $privilege_id))
-            ;
-        {
+            ; {
             $this->CI->flexi_auth_model->set_status_message('update_successful', 'config');
             return $privilege_id;
         }
@@ -884,7 +881,7 @@ class Flexi_auth extends Flexi_auth_lite {
 
     /**
      * identity_available
-     * Returns whether a user identity is available in the database. 
+     * Returns whether a user identity is available in the database.
      * The identity columns are defined via the $config['database']['settings']['identity_cols'] variable in the config file.
      *
      * @return bool
@@ -896,7 +893,7 @@ class Flexi_auth extends Flexi_auth_lite {
 
     /**
      * email_available
-     * Returns whether an email address is available in the database. 
+     * Returns whether an email address is available in the database.
      *
      * @return bool
      * @author Rob Hussey
@@ -907,7 +904,7 @@ class Flexi_auth extends Flexi_auth_lite {
 
     /**
      * username_available
-     * Returns whether a username is available in the database. 
+     * Returns whether a username is available in the database.
      *
      * @return bool
      * @author Rob Hussey
@@ -916,9 +913,9 @@ class Flexi_auth extends Flexi_auth_lite {
         return $this->CI->flexi_auth_model->username_available($username, $user_id);
     }
 
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
     // GET USER / GROUP / PRIVILEGE FUNCTIONS
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
     /**
      * search_users_query
@@ -936,7 +933,7 @@ class Flexi_auth extends Flexi_auth_lite {
 
     /**
      * get_users_group_query
-     * Gets records from the user group table typically for a filtered set of users. 
+     * Gets records from the user group table typically for a filtered set of users.
      *
      * @return object
      * @author Rob Hussey
@@ -1024,9 +1021,9 @@ class Flexi_auth extends Flexi_auth_lite {
         return $this->CI->flexi_auth_model->get_user_group_privileges($sql_select, $sql_where);
     }
 
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
     // EMAIL FUNCTIONS
-    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###	
+    ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 
     /**
      * send_email

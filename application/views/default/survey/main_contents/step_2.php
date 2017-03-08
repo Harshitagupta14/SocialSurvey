@@ -5,7 +5,7 @@
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/typeahead/typeahead.css" rel="stylesheet" type="text/css" />
 <style>
     .question-active {
-        background-color: #32c5d2;
+        background-color: #91BAE1;
     }
 
     .question-row {

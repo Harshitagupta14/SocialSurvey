@@ -174,8 +174,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
 
 ###+++++++++++++++++++++++++++++++++###
 // Start SQL transaction.
-        $this->db->trans_start();
-
+        //$this->db->trans_start();
 // Main user account table.
         $sql_insert = array(
             $this->auth->tbl_col_user_account['group_id'] => $group_id,
@@ -215,10 +214,10 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
 
 ###+++++++++++++++++++++++++++++++++###
 // Complete SQL transaction.
-        $this->db->trans_complete();
+        //$this->db->trans_complete();
 
 
-        return is_numeric($user_id) ? $user_id : FALSE;
+        return $user_id;
     }
 
 ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###

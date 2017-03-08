@@ -12,8 +12,22 @@ class Welcome extends CI_Controller {
         $this->load->library('form_validation');
         $this->auth = new stdClass;
         $this->load->library('flexi_auth');
-        $city1 = $this->session->userdata('city');
-        $this->common_model->check_is_city_set();
+        $this->load->model('content_model', 'content');
+        $this->load->model($this->config->item('login_folder') . '/auth_model', 'authentication');
+        if ($this->flexi_auth->is_logged_in_via_password() && $this->uri->segment(2) != 'logout') {
+            if ($this->session->flashdata('message')) {
+                $this->session->keep_flashdata('message');
+            }
+            if ($this->flexi_auth->is_admin()) {
+                redirect($this->config->item('admin_login_url') . '/dashboard');
+            } else {
+                //$customerId = $this->flexi_auth->get_user_id();
+                //pr($customerId);die;
+                //$this->cart->session_to_usercart($customerId);
+                //$this->cart->session_to_user_cartItems($customerId);
+                redirect('dashboard');
+            }
+        }
     }
 
     public function index() {

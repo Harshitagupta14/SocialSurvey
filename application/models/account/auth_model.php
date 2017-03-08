@@ -50,12 +50,14 @@ class Auth_model extends CI_Model {
         $this->form_validation->set_rules('login_password', 'Password', 'required');
         if ($this->form_validation->run()) {
             $remember_user = 1;
-            return $this->flexi_auth->login($this->input->post('login_identity'), $this->input->post('login_password'), $remember_user);
+            $this->flexi_auth->login($this->input->post('login_identity'), $this->input->post('login_password'), $remember_user);
             $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
             $this->data['message'] = $this->flexi_auth->get_messages();
+
             return TRUE;
         } else {
-            $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
+            $this->data['message'] = validation_errors(' ', ' ');
+            //$this->data['message'] = array('login_identity' => form_error('login_identity'), 'login_password' => form_error('login_password'));
             return FALSE;
         }
     }
@@ -63,9 +65,12 @@ class Auth_model extends CI_Model {
     function register_via_ajax() {
         $this->load->library('form_validation');
         $validation_rules = array(
+            array('field' => 'register_first_name', 'label' => 'First Name', 'rules' => 'required'),
+            array('field' => 'register_last_name', 'label' => 'Last Name', 'rules' => 'required'),
+            array('field' => 'register_phone_number', 'label' => 'Phone Number', 'rules' => 'required'),
             array('field' => 'register_email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email|identity_available'),
             array('field' => 'register_password', 'label' => 'Password', 'rules' => 'required|validate_password'),
-            array('field' => 'register_confirm_password', 'label' => 'Confirm Password', 'rules' => 'required|matches[register_password]')
+                // array('field' => 'register_confirm_password', 'label' => 'Confirm Password', 'rules' => 'required|matches[register_password]')
         );
         $this->form_validation->set_rules($validation_rules);
         if ($this->form_validation->run()) {
@@ -74,21 +79,25 @@ class Auth_model extends CI_Model {
             $username = $email_array[0];
             $password = $this->input->post('register_password');
             $profile_data = array(
-                'upro_first_name' => '',
-                'upro_last_name' => '',
-                'upro_phone' => '',
-                'upro_newsletter' => ''
+                'upro_type' => "customer",
+                'upro_first_name' => $this->input->post('register_first_name'),
+                'upro_last_name' => $this->input->post('register_last_name'),
+                'upro_phone' => $this->input->post('register_phone_number'),
+                'upro_newsletter' => 1,
+                'ugrp_id' => 1,
+                'uacc_parent_id_fk' => 0,
+                'uacc_active' => 0
             );
-            $instant_activate = TRUE;
-            $response = $this->flexi_auth->insert_user($email, $username, $password, $profile_data, 1, $instant_activate);
+            $instant_activate = FALSE;
+
+            $response = $this->flexi_auth->insert_user($email, $username, $password, $profile_data, 1, 0);
             if ($response) {
                 $email_data = array('identity' => $email);
                 $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
                 $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-                if ($instant_activate && $this->flexi_auth->login($email, $password)) {
-                    $this->data['message'] = $this->flexi_auth->get_messages();
-                    return TRUE;
-                }
+                $this->data['registration'] = true;
+                $this->data['message'] = "Account Created Successfully, Please Verify Email to Login.";
+                return TRUE;
             }
         } else {
             $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
@@ -128,7 +137,7 @@ class Auth_model extends CI_Model {
             //$this->common_model->update_data('user_accounts', array('uacc_id' => $response), array('uacc_active' => '0'));
             if ($response) {
                 $email_data = array('identity' => $email);
-                $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
+                // $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
                 $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
                 if ($instant_activate && $this->flexi_auth->login($email, $password)) {
                     redirect($this->config->item('login_url'));
@@ -158,7 +167,7 @@ class Auth_model extends CI_Model {
             $response = $this->flexi_auth->insert_user($email, $username, $password, '', 1, $instant_activate);
             if ($response) {
                 $email_data = array('identity' => $email);
-                $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
+                //$this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
                 $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
                 if ($instant_activate && $this->flexi_auth->login($email, $password)) {
                     $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
@@ -179,9 +188,13 @@ class Auth_model extends CI_Model {
         $this->form_validation->set_rules('activation_token_identity', 'Identity (Email / Login)', 'required');
         if ($this->form_validation->run()) {
             $response = $this->flexi_auth->resend_activation_token($this->input->post('activation_token_identity'));
+
             $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-            ($response) ? redirect($this->config->item('login_url')) : redirect('activation-token-resend');
+            $this->data['success'] = true;
+            $this->data['message'] = $this->flexi_auth->get_messages();
+            //($response) ? redirect($this->config->item('login_url')) : redirect('activation-token-resend');
         } else {
+            $this->data['success'] = false;
             $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
             return FALSE;
         }
@@ -425,4 +438,4 @@ class Auth_model extends CI_Model {
 }
 
 /* End of file auth_model.php */
-/* Location: ./application/models/auth_model.php */
+    /* Location: ./application/models/auth_model.php */

@@ -66,16 +66,17 @@ class Login extends CI_Controller {
         if ($this->input->is_ajax_request()) {
             $this->authentication->login_via_ajax();
             $this->data['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];
+            $response['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];
             //echo json_encode($this->flexi_auth->is_logged_in());
             if ($this->flexi_auth->is_logged_in()) {
                 $response['success'] = true;
                 echo json_encode($response);
                 die;
             } else {
-                if ($this->flexi_auth->ip_login_attempts_exceeded()) {
-                    $this->data['captcha'] = $this->flexi_auth->math_captcha(FALSE);
-                }
-                $response['captcha'] = $this->data['captcha'];
+                //if ($this->flexi_auth->ip_login_attempts_exceeded()) {
+                //     $this->data['captcha'] = $this->flexi_auth->math_captcha(FALSE);
+                // }
+                //$response['captcha'] = $this->data['captcha'];
                 $response['success'] = false;
                 echo json_encode($response);
                 die;
@@ -131,11 +132,13 @@ class Login extends CI_Controller {
             if ($this->flexi_auth->is_logged_in()) {
                 $this->data['redirect'] = $this->config->item('login_url');
             } else if ($this->input->post('register_email_address')) {
-                $this->authentication->register_via_ajax();
-                if ($this->flexi_auth->is_logged_in()) {
-                    $this->data['response'] = TRUE;
+                $response = $this->authentication->register_via_ajax();
+                if ($response) {
+                    $this->data['success'] = TRUE;
+                } else if ($this->flexi_auth->is_logged_in()) {
+                    $this->data['success'] = TRUE;
                 } else {
-                    $this->data['response'] = FALSE;
+                    $this->data['success'] = FALSE;
                 }
             }
         }
@@ -145,9 +148,20 @@ class Login extends CI_Controller {
     }
 
     function activate_account($user_id, $token = FALSE) {
-        $this->flexi_auth->activate_user($user_id, $token, TRUE);
-        $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-        redirect($this->config->item('login_url'));
+        $user_data = $this->common_model->fetch_row('user_accounts', '*', array('uacc_id' => $user_id));
+        if ($user_data['uacc_active'] == 1) {
+            $this->session->set_flashdata('account_activated', 'already');
+        } else {
+            $response = $this->flexi_auth->activate_user($user_id, $token, TRUE);
+            if (isset($response) && $response == 1) {
+                $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
+                $this->session->set_flashdata('account_activated', 'true');
+            } else {
+                $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
+                $this->session->set_flashdata('account_activated', 'false');
+            }
+        }
+        redirect(site_url(''));
     }
 
     function resend_activation_token() {
@@ -155,7 +169,9 @@ class Login extends CI_Controller {
             $this->authentication->resend_activation_token();
         }
         $this->data['message'] = (!isset($this->data['message'])) ? $this->session->flashdata('message') : $this->data['message'];
-        $this->load->view($this->config->item('public_login_folder') . '/resend_activation_token_view', $this->data);
+        echo json_encode($this->data);
+        die;
+        //$this->load->view($this->config->item('public_login_folder') . '/resend_activation_token_view', $this->data);
     }
 
     function forgotten_password() {
@@ -183,7 +199,8 @@ class Login extends CI_Controller {
     function logout() {
         $this->flexi_auth->logout(TRUE);
         $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-        redirect($this->config->item('login_url'));
+        //redirect($this->config->item('login_url'));
+        redirect(site_url(''));
     }
 
     function secure_logout() {

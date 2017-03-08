@@ -627,10 +627,10 @@ $config['settings']['privilege_sources'] = array('user', 'group');
  */
 ###++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++###
 // Site title shown as 'from' header on emails.
-$config['email']['site_title'] = "Catslink";
+$config['email']['site_title'] = "SocialEverest";
 
 // Reply email shown as 'from' header on emails.
-$config['email']['reply_email'] = "test.degitalcafe@gmail.com";
+$config['email']['reply_email'] = "noreply@polson.in";
 
 /**
  * Type of email to send, options: 'html', 'text'.

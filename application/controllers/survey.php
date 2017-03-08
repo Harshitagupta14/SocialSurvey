@@ -160,7 +160,7 @@ class Survey extends CI_Controller {
     }
 
     public function handle_save_survey_question() {
-
+        $data_array = array();
         $type = $this->input->post("survey_type");
         $select_type = $this->common_model->fetch_where('tbl_survey_question_type', '*', array('type_small_name' => $type))[0];
         $type_id = $select_type['id'];
@@ -171,6 +171,8 @@ class Survey extends CI_Controller {
             $multiple_choice = 0;
         }
         $question_mandatory = $this->input->post('question_mandatory');
+        $question_current_details = $this->common_model->fetch_row('tbl_survey_question', '*', array('survey_fk_id' => $this->input->post('survey_id'), 'question_no' => $this->input->post('question_no')));
+
         $data_array = array(
             'question_title' => $this->input->post('question_title'),
             'question_mandatory' => (isset($question_mandatory)) ? $question_mandatory : 0,
@@ -184,6 +186,14 @@ class Survey extends CI_Controller {
             'question_no' => $this->input->post('question_no'),
             'add_time' => date('Y-m-d H:i:s')
         );
+        if (count($question_current_details) > 0) {
+            if ($question_current_details['question_title'] != $this->input->post('question_title') || $question_current_details['type_id_fk'] != $type_id) {
+                $data_array['question_key'] = md5($this->input->post('survey_id') . date('Y-m-d H:i:s'));
+            }
+        } else {
+            $data_array['question_key'] = md5($this->input->post('survey_id') . date('Y-m-d H:i:s'));
+        }
+
         if ($this->input->post('question_state') == "save") {
             $this->common_model->insert_data('tbl_survey_question', $data_array);
             return $this->db->insert_id();
