@@ -19,7 +19,7 @@ if (!defined('BASEPATH'))
  */
 
 $config['base_url'] = 'http://localhost/SocialSurvey/';
-$config['base_url_partner'] = 'http://localhost/partners.polson/';
+$config['base_url_collect'] = 'http://localhost/Collect.SocialSurvey/';
 $config['adminassets'] = $config['base_url'] . 'assets/admin/';
 $config['frontassets'] = $config['base_url'] . 'assets/frontend/';
 $config['emailerassets'] = $config['base_url'] . 'assets/emailer/';

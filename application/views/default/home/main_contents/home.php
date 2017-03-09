@@ -1,46 +1,3 @@
-
-<style>
-    .navbar-brand {font-size: 24px; }
-    .navbar-container { padding: 15px 0 0px 0;}
-    .navbar.navbar-fixed-top.fixed-theme {
-        background-color: #222;
-        border-color: #080808;
-        box-shadow: 0 0 5px rgba(0,0,0,.8);
-    }
-    .navbar-brand.fixed-theme {font-size: 18px;}
-    .navbar-container.fixed-theme {padding: 0;}
-    .navbar-brand.fixed-theme,
-    .navbar-container.fixed-theme,
-    .navbar.navbar-fixed-top.fixed-theme,
-    .navbar-brand,
-    .navbar-container{
-        transition: 0.8s;
-        -webkit-transition:  0.8s;
-    }
-    .navbar{background:none !important; top:0px !important;}
-    .navbar.open {background:#91BAE1 !important; transition: top 0.4s ease 0s;}
-    @media screen and (min-width: 768px) {
-        .navbar-nav{float:right !important;}
-    }
-    .navbar-nav > li > a:hover{background:none !important;  border-bottom: 4px solid #91BAE1;  text-decoration: none;}
-    @media screen and (min-width: 768px) {
-        .navbar-default .navbar-nav > li.dropdown:hover > a,
-        .navbar-default .navbar-nav > li.dropdown:hover > a:hover,
-        .navbar-default .navbar-nav > li.dropdown:hover > a:focus {
-            background-color: rgb(231, 231, 231);
-            color: rgb(85, 85, 85);
-        }
-        li.dropdown:hover > .dropdown-menu {
-            display: block;
-        }
-    }
-    .container-fluid > .navbar-collapse, .container-fluid > .navbar-header, .container > .navbar-collapse, .container > .navbar-header{
-        margin-left:0px !important;
-        margin-right:0px !important;
-    }
-    @media screen and (max-width: 768px) {.navbar-nav{background:#666;}}
-
-</style>
 <div id="overlay">
     <nav id="header" class="navbar navbar-fixed-top">
         <div id="header-container" class="container navbar-container">
@@ -74,24 +31,26 @@
     </nav><!-- /.navbar -->
 
     <div class="header-video">
-        <div class="container hidden-md hidden-sm hidden-xs">
-
-            <div class="row">
+        <div class="container ">
+            <aside id="sticky-sidebar">
+                <ul class="sidebar-list">
+                    <li><a href="javascript:;" class="entypo-pencil sidebar-link" onclick="loginpopup();"><span><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/create.png" alt="Create">Create</span></a></li>
+                    <li><a href="<?php echo $this->config->item('base_url_collect'); ?>" class="entypo-database sidebar-link" target="_blank"><span><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/collect.png" alt="Collect">Collect</span></a></li>
+                </ul>
+            </aside>
+            <div class="row hidden-sm hidden-xs">
                 <div class="col-sm-12 text-center margin-30 wow fadeIn" data-wow-delay="0.6s" style="visibility: visible; z-index:1000; margin-top:150px;">
-
                     <h2 style="color:rgba(0,0,0,0.50);">Be the first to</h2>
                     <h2 style="color:rgba(0,0,0,0.50);">Gather data on your contemporary area in order to monitor and explain trends.</h2>
-                    <a class="btn btn-primary" style="background-color:#91BAE1;" href="#">Request Demo</a><br/>
-
+                    <a class="btn btn-primary" style="background-color:#91BAE1;" href="javascript:;" onclick="loginpopup();" > Request Demo </a><br/>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12 margin-30 wow fadeIn" data-wow-delay="0.6s" style="visibility: visible; margin-top:35px; margin-left:50px; z-index:1000;">
-
-                    <div class="col-md-3 wow fadeIn form-group" data-wow-delay="0.4s"><h2 style="color:#fff; font-size: 35px; font-weight:300; line-height: 30px;letter-spacing: 0px;">Create</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/create.png" alt="Create"></div>
-                    <div class="col-md-3 wow fadeIn" data-wow-delay="0.4s"><h2 style="color:#fff; font-size: 35px; font-weight:300;line-height: 30px;letter-spacing: 0px;">Collect</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/collect.png" alt="Create"></div>
-                    <div class="col-md-3 wow fadeIn" data-wow-delay="0.4s"><h2 style="color:#fff; font-size: 35px; font-weight:300; line-height: 30px;letter-spacing: 0px; ">Analyse</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/analyse.png" alt="Create"></div>
-                    <div class="col-md-3 wow fadeIn" data-wow-delay="0.4s"><h2 style="color:#fff; font-size: 35px; font-weight:300; line-height: 30px;letter-spacing: 0px;">Visualize</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/visualize.png" alt="Create"></div>
+                <div class="col-sm-12 margin-30 wow fadeIn core-icons-container" data-wow-delay="0.6s">
+                    <div class="col-md-3 col-sm-3 col-xs-3 wow fadeIn form-group" data-wow-delay="0.4s"><h2 class="core-icons">Create</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/create.png" alt="Create"></div>
+                    <div class="col-md-3 col-sm-3 col-xs-3 wow fadeIn" data-wow-delay="0.4s"><h2 class="core-icons">Collect</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/collect.png" alt="Create"></div>
+                    <div class="col-md-3 col-sm-3 col-xs-3 wow fadeIn" data-wow-delay="0.4s"><h2 class="core-icons">Analyse</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/analyse.png" alt="Create"></div>
+                    <div class="col-md-3 col-sm-3 col-xs-3 wow fadeIn" data-wow-delay="0.4s"><h2 class="core-icons">Visualize</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/visualize.png" alt="Create"></div>
 
                 </div>
             </div>
@@ -257,79 +216,3 @@
 
         </div>
     </section> -->
-
-    <script>
-        $(document).ready(function () {
-
-            /**
-             * This object controls the nav bar. Implement the add and remove
-             * action over the elements of the nav bar that we want to change.
-             *
-             * @type {{flagAdd: boolean, elements: string[], add: Function, remove: Function}}
-             */
-            var myNavBar = {
-                flagAdd: true,
-                elements: [],
-                init: function (elements) {
-                    this.elements = elements;
-                },
-                add: function () {
-                    if (this.flagAdd) {
-                        for (var i = 0; i < this.elements.length; i++) {
-                            document.getElementById(this.elements[i]).className += " fixed-theme";
-                        }
-                        this.flagAdd = false;
-                    }
-                },
-                remove: function () {
-                    for (var i = 0; i < this.elements.length; i++) {
-                        document.getElementById(this.elements[i]).className =
-                                document.getElementById(this.elements[i]).className.replace(/(?:^|\s)fixed-theme(?!\S)/g, '');
-                    }
-                    this.flagAdd = true;
-                }
-
-            };
-
-            /**
-             * Init the object. Pass the object the array of elements
-             * that we want to change when the scroll goes down
-             */
-            myNavBar.init([
-                "header",
-                "header-container",
-                "brand"
-            ]);
-
-            /**
-             * Function that manage the direction
-             * of the scroll
-             */
-            function offSetManager() {
-
-                var yOffset = 0;
-                var currYOffSet = window.pageYOffset;
-
-                if (yOffset < currYOffSet) {
-                    myNavBar.add();
-                }
-                else if (currYOffSet == yOffset) {
-                    myNavBar.remove();
-                }
-
-            }
-
-            /**
-             * bind to the document scroll detection
-             */
-            window.onscroll = function (e) {
-                offSetManager();
-            }
-
-            /**
-             * We have to do a first detectation of offset because the page
-             * could be load with scroll down set.
-             */
-            offSetManager();
-        });
-    </script>

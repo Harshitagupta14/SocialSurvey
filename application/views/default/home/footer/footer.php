@@ -55,6 +55,7 @@
         text-decoration: none;
         text-transform: uppercase;
     }
+    @media (max-width: 560px) {.mdl-snackbar{left:10% !important;}}
 </style>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script type="text/javascript">
@@ -92,9 +93,9 @@
     </div>
 </div>
 </footer>
-<div class="row pop-up">
+<div class="pop-up">
     <div class="box small-6 large-centered">
-        <a href="#" class="close-button">&#10006;</a>
+        <a href="javascript:;" class="close-button">&#10006;</a>
         <div class="pop-up-container">
             <div class="box"></div>
             <div class="pop-up-container-forms" id="sign_signup_modal">
@@ -102,7 +103,7 @@
                     <div class="info-item">
                         <div class="table">
                             <div class="table-cell">
-                                <p>
+                                <p class="popup-paragraph">
                                     Have an account?
                                 </p>
                                 <div class="btn btn-primary" style="background-color:#91BAE1;" onclick="switch_modals('login');">
@@ -114,7 +115,7 @@
                     <div class="info-item">
                         <div class="table">
                             <div class="table-cell">
-                                <p>
+                                <p class="popup-paragraph">
                                     Don't have an account?
                                 </p>
                                 <div class="btn btn-primary" style="background-color:#91BAE1;" onclick="switch_modals('register');">
@@ -133,19 +134,26 @@
                                     <div class="col-md-12">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input class="form-control input-sm" id="login_identity" type="text" name="login_identity" required />
-                                            <label for="form_control_1">Email</label>
+                                            <label for="form_control_1">Email <sup>*</sup></label>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input class="form-control input-sm" id="login_password" type="password" name="login_password" required />
-                                            <label for="form_control_1">Password</label>
+                                            <label for="form_control_1">Password <sup>*</sup></label>
                                         </div>
                                     </div>
-                                    <input class="btn btn-danger" id="login_user" value="Sign In" name="login_user">
+                                    <input type="button" class="btn btn-danger" id="login_user" value="Sign In" name="login_user">
 
                                 </div>
-
+                                <div class="row hidden-sm hidden-md hidden-lg">
+                                    <p class="popup-paragraph">
+                                        Don't have an account?
+                                    </p>
+                                    <div class="btn btn-primary" style="background-color:#91BAE1;" onclick="switch_modals('register');">
+                                        Sign up
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -193,6 +201,14 @@
                                             <input type="submit"  id="register_user" class="btn btn-primary" value="Register" />
                                         </div>
                                     </div>
+                                    <div class="row hidden-sm hidden-md hidden-lg">
+                                        <p >
+                                            Have an account?
+                                        </p>
+                                        <div class="btn btn-primary" style="background-color:#91BAE1;" onclick="switch_modals('login');">
+                                            Log in
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -207,7 +223,7 @@
                 <div class="info-item">
                     <div class="table" style="margin-top:20px;">
                         <div class="table-cell" style="margin-top:20px;">
-                            <p>
+                            <p class="popup-paragraph">
                                 Don't have an account?
                             </p>
                             <div class="btn btn-primary" style="background-color:#91BAE1;" onclick="show_sign_signup_modal('register');">
@@ -215,7 +231,7 @@
                             </div>
                         </div>
                         <div class="table-cell">
-                            <p>
+                            <p class="popup-paragraph">
                                 Have an account?
                             </p>
                             <div class="btn btn-primary" style="background-color:#91BAE1;" onclick="show_sign_signup_modal('login');">
@@ -256,6 +272,7 @@
         $('#overlay').removeClass('cover');
         e.stopPropagation();
     });
+
     function switch_modals(modal) {
         $(".pop-up-container").toggleClass("log-in");
         if (modal == 'login') {
@@ -298,7 +315,8 @@
                 dataType: 'json',
                 data: {'login_identity': login_identity, 'login_password': login_password},
                 //beforeSend: function () {},
-                success: function (stat) {                 //var data = JSON.parse(stat);
+                success: function (stat) {
+                    //var data = JSON.parse(stat);
                     console.log(stat.success);
                     if (stat.success == true) {
                         var errors = stat.message.split("\n");
@@ -320,17 +338,16 @@
                                 if (error == "Your account needs to be activated via email.") {
                                     $('#sign_signup_modal').hide();
                                     $('#resend_token_modal').show();
+                                    document.getElementById('resend_activation_code').click();
                                 }
                             }
                         }
-
-
                     }
-
                 }
             });
         }
     });
+
     $("#register_user").click(function (e) {
         e.preventDefault();
         var register_first_name = $('#register_first_name').val();
@@ -369,6 +386,7 @@
                         if (stat.registration == true) {
                             $('#sign_signup_modal').hide();
                             $('#resend_token_modal').show();
+                            set_resend_link_timer();
                         }
                     } else if (stat.success == false) {
                         var errors = stat.message.split("\n");
@@ -385,6 +403,7 @@
             });
         }
     });
+
     $("#resend_activation_code").click(function (e) {
         e.preventDefault();
         var is_disabled = $("#resend_activation_code").attr('data-disabled');
@@ -458,18 +477,13 @@ if ($this->session->flashdata('account_activated') == 'true') {
         };
     </script>
 <?php } ?>
-<!-- Javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="<?= $this->config->item('frontassets') ?>video-parralax/js/jquery-1.11.0.min.js"><\/script>')</script>
 <script src="<?= $this->config->item('frontassets') ?>video-parralax/js/wow.min.js"></script>
 <script src="<?= $this->config->item('frontassets') ?>video-parralax/js/bootstrap.min.js"></script>
 <script src="<?= $this->config->item('frontassets') ?>video-parralax/js/main.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="<?= $this->config->item('frontassets') ?>video-parralax/js/modernizr.js"></script>
 <script src="<?= $this->config->item('frontassets') ?>video-parralax/js/script.js?v1.1"></script>
-<script>     $(document).ready(function () {
+<script>
+    $(document).ready(function () {
         $('.header-video').each(function (i, elem) {
             headerVideo = new HeaderVideo({
                 element: elem,
