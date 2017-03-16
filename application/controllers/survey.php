@@ -82,6 +82,7 @@ class Survey extends CI_Controller {
     public function ajax_save_question() {
         parse_str($_POST['str'], $_POST);
         $type = $this->input->post("survey_type");
+        $upper = 3;
         $config = array(
             'default' => array(
                 array(
@@ -106,7 +107,7 @@ class Survey extends CI_Controller {
                 array(
                     'field' => 'multiple_choice',
                     'label' => 'Multiple Choice',
-                    'rules' => 'required',
+                    'rules' => 'required|callback_check_equal_less[]',
                 ),
                 array(
                     'field' => 'question_limit_lower',
@@ -157,6 +158,17 @@ class Survey extends CI_Controller {
         }
         echo json_encode($data);
         die;
+    }
+
+    function check_equal_less() {
+        $count = count($this->input->post('multiple_choice'));
+        $limit_upper = $this->input->post('question_limit_upper');
+        if ($count >= $limit_upper && $count >= 2) {
+            return true;
+        } else {
+            $this->form_validation->set_message('check_equal_less', 'Number of muliple options must not be greater than Max choice');
+            return false;
+        }
     }
 
     public function handle_save_survey_question() {
