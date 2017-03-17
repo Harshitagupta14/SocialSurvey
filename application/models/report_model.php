@@ -43,7 +43,7 @@ class Report_Model extends CI_Model {
             $surveyor = "YES";
         }
 
-        $initial_select = "`survey_response`.*,`survey_response`.`id` as response_id,`survey_response_question`.`survey_res_fk_id` ,GROUP_CONCAT(`survey_response_question`.`question_no`) as question_no,GROUP_CONCAT(`survey_response_question`.`question_response`) as question_response,GROUP_CONCAT(`survey_response_question`.`question_type`) as question_type,`survey_response`.add_time,`user_profile`.upro_first_name";
+        $initial_select = "`survey_response`.*,`survey_response`.`id` as response_id,`survey_response_question`.`survey_res_fk_id` ,GROUP_CONCAT(`survey_response_question`.`question_no`) as question_no,GROUP_CONCAT(`survey_response_question`.`question_response` SEPARATOR '|')  as question_response,GROUP_CONCAT(`survey_response_question`.`question_type`) as question_type,`survey_response`.add_time,`user_profile`.upro_first_name";
 
         $final_select = " $initial_select ";
 

@@ -14,6 +14,13 @@
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css" />
 <link href="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css" />
 <style>
+    .new_modal{
+        margin-left: 15%;
+        margin-right: 15%;
+        left: 0px;
+        width: auto;
+        overflow: auto !important;
+    }
     .btn:not(.md-skip){
         padding:8px 44px 8px;
     }
@@ -107,7 +114,7 @@
         </div>
     </div>
 </div>
-<div id="response_view" class="modal fade">
+<div id="response_view" class="modal fade new_modal">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
         <h4 class="modal-title">View</h4>
@@ -163,14 +170,24 @@
 
     });
     function view_response(i) {
+//        var base_url = '<?php echo base_url(); ?>';
+        var base_url = "http://localhost/Collect.SocialSurvey/";
+        var response;
         var data = JSON.parse(view_data[i]);
-        var modal_html = "<table class='table table-striped table-bordered table-hover table-checkable order-column'><thead><th>SNO</th><th>Question Number</th><th>Question Response</th><th>Question Type</th></thead>";
+        var modal_html = "<table class='table table-striped table-bordered table-hover table-checkable order-column'><thead><th>SNO</th><th>Question Number</th><th>Question Response</th><th>Question Type</th><th>Media</th></thead>";
         var question_array = data.question_no.split(",");
         var question_array_size = question_array.length;
-        var question_response = data.question_response.split(",");
+        var question_response = data.question_response.split("|");
         var question_type = data.question_type.split(",");
         for (i = 0; i < question_array_size; i++) {
-            modal_html += "<tr><td>" + (i + 1) + "</td><td>" + question_array[i] + "</td><td>" + question_response[i] + "</td><td><label class='label label-info'>" + question_type[i] + "</label></td></tr>";
+            if(question_type[i] == "PICTURE/CAMERA INPUT"){
+                response = "<img src="+base_url+"assets/uploads/response_images/"+question_response[i]+" height='50' width='50'>"; 
+            }else if(question_type[i] == "AUDIO INPUT"){
+                response = "<audio controls><source src="+base_url+"assets/uploads/response_audio/"+question_response[i]+" type='audio/mp3'></audio>";
+            }else{
+                response="--";
+            }
+            modal_html += "<tr><td>" + (i + 1) + "</td><td>" + question_array[i] + "</td><td>" + question_response[i] + "</td><td><label class='label label-info'>" + question_type[i] + "</label></td><td>" + response + "</td></tr>";
         }
         modal_html += "</table>";
         document.getElementById('view_data').innerHTML = modal_html;
