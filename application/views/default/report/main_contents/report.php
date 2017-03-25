@@ -26,15 +26,6 @@
     }
     .search-inputs-padding{padding:0px 0px 0px 15px;}
 </style>
-
-
-
-
-
-
-
-
-
 <div class="page-content-wrapper">
     <div class="page-content">
         <div class="row">
@@ -119,8 +110,21 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
         <h4 class="modal-title">View</h4>
     </div>
-    <div class="modal-body" id="view_data">
+    <div class="modal-body" id="view">
+        <table class="table table-striped table-bordered table-hover table-checkable order-column" id="view_table">
+            <thead>
+                <tr>
+                    <th> SNO. </th>
+                    <th> Question Number</th>
+                    <th> Question Response </th>
+                    <th> Question Type </th>
+                    <th> Media </th>
+                </tr>
+            </thead>
+            <tbody>
 
+            </tbody>
+        </table>
     </div>
 </div>
 <script>
@@ -131,6 +135,7 @@
             paging: false});
     }
     var view_data = new Array();
+    var view_data_popup = new Array();
     $("#search_button").click(function (e) {
         e.preventDefault();
         var selected_survey = $("#selected_survey option:selected").val();
@@ -170,32 +175,39 @@
 
     });
     function view_response(i) {
-//        var base_url = '<?php echo base_url(); ?>';
+        //        var base_url = '<?php echo base_url(); ?>';
         var base_url = "http://localhost/Collect.SocialSurvey/";
         var response;
         var data = JSON.parse(view_data[i]);
-        var modal_html = "<table class='table table-striped table-bordered table-hover table-checkable order-column'><thead><th>SNO</th><th>Question Number</th><th>Question Response</th><th>Question Type</th><th>Media</th></thead>";
         var question_array = data.question_no.split(",");
         var question_array_size = question_array.length;
         var question_response = data.question_response.split("|");
         var question_type = data.question_type.split(",");
-        for (i = 0; i < question_array_size; i++) {
-            if(question_type[i] == "PICTURE/CAMERA INPUT"){
-                response = "<img src="+base_url+"assets/uploads/response_images/"+question_response[i]+" height='50' width='50'>"; 
-            }else if(question_type[i] == "AUDIO INPUT"){
-                response = "<audio controls><source src="+base_url+"assets/uploads/response_audio/"+question_response[i]+" type='audio/mp3'></audio>";
-            }else{
-                response="--";
-            }
-            modal_html += "<tr><td>" + (i + 1) + "</td><td>" + question_array[i] + "</td><td>" + question_response[i] + "</td><td><label class='label label-info'>" + question_type[i] + "</label></td><td>" + response + "</td></tr>";
+        view_data_popup.length = 0;
+        var data_table;
+        data_table = $('#view_table').DataTable({destroy: true,
+            bLengthChange: false,
+            paging: false});
+        if (data_table) {
+            data_table.clear();
         }
-        modal_html += "</table>";
-        document.getElementById('view_data').innerHTML = modal_html;
+        for (i = 0; i < question_array_size; i++) {
+           if (question_type[i] == "PICTURE/CAMERA INPUT") {
+                response = "<img src=" + base_url + "assets/uploads/response_images/" + question_response[i] + " height='50' width='50'>";
+            } else if (question_type[i] == "AUDIO INPUT") {
+                response = "<audio controls><source src=" + base_url + "assets/uploads/response_audio/" + question_response[i] + " type='audio/mp3'></audio>";
+            } else {
+                response = "--";
+            }
+            
+            data_table.row.add([(i + 1), question_array[i], question_response[i] ,"<label class='label label-info'>"+question_type[i]+"</label>", response]);
+            view_data_popup.push(JSON.stringify(data[i]));
+
+        }
+        data_table.draw();
         $('#response_view').modal('show');
     }
 </script>
-
-
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
@@ -210,5 +222,4 @@
 <script src="<?= $this->config->item('adminassets'); ?>global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
 <script src="<?= $this->config->item('adminassets'); ?>pages/scripts/table-datatables-managed.min.js" type="text/javascript"></script>
 </body>
-
 </html>
