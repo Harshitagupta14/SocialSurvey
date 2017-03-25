@@ -107,12 +107,7 @@ class Survey extends CI_Controller {
                 array(
                     'field' => 'multiple_choice',
                     'label' => 'Multiple Choice',
-                    'rules' => 'required|callback_check_equal_less[]',
-                ),
-                array(
-                    'field' => 'question_limit_lower',
-                    'label' => 'Min Characters allowed',
-                    'rules' => 'required|numeric',
+                    'rules' => 'required|callback_check_equal_less',
                 ),
                 array(
                     'field' => 'question_limit_upper',
@@ -163,10 +158,16 @@ class Survey extends CI_Controller {
     function check_equal_less() {
         $count = count($this->input->post('multiple_choice'));
         $limit_upper = $this->input->post('question_limit_upper');
-        if ($count >= $limit_upper && $count >= 2) {
+        if ($count < 2) {
+            $this->form_validation->set_message('check_equal_less', 'MINIMUM 2 OPTIONS ARE REQUIRED.');
+            return false;
+        } else if ($limit_upper == 0) {
+            $this->form_validation->set_message('check_equal_less', 'MAX CHOICE  CANNOT BE LEFT ZERO (0).');
+            return false;
+        } else if ($count >= $limit_upper) {
             return true;
         } else {
-            $this->form_validation->set_message('check_equal_less', 'Number of muliple options must not be greater than Max choice');
+            $this->form_validation->set_message('check_equal_less', 'MAX CHOICE CANNOT BE GREATER THAN MULTIPLE OPTIONS ENTERED.');
             return false;
         }
     }

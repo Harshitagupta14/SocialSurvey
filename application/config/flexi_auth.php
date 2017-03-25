@@ -65,6 +65,7 @@ $config['database']['user_acc']['columns']['password'] = 'uacc_password';
 $config['database']['user_acc']['columns']['ip_address'] = 'uacc_ip_address';
 $config['database']['user_acc']['columns']['salt'] = 'uacc_salt';
 $config['database']['user_acc']['columns']['activation_token'] = 'uacc_activation_token';
+$config['database']['user_acc']['columns']['hybrid_identifier'] = 'uacc_hybrid_identifier';
 $config['database']['user_acc']['columns']['forgot_password_token'] = 'uacc_forgotten_password_token';
 $config['database']['user_acc']['columns']['forgot_password_expire'] = 'uacc_forgotten_password_expire';
 $config['database']['user_acc']['columns']['update_email_token'] = 'uacc_update_email_token';

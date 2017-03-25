@@ -41,6 +41,8 @@
         display: none;
         /* 1px higher than the overlay layer */
     }
+
+    .portlet > .portlet-body p, .table .btn{margin-top:5px;}
 </style>
 <!-- END PAGE LEVEL PLUGINS -->
 

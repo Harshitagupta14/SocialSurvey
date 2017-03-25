@@ -30,8 +30,9 @@
         </div><!-- /.container -->
     </nav><!-- /.navbar -->
 
-    <div class="header-video">
+    <div class="header-video" style='background-image: url("<?= $this->config->item('frontassets') ?>video-parralax/img/masthead.jpg");'>
         <div class="container ">
+
             <aside id="sticky-sidebar">
                 <ul class="sidebar-list">
                     <li><a href="javascript:;" class="entypo-pencil sidebar-link" onclick="loginpopup();"><span><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/create.png" alt="Create">Create</span></a></li>
@@ -51,18 +52,16 @@
                     <div class="col-md-3 col-sm-3 col-xs-3 wow fadeIn" data-wow-delay="0.4s"><h2 class="core-icons">Collect</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/collect.png" alt="Create"></div>
                     <div class="col-md-3 col-sm-3 col-xs-3 wow fadeIn" data-wow-delay="0.4s"><h2 class="core-icons">Analyse</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/analyse.png" alt="Create"></div>
                     <div class="col-md-3 col-sm-3 col-xs-3 wow fadeIn" data-wow-delay="0.4s"><h2 class="core-icons">Visualize</h2><img class=" img-responsive" src="<?= $this->config->item('frontassets') ?>images/visualize.png" alt="Create"></div>
-
                 </div>
             </div>
+            <div  class="header-video__media"
+                  data-video-URL="https://www.youtube.com/embed/Scxs7L0vhZ4"
+                  data-teaser="<?= $this->config->item('frontassets') ?>video-parralax/video/teaser-video"
+                  data-video-width="560"
+                  data-video-height="315"></div>
+            <a href="https://www.youtube.com/embed/Scxs7L0vhZ4" class="header-video__play-trigger hidden-md hidden-sm hidden-xs" id="header-video__play-trigger">Play video</a>
+            <button type="button" class="header-video__close-trigger hidden-md hidden-sm hidden-xs" id="header-video__close-trigger">Close video</button>
         </div>
-        <img src="<?= $this->config->item('frontassets') ?>video-parralax/img/masthead.jpg"
-             class="header-video__media"
-             data-video-URL="https://www.youtube.com/embed/Scxs7L0vhZ4"
-             data-teaser="<?= $this->config->item('frontassets') ?>video-parralax/video/teaser-video"
-             data-video-width="560"
-             data-video-height="315">
-        <a href="https://www.youtube.com/embed/Scxs7L0vhZ4" class="header-video__play-trigger" id="header-video__play-trigger">Play video</a>
-        <button type="button" class="header-video__close-trigger" id="header-video__close-trigger">Close video</button>
     </div>
 
     <!--<div class="mouse-icon hidden-xs">

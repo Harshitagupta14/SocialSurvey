@@ -56,6 +56,103 @@
         text-transform: uppercase;
     }
     @media (max-width: 560px) {.mdl-snackbar{left:10% !important;}}
+
+    /* Shared */
+    .loginBtn {
+        box-sizing: border-box;
+        position: relative;
+        width: 14em;
+        margin: 0.2em;
+        padding: 0 15px 0 46px;
+        border: none;
+        text-align: left;
+        line-height: 34px;
+        white-space: nowrap;
+        border-radius: 0.2em;
+        font-size: 16px;
+        color: #FFF;
+    }
+    .loginBtn:before {
+        content: "";
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 34px;
+        height: 100%;
+    }
+    .loginBtn:focus {
+        outline: none;
+    }
+    .loginBtn:active {
+        box-shadow: inset 0 0 0 32px rgba(0,0,0,0.1);
+    }
+
+
+    /* Facebook */
+    .loginBtn--facebook {
+        background-color: #4C69BA;
+        background-image: linear-gradient(#4C69BA, #3B55A0);
+        /*font-family: "Helvetica neue", Helvetica Neue, Helvetica, Arial, sans-serif;*/
+        text-shadow: 0 -1px 0 #354C8C;
+    }
+    .loginBtn--facebook:before {
+        border-right: #364e92 1px solid;
+        background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_facebook.png') 6px 6px no-repeat;
+    }
+    .loginBtn--facebook:hover,
+    .loginBtn--facebook:focus {
+        background-color: #5B7BD5;
+        background-image: linear-gradient(#5B7BD5, #4864B1);
+    }
+
+
+    /* Google */
+    .loginBtn--google {
+        /*font-family: "Roboto", Roboto, arial, sans-serif;*/
+        background: #DD4B39;
+    }
+    .loginBtn--google:before {
+        border-right: #BB3F30 1px solid;
+        background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png') 6px 6px no-repeat;
+    }
+    .loginBtn--google:hover,
+    .loginBtn--google:focus {
+        background: #E74B37;
+    }
+
+    .omb_login .omb_loginOr {
+        position: relative;
+        font-size: 1.5em;
+        color: #aaa;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+    }
+    .omb_row-sm-offset-3 div[class*="col-"]:first-child {
+        margin-left: 25%;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .omb_login .omb_loginOr .omb_hrOr {
+        background-color: #cdcdcd;
+        height: 1px;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+    }
+    .omb_spanOr {
+        display: block;
+        position: absolute;
+        left: 50%;
+        top: -0.6em;
+        margin-left: -1.5em;
+        background-color: white;
+        width: 3em;
+        text-align: center;
+    }
+    .omb_hrOr{margin-top:1px;}
+
 </style>
 <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 <script type="text/javascript">
@@ -131,20 +228,34 @@
                             <div class="table-cell">
 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="row">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input class="form-control input-sm" id="login_identity" type="text" name="login_identity" required />
                                             <label for="form_control_1">Email <sup>*</sup></label>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="row">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input class="form-control input-sm" id="login_password" type="password" name="login_password" required />
                                             <label for="form_control_1">Password <sup>*</sup></label>
                                         </div>
                                     </div>
-                                    <input type="button" class="btn btn-danger" id="login_user" value="Sign In" name="login_user">
-
+                                    <div class="row">
+                                        <input style="margin-top: 10px;" type="button" class="btn btn-danger" id="login_user" value="Sign In" name="login_user">
+                                    </div>
+                                    <div class="row omb_row-sm-offset-3 omb_loginOr">
+                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <hr class="omb_hrOr">
+                                            <span class="omb_spanOr">or</span>
+                                        </div>
+                                    </div>
+                                    <a href="<?= base_url(); ?>hauth/login/Facebook?redirect_uri=<?= base_url(); ?>dashboard" title="Facebook"  >
+                                        <button type="button" class="button loginBtn loginBtn--facebook"> Login with Facebook </button>
+                                    </a>
+                                    <br/>
+                                    <a href="<?= base_url(); ?>hauth/login/Google?redirect_uri=<?= base_url(); ?>dashboard" title="Google" >
+                                        <button type="button" class="button loginBtn loginBtn--google"> Login with Google </button>
+                                    </a>
                                 </div>
                                 <div class="row hidden-sm hidden-md hidden-lg">
                                     <p class="popup-paragraph">
@@ -161,43 +272,43 @@
                         <div class="table">
                             <div class="table-cell">
                                 <form action="" class="" method="post">
-                                    <div class="col-md-12">
+                                    <div class="row">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input id="register_first_name"  class="form-control input-sm" required="" type="text">
                                             <label for="form_control_1">First Name <sup>*</sup></label>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="row">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input id="register_last_name"   class="form-control input-sm" required="" type="text">
                                             <label for="form_control_1">Last Name <sup>*</sup></label>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="row">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input id="register_phone_number"  class="form-control input-sm" required="" type="text">
                                             <label for="form_control_1">Phone Number <sup>*</sup></label>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="row">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input id="register_email_address" class="form-control input-sm" required="" type="text">
                                             <label for="form_control_1">Email  <sup>*</sup></label>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="row">
                                         <div class="form-group form-md-line-input form-md-floating-label has-info">
                                             <input id="register_password"  class="form-control input-sm" required="" type="text">
-                                            <span class="help-block" >Password must be 8 characters long.</span>
+                                            <span class="col-md-12 help-block" >Password must be 8 characters long.</span>
                                             <label for="form_control_1">Password  <sup>*</sup></label>
                                         </div>
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-12" style="margin-top:10px;">
+                                        <div class="row" style="margin-top:25px;">
                                             <input type="submit"  id="register_user" class="btn btn-primary" value="Register" />
                                         </div>
                                     </div>
@@ -387,6 +498,11 @@
                             $('#sign_signup_modal').hide();
                             $('#resend_token_modal').show();
                             set_resend_link_timer();
+                        } else if (stat.autologin == true) {
+                            window.location.href = 'dashboard';
+                        } else {
+                            display_error('Something went wrong , Please try again.');
+                            window.location.reload();
                         }
                     } else if (stat.success == false) {
                         var errors = stat.message.split("\n");

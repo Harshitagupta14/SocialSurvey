@@ -377,6 +377,7 @@ class Common_Model extends CI_Model {
             }
         }
     }
+
 // --------------------------------------------------------------------------------------------------
     function num_rows($table, $cond) {
         $this->db->where($cond);
@@ -585,6 +586,23 @@ class Common_Model extends CI_Model {
             }
         }
         return $this->db->get()->result_array();
+    }
+
+    /**
+     *
+     * @param type $table
+     * @param type $select
+     * @param type $cond
+     * @return type
+     */
+    function fetch_row_obj($table, $select = '*', $cond = NULL) {
+        $this->db->select($select);
+        $this->db->from($table);
+        if ($cond !== NULL) {
+            $this->db->where($cond);
+        }
+        $result = $this->db->get()->row();
+        return $result ? $result : array();
     }
 
 }

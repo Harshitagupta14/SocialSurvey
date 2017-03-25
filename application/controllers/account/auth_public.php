@@ -18,7 +18,7 @@ class Auth_Public extends CI_Controller {
         if (!$this->flexi_auth->is_logged_in() && $this->uri->segment(2) != 'update_email') {
             $this->flexi_auth->set_error_message('You must login to access this area.', TRUE);
             $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-            redirect($this->config->item('login_url'));
+            redirect(site_url(''));
         }
         $this->data = null;
     }

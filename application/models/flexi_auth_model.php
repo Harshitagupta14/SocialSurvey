@@ -105,8 +105,8 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
     public function insert_user($email, $username, $password, $custom_data = FALSE, $group_id = FALSE, $instant_activate = 0) {
 // Check that an email address and password have been set.
 // If a username is defined as an identity column, ensure it is also set.
-        if (empty($email) || empty($password) ||
-                (empty($username) && in_array($this->auth->tbl_col_user_account['username'], $this->auth->db_settings['identity_cols']))) {
+
+        if (empty($email) || (empty($username) && in_array($this->auth->tbl_col_user_account['username'], $this->auth->db_settings['identity_cols']))) {
             $this->set_error_message('account_creation_insufficient_data', 'config');
             return FALSE;
         }
@@ -159,7 +159,6 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
         else if (!is_numeric($parent_id)) {
             $parent_id = 0;
         }
-
 
 
 
@@ -1621,7 +1620,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
      * @return bool
      * @author Rob Hussey / Filou Tschiemer
      */
-    private function set_login_sessions($user, $logged_in_via_password = FALSE) {
+    public function set_login_sessions($user, $logged_in_via_password = FALSE) {
         if (!$user) {
             return FALSE;
         }
@@ -1710,6 +1709,7 @@ class Flexi_auth_model extends Flexi_auth_lite_model {
             $this->auth->session_data[$this->auth->session_name['is_admin']] = 0;
             $this->auth->session_data[$this->auth->session_name['group']] = array(1 => 'Public');
         }
+
         $this->session->set_userdata(array($this->auth->session_name['name'] => $this->auth->session_data));
         return TRUE;
     }

@@ -760,7 +760,8 @@ class Flexi_auth extends Flexi_auth_lite {
      */
     public function insert_privilege($name, $description = NULL, $custom_data = array()) {
         if ($privilege_id = $this->CI->flexi_auth_model->insert_privilege($name, $description, $custom_data))
-            ; {
+            ;
+        {
             $this->CI->flexi_auth_model->set_status_message('update_successful', 'config');
             return $privilege_id;
         }
@@ -814,7 +815,8 @@ class Flexi_auth extends Flexi_auth_lite {
      */
     public function insert_privilege_user($user_id, $privilege_id) {
         if ($privilege_id = $this->CI->flexi_auth_model->insert_privilege_user($user_id, $privilege_id))
-            ; {
+            ;
+        {
             $this->CI->flexi_auth_model->set_status_message('update_successful', 'config');
             return $privilege_id;
         }
@@ -851,7 +853,8 @@ class Flexi_auth extends Flexi_auth_lite {
      */
     public function insert_user_group_privilege($group_id, $privilege_id) {
         if ($privilege_id = $this->CI->flexi_auth_model->insert_user_group_privilege($group_id, $privilege_id))
-            ; {
+            ;
+        {
             $this->CI->flexi_auth_model->set_status_message('update_successful', 'config');
             return $privilege_id;
         }
@@ -1068,6 +1071,11 @@ class Flexi_auth extends Flexi_auth_lite {
         }
 
         $this->CI->auth->template_data = $data;
+    }
+
+    public function set_login_session($custom_data) {
+        $this->CI->flexi_auth_model->set_login_sessions($custom_data, FALSE);
+        return TRUE;
     }
 
 }

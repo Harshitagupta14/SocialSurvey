@@ -135,7 +135,7 @@
     color: #fff;
 }
 .popup-paragraph {
-    padding: 20px 65px 10px 65px;
+    padding: 10px 65px 0px 65px;
     color: dimgray;
 }
 .pop-up-container {
@@ -248,7 +248,7 @@
     left: 30px;
     top: -30px;
     width: 305px;
-    height: 380px;
+    height: 430px;
     background-color: #fff;
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
     -moz-transition: all 0.5s;
@@ -262,7 +262,7 @@
     left: 30px;
     top: -90px;
     width: 305px;
-    height: 600px;
+    height: 500px;
     background-color: #fff;
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
     -moz-transition: all 0.5s;
@@ -373,7 +373,7 @@
 }
 .form-group.form-md-line-input {
     position:relative;
-    margin:0 0 35px;
+    margin:0 0 15px;
 }
 .form-horizontal .form-group.form-md-line-input {
     padding-top:10px;
@@ -723,6 +723,34 @@
 
 /**Media Queries Css Mobile*/
 @media (max-width: 560px) {
+    .pop-up-container .pop-up-container-form-login {
+    overflow: hidden;
+    position: absolute;
+    left: 30px;
+    top: -30px;
+    width: 305px;
+    height: 465px;
+    background-color: #fff;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+    .pop-up-container .pop-up-container-form-register {
+    overflow: hidden;
+    position: absolute;
+    left: 30px;
+    top: -90px;
+    width: 305px;
+    height: 600px;
+    background-color: #fff;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
     .core-icons-container{visibility: visible; margin-top:80px; margin-left:0px; z-index:1000;}
     .core-icons{color:#fff; font-size: 10px; font-weight:300;line-height: 30px;letter-spacing: 0px;}
     .navbar-nav{margin:-1.5px -15px;}

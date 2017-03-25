@@ -49,7 +49,7 @@ class Auth_model extends CI_Model {
         $this->form_validation->set_rules('login_identity', 'Identity (Email / Login)', 'required');
         $this->form_validation->set_rules('login_password', 'Password', 'required');
         if ($this->form_validation->run()) {
-            $remember_user = 1;
+            $remember_user = FALSE;
             $this->flexi_auth->login($this->input->post('login_identity'), $this->input->post('login_password'), $remember_user);
             $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
             $this->data['message'] = $this->flexi_auth->get_messages();
@@ -64,45 +64,85 @@ class Auth_model extends CI_Model {
 
     function register_via_ajax() {
         $this->load->library('form_validation');
-        $validation_rules = array(
-            array('field' => 'register_first_name', 'label' => 'First Name', 'rules' => 'required'),
-            array('field' => 'register_last_name', 'label' => 'Last Name', 'rules' => 'required'),
-            array('field' => 'register_phone_number', 'label' => 'Phone Number', 'rules' => 'required'),
-            array('field' => 'register_email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email|identity_available'),
-            array('field' => 'register_password', 'label' => 'Password', 'rules' => 'required|validate_password'),
-                // array('field' => 'register_confirm_password', 'label' => 'Confirm Password', 'rules' => 'required|matches[register_password]')
-        );
-        $this->form_validation->set_rules($validation_rules);
-        if ($this->form_validation->run()) {
-            $email = $this->input->post('register_email_address');
-            $email_array = explode('@', $this->input->post('register_email_address'));
-            $username = $email_array[0];
-            $password = $this->input->post('register_password');
-            $profile_data = array(
-                'upro_type' => "customer",
-                'upro_first_name' => $this->input->post('register_first_name'),
-                'upro_last_name' => $this->input->post('register_last_name'),
-                'upro_phone' => $this->input->post('register_phone_number'),
-                'upro_newsletter' => 1,
-                'ugrp_id' => 1,
-                'uacc_parent_id_fk' => 0,
-                'uacc_active' => 0
+        $check_data = $this->check($this->input->post('register_email_address'));
+        if ($check_data['type'] == 'signup') {
+            $validation_rules = array(
+                array('field' => 'register_first_name', 'label' => 'First Name', 'rules' => 'required'),
+                array('field' => 'register_last_name', 'label' => 'Last Name', 'rules' => 'required'),
+                array('field' => 'register_phone_number', 'label' => 'Phone Number', 'rules' => 'required'),
+                array('field' => 'register_email_address', 'label' => 'Email Address', 'rules' => 'required|valid_email|identity_available'),
+                array('field' => 'register_password', 'label' => 'Password', 'rules' => 'required|validate_password'),
+                    // array('field' => 'register_confirm_password', 'label' => 'Confirm Password', 'rules' => 'required|matches[register_password]')
             );
-            $instant_activate = FALSE;
-
-            $response = $this->flexi_auth->insert_user($email, $username, $password, $profile_data, 1, 0);
-            if ($response) {
-                $email_data = array('identity' => $email);
-                $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
-                $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
-                $this->data['registration'] = true;
-                $this->data['message'] = "Account Created Successfully, Please Verify Email to Login.";
-                return TRUE;
+            $this->form_validation->set_rules($validation_rules);
+            if ($this->form_validation->run()) {
+                $email = $this->input->post('register_email_address');
+                $email_array = explode('@', $this->input->post('register_email_address'));
+                $username = $email_array[0];
+                $password = $this->input->post('register_password');
+                $profile_data = array(
+                    'upro_type' => "customer",
+                    'upro_first_name' => $this->input->post('register_first_name'),
+                    'upro_last_name' => $this->input->post('register_last_name'),
+                    'upro_phone' => $this->input->post('register_phone_number'),
+                    'upro_newsletter' => 1,
+                    'ugrp_id' => 1,
+                    'uacc_parent_id_fk' => 0,
+                    'uacc_active' => 0
+                );
+                $instant_activate = FALSE;
+                $response = $this->flexi_auth->insert_user($email, $username, $password, $profile_data, 1, 0);
+                if ($response) {
+                    $email_data = array('identity' => $email);
+                    $this->flexi_auth->send_email($email, 'Welcome', 'registration_welcome.tpl.php', $email_data);
+                    $this->session->set_flashdata('message', $this->flexi_auth->get_messages());
+                    $this->data['registration'] = true;
+                    $this->data['message'] = "Account Created Successfully, Please Verify Email to Login.";
+                    return TRUE;
+                }
+            } else {
+                $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
+                return FALSE;
             }
-        } else {
-            $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
-            return FALSE;
+        } else if ($check_data['type'] == 'signup_without_email_check') {
+            $validation_rules = array(
+                array('field' => 'register_first_name', 'label' => 'First Name', 'rules' => 'required'),
+                array('field' => 'register_last_name', 'label' => 'Last Name', 'rules' => 'required'),
+                array('field' => 'register_phone_number', 'label' => 'Phone Number', 'rules' => 'required'),
+                array('field' => 'register_email_address', 'label' => 'Email Address', 'rules' => 'required'),
+                array('field' => 'register_password', 'label' => 'Password', 'rules' => 'required|validate_password'),
+                    // array('field' => 'register_confirm_password', 'label' => 'Confirm Password', 'rules' => 'required|matches[register_password]')
+            );
+            $this->form_validation->set_rules($validation_rules);
+            if ($this->form_validation->run()) {
+                $email_array = explode('@', $this->input->post('register_email_address'));
+                $username = $email_array[0];
+                $current_password = '23456789BbCcDdFfGgHh' . $username . 'JjKkMmNnPpQqRrSsTtVvWwXxYyZz';
+                $new_password = $this->input->post('register_password');
+                $response = $this->flexi_auth->change_password($this->input->post('register_email_address'), $current_password, $new_password);
+                $new_account_data = $this->common_model->fetch_row_obj('user_accounts', '*', array('uacc_email' => $this->input->post('register_email_address')));
+                $this->flexi_auth->set_login_session($new_account_data, FALSE);
+                $this->data['autologin'] = true;
+                $this->data['message'] = "Account Created Successfully , Logging you in.";
+                return TRUE;
+            } else {
+                $this->data['message'] = validation_errors('<p class="error_msg">', '</p>');
+                return FALSE;
+            }
         }
+    }
+
+    function check($email) {
+        $email_array = explode('@', $email);
+        $username = $email_array[0];
+        $current_password = '23456789BbCcDdFfGgHh' . $username . 'JjKkMmNnPpQqRrSsTtVvWwXxYyZz';
+        $response = $this->flexi_auth->validate_current_password($current_password, $email);
+        if ($response) {
+            $data['type'] = 'signup_without_email_check';
+        } else {
+            $data['type'] = 'signup';
+        }
+        return $data;
     }
 
     function register_account() {
